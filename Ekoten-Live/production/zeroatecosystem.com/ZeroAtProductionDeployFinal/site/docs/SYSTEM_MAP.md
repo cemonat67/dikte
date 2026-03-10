@@ -123,3 +123,32 @@ Next step in a new chat:
 - Optional active-state highlight for selected % button
 - Optional CFO wording improvement (`Annual savings potential`, `margin recovery`, `payback`)
 
+Zero@Production Architecture
+
+Factory Layer
+↓
+Operational Signals
+↓
+Financial Exposure (CFO)
+↓
+Strategic Risk (CEO)
+↓
+Board Scenario Engine
+↓
+Executive Decision
+
+---
+
+# Zero@Production Architecture
+
+Factory Layer
+↓
+Operational Signals
+↓
+Financial Exposure (CFO)
+↓
+Strategic Risk (CEO)
+↓
+Board Scenario Engine
+↓
+Executive Decision

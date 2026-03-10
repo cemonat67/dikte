@@ -1,0 +1,32 @@
+{
+  "module": "fabric",
+  "facility": "ekoten",
+  "line": "LINE-1",
+  "kpis": {
+    "rework_pct": 3.6,
+    "yield_loss_pct": 2.4,
+    "throughput_meters": 142000,
+    "water_l_per_meter": 4.85,
+    "co2_kg_per_meter": 0.68,
+    "energy_cost_eur_per_meter": 0.12,
+    "chemical_cost_eur_per_meter": 0.09,
+    "material_cost_eur_per_meter": 1.02,
+    "labor_cost_eur_per_meter": 0.07
+  },
+  "executive": {
+    "cto_status": "MONITOR",
+    "md_status": "WATCH"
+  },
+  "trends": {
+    "labels": ["W1","W2","W3","W4","W5","W6"],
+    "throughput": [131000,133500,136200,138900,140200,142000],
+    "yield_loss_pct": [2.8,2.7,2.6,2.5,2.4,2.4],
+    "rework_pct": [4.2,4.0,3.9,3.8,3.7,3.6]
+  },
+  "module_breakdown": {
+    "labels": ["Knitting","Inspection","Prep","Dye","Dry","Pack"],
+    "co2": [11,5,8,27,9,4],
+    "water": [3,1,4,31,5,1],
+    "energy": [14,3,7,25,11,2]
+  }
+}

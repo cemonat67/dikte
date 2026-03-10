@@ -1,0 +1,31 @@
+{
+  "module": "fibre",
+  "facility": "sun",
+  "line": "LINE-2",
+  "kpis": {
+    "rework_pct": 2.1,
+    "yield_loss_pct": 1.5,
+    "throughput_kg": 21200,
+    "energy_kwh_per_kg": 1.58,
+    "co2_kg_per_kg": 1.96,
+    "energy_cost_eur_per_kg": 0.22,
+    "material_cost_eur_per_kg": 1.88,
+    "labor_cost_eur_per_kg": 0.18
+  },
+  "executive": {
+    "cto_status": "OK",
+    "md_status": "STABLE"
+  },
+  "trends": {
+    "labels": ["W1","W2","W3","W4","W5","W6"],
+    "throughput": [19800,20150,20540,20800,21010,21200],
+    "yield_loss_pct": [1.9,1.8,1.7,1.6,1.5,1.5],
+    "rework_pct": [2.7,2.5,2.4,2.3,2.2,2.1]
+  },
+  "module_breakdown": {
+    "labels": ["Blend","Open","Card","Draw","Roving","Spin"],
+    "co2": [10,12,15,14,10,18],
+    "energy": [19,24,28,25,18,29],
+    "water": [2,2,1,1,1,1]
+  }
+}

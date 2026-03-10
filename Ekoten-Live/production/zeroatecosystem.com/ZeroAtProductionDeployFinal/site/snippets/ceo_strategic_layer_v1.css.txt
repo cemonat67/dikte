@@ -1,0 +1,260 @@
+/* CEO_STRATEGIC_LAYER_V1_START */
+<style>
+  .ceo-strategic-shell{
+    margin:28px 0 22px 0;
+    border:1px solid rgba(2,21,78,.10);
+    border-radius:24px;
+    background:linear-gradient(180deg,#ffffff 0%,#f7f9fc 100%);
+    box-shadow:0 18px 50px rgba(2,21,78,.08);
+    overflow:hidden;
+  }
+  .ceo-strategic-head{
+    background:linear-gradient(135deg,#02154e 0%,#0d2a7a 100%);
+    color:#fff;
+    padding:22px 24px 18px;
+  }
+  .ceo-strategic-kicker{
+    font-size:12px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:.82;
+    margin-bottom:8px;
+    font-weight:700;
+  }
+  .ceo-strategic-title{
+    font-size:30px;
+    line-height:1.08;
+    font-weight:800;
+    margin:0 0 8px 0;
+  }
+  .ceo-strategic-sub{
+    font-size:14px;
+    line-height:1.55;
+    opacity:.92;
+    max-width:900px;
+  }
+  .ceo-strategic-body{
+    padding:24px;
+    display:grid;
+    grid-template-columns:1.15fr .85fr;
+    gap:20px;
+  }
+  .ceo-card{
+    background:#fff;
+    border:1px solid rgba(2,21,78,.08);
+    border-radius:20px;
+    padding:18px 18px 16px;
+    box-shadow:0 10px 24px rgba(2,21,78,.05);
+  }
+  .ceo-card h3{
+    margin:0 0 10px 0;
+    font-size:15px;
+    font-weight:800;
+    color:#02154e;
+    letter-spacing:.01em;
+  }
+  .ceo-risk-top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:18px;
+    margin-bottom:14px;
+  }
+  .ceo-risk-value{
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+  }
+  .ceo-risk-number{
+    font-size:54px;
+    line-height:1;
+    font-weight:900;
+    color:#02154e;
+  }
+  .ceo-risk-den{
+    font-size:20px;
+    color:#5f6b8a;
+    font-weight:700;
+    padding-bottom:6px;
+  }
+  .ceo-risk-trend{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border-radius:999px;
+    padding:8px 12px;
+    font-size:13px;
+    font-weight:800;
+    background:rgba(249,186,0,.16);
+    color:#7b5700;
+    white-space:nowrap;
+  }
+  .ceo-mini-note{
+    font-size:13px;
+    line-height:1.55;
+    color:#4f5d79;
+  }
+  .ceo-bar-wrap{
+    margin-top:14px;
+  }
+  .ceo-bar-track{
+    height:14px;
+    border-radius:999px;
+    background:#e9edf5;
+    overflow:hidden;
+  }
+  .ceo-bar-fill{
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#f9ba00 0%,#f58b00 45%,#d51635 100%);
+    transition:width .45s ease;
+  }
+  .ceo-bar-scale{
+    display:flex;
+    justify-content:space-between;
+    margin-top:7px;
+    font-size:11px;
+    color:#6c7894;
+    font-weight:700;
+  }
+  .ceo-signals{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:10px;
+  }
+  .ceo-signal{
+    border-radius:16px;
+    padding:12px 12px;
+    background:#f7f9fc;
+    border:1px solid rgba(2,21,78,.07);
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    align-items:center;
+  }
+  .ceo-signal-name{
+    font-size:13px;
+    font-weight:700;
+    color:#02154e;
+  }
+  .ceo-signal-badge{
+    font-size:11px;
+    font-weight:900;
+    border-radius:999px;
+    padding:6px 8px;
+    background:#fff3cd;
+    color:#8a6700;
+    white-space:nowrap;
+  }
+  .ceo-signal-badge.high{
+    background:#fde4e8;
+    color:#a10f2f;
+  }
+  .ceo-signal-badge.low{
+    background:#e7f6ed;
+    color:#0c7a43;
+  }
+  .ceo-scenarios{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+  .ceo-scenario-btn{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    padding:14px 14px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:800;
+    color:#02154e;
+    background:#f7f9fc;
+    border:1px solid rgba(2,21,78,.08);
+    transition:.2s ease;
+  }
+  .ceo-scenario-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 10px 20px rgba(2,21,78,.08);
+  }
+  .ceo-scenario-btn.active{
+    background:#02154e;
+    color:#fff;
+    border-color:#02154e;
+  }
+  .ceo-scenario-sub{
+    display:block;
+    margin-top:4px;
+    font-size:12px;
+    font-weight:600;
+    opacity:.78;
+  }
+  .ceo-scenario-result{
+    margin-top:14px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#fff8e8 0%,#fff 100%);
+    border:1px solid rgba(249,186,0,.32);
+    padding:14px 14px;
+  }
+  .ceo-scenario-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+    margin-bottom:8px;
+  }
+  .ceo-scenario-row:last-child{
+    margin-bottom:0;
+  }
+  .ceo-scenario-label{
+    font-size:12px;
+    font-weight:800;
+    color:#7a5b00;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .ceo-scenario-value{
+    font-size:22px;
+    font-weight:900;
+    color:#02154e;
+  }
+  .ceo-narrative{
+    margin-top:14px;
+    border-radius:18px;
+    background:#fff;
+    border:1px solid rgba(2,21,78,.08);
+    padding:16px 16px;
+    color:#24314f;
+    font-size:15px;
+    line-height:1.7;
+  }
+  .ceo-narrative strong{
+    color:#02154e;
+  }
+  .ceo-foot{
+    padding:0 24px 24px 24px;
+  }
+  .ceo-foot-note{
+    font-size:12px;
+    color:#6b7893;
+    line-height:1.6;
+  }
+  @media (max-width: 980px){
+    .ceo-strategic-body{
+      grid-template-columns:1fr;
+    }
+    .ceo-signals{
+      grid-template-columns:1fr;
+    }
+    .ceo-risk-number{
+      font-size:44px;
+    }
+    .ceo-strategic-title{
+      font-size:24px;
+    }
+  }
+</style>
+/* CEO_STRATEGIC_LAYER_V1_END */

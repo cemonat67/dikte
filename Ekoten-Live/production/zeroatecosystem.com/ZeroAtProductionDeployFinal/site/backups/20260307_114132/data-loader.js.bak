@@ -1,0 +1,80 @@
+(function () {
+  function getParams() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      facility: (params.get('facility') || 'Ekoten').trim(),
+      mode: (params.get('mode') || 'synthetic').trim().toLowerCase()
+    };
+  }
+
+  function facilityKey(name) {
+    const map = {
+      'ekoten': 'ekoten',
+      'sun': 'sun',
+      'sun tekstil': 'sun',
+      'suntekstil': 'sun'
+    };
+    return map[(name || '').toLowerCase()] || 'ekoten';
+  }
+
+  async function tryFetchJson(path) {
+    try {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } catch (err) {
+      console.warn('[data-loader] failed:', path, err.message);
+      return null;
+    }
+  }
+
+  async function loadSynthetic(moduleName, facility) {
+    const key = facilityKey(facility);
+    return await tryFetchJson(`assets/data/synthetic/${key}/${moduleName}.json`);
+  }
+
+  async function loadLegacy(moduleName) {
+    const legacyMap = {
+      fibre: 'assets/data/fibre-cards.json',
+      fabric: 'assets/data/fabric-cards.json',
+      finishing: 'assets/data/finishing.json'
+    };
+    if (!legacyMap[moduleName]) return null;
+    return await tryFetchJson(legacyMap[moduleName]);
+  }
+
+  async function loadLive(moduleName, facility) {
+    console.warn('[data-loader] live mode placeholder for', moduleName, facility);
+    return null;
+  }
+
+  async function loadModule(moduleName, opts = {}) {
+    const params = getParams();
+    const facility = (opts.facility || params.facility || 'Ekoten').trim();
+    const mode = (opts.mode || params.mode || 'synthetic').trim().toLowerCase();
+
+    if (mode === 'live') {
+      const live = await loadLive(moduleName, facility);
+      if (live) return { source: 'live', facility, mode, data: live };
+      const synthetic = await loadSynthetic(moduleName, facility);
+      if (synthetic) return { source: 'synthetic', facility, mode, data: synthetic };
+      const legacy = await loadLegacy(moduleName);
+      return { source: 'legacy', facility, mode, data: legacy };
+    }
+
+    if (mode === 'synthetic' || mode === 'demo') {
+      const synthetic = await loadSynthetic(moduleName, facility);
+      if (synthetic) return { source: 'synthetic', facility, mode, data: synthetic };
+      const legacy = await loadLegacy(moduleName);
+      return { source: 'legacy', facility, mode, data: legacy };
+    }
+
+    const legacy = await loadLegacy(moduleName);
+    return { source: 'legacy', facility, mode, data: legacy };
+  }
+
+  window.ZeroDataLoader = {
+    getParams,
+    loadModule
+  };
+})();

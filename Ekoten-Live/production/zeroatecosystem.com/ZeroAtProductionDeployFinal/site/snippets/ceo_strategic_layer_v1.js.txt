@@ -1,0 +1,47 @@
+    var riskValue = document.getElementById("ceoStrategicRiskValue");
+    var trendEl = document.getElementById("ceoStrategicTrend");
+    var bar = document.getElementById("ceoStrategicRiskBar");
+    var summary = document.getElementById("ceoStrategicSummary");
+
+    if (riskValue) riskValue.textContent = model.risk;
+    if (trendEl) trendEl.textContent = model.trend;
+    if (bar) bar.style.width = model.risk + "%";
+    if (summary) {
+      summary.textContent =
+        "Strategic risk blends financial exposure, operational alert intensity and signal momentum into one CEO-level index.";
+    }
+
+    renderSignalMap(getSignalMap(model.risk));
+    renderScenario("stabilize");
+  }
+
+  function renderScenario(name) {
+    var model = buildStrategicRisk();
+    var projected = scenarioProjection(model.risk, name);
+
+    var riskEl = document.getElementById("ceoScenarioRiskValue");
+    var statusEl = document.getElementById("ceoScenarioStatus");
+    var narrativeEl = document.getElementById("ceoNarrativeOutput");
+
+    if (riskEl) riskEl.textContent = projected.risk + " / 100";
+    if (statusEl) statusEl.textContent = projected.label;
+    if (narrativeEl) narrativeEl.innerHTML = narrativeFrom(projected.risk, projected.label);
+
+    document.querySelectorAll(".ceo-scenario-btn").forEach(function (btn) {
+      btn.classList.toggle("active", btn.getAttribute("data-scenario") === name);
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var btn = e.target.closest(".ceo-scenario-btn");
+    if (!btn) return;
+    renderScenario(btn.getAttribute("data-scenario"));
+  });
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderBase);
+  } else {
+    renderBase();
+  }
+})();
+/* CEO_STRATEGIC_LAYER_V1_END */

@@ -1,0 +1,31 @@
+{
+  "module": "fibre",
+  "facility": "ekoten",
+  "line": "LINE-1",
+  "kpis": {
+    "rework_pct": 2.8,
+    "yield_loss_pct": 1.9,
+    "throughput_kg": 18500,
+    "energy_kwh_per_kg": 1.72,
+    "co2_kg_per_kg": 2.18,
+    "energy_cost_eur_per_kg": 0.24,
+    "material_cost_eur_per_kg": 1.92,
+    "labor_cost_eur_per_kg": 0.19
+  },
+  "executive": {
+    "cto_status": "MONITOR",
+    "md_status": "STABLE"
+  },
+  "trends": {
+    "labels": ["W1","W2","W3","W4","W5","W6"],
+    "throughput": [17100,17400,17950,18100,18320,18500],
+    "yield_loss_pct": [2.4,2.2,2.1,2.0,1.9,1.9],
+    "rework_pct": [3.4,3.1,3.0,2.9,2.8,2.8]
+  },
+  "module_breakdown": {
+    "labels": ["Blend","Open","Card","Draw","Roving","Spin"],
+    "co2": [12,14,18,16,11,21],
+    "energy": [22,27,31,28,19,34],
+    "water": [3,2,2,1,1,1]
+  }
+}

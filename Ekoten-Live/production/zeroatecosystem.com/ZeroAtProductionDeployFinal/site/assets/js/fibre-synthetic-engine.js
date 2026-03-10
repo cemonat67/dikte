@@ -1,0 +1,337 @@
+(function () {
+  const MODULE = "fibre";
+
+  const ZERO_BRAND = {
+    green: "#005530",
+    red: "#D51635",
+    navy: "#02154e",
+    orange: "#f9ba00",
+    grid: "rgba(2, 21, 78, 0.10)",
+    tick: "#02154e"
+  };
+
+  function rgba(hex, alpha) {
+    const h = String(hex).replace("#", "");
+    const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
+    const n = parseInt(full, 16);
+    const r = (n >> 16) & 255;
+    const g = (n >> 8) & 255;
+    const b = n & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function chartPalette(i) {
+    const base = [
+      ZERO_BRAND.green,
+      ZERO_BRAND.red,
+      ZERO_BRAND.navy,
+      ZERO_BRAND.orange
+    ];
+    return base[i % base.length];
+  }
+
+  function num(v, d = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : d;
+  }
+
+  function money(v) {
+    return "€ " + Math.round(num(v, 0)).toLocaleString("en-GB");
+  }
+
+  function pct(v) {
+    return num(v, 0).toFixed(1) + "%";
+  }
+
+  function text(el, value) {
+    if (el) el.textContent = value;
+  }
+
+  function qs(sel, root = document) {
+    return root.querySelector(sel);
+  }
+
+  function qsa(sel, root = document) {
+    return Array.from(root.querySelectorAll(sel));
+  }
+
+  function firstExisting(selectors) {
+    for (const s of selectors) {
+      const el = qs(s);
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function setCardValue(selectors, value) {
+    const el = firstExisting(selectors);
+    if (el) el.textContent = value;
+  }
+
+  function setBadge(selectors, value) {
+    const el = firstExisting(selectors);
+    if (el) el.textContent = value;
+  }
+
+  function safeChart(id, labels, series) {
+    if (!window.Chart) return;
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    if (canvas.__chart) {
+      canvas.__chart.destroy();
+      canvas.__chart = null;
+    }
+    const datasets = series.map((s, i) => {
+      const color = s.color || chartPalette(i);
+      return {
+        label: s.label,
+        data: s.data || [],
+        borderColor: color,
+        backgroundColor: s.fill ? rgba(color, 0.18) : rgba(color, 0.10),
+        pointBackgroundColor: color,
+        pointBorderColor: color,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 2,
+        tension: 0.35,
+        fill: !!s.fill
+      };
+    });
+    canvas.__chart = new Chart(canvas.getContext("2d"), {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: ZERO_BRAND.tick, boxWidth: 18, boxHeight: 10 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          },
+          y: {
+            beginAtZero: false,
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          }
+        }
+      }
+    });
+  }
+
+  function safeBar(id, labels, series) {
+    if (!window.Chart) return;
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    if (canvas.__chart) {
+      canvas.__chart.destroy();
+      canvas.__chart = null;
+    }
+    canvas.__chart = new Chart(canvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels,
+        datasets: series.map((s, i) => {
+          const color = s.color || chartPalette(i);
+          return {
+            label: s.label,
+            data: s.data || [],
+            backgroundColor: rgba(color, 0.35),
+            borderColor: color,
+            hoverBackgroundColor: rgba(color, 0.50),
+            borderWidth: 1
+          };
+        })
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: ZERO_BRAND.tick, boxWidth: 18, boxHeight: 10 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          }
+        }
+      }
+    });
+  }
+
+  function calcHiddenCost(kpi) {
+    const reworkPct = num(kpi.rework_pct);
+    const yieldLossPct = num(kpi.yield_loss_pct);
+    const throughputKg = num(kpi.throughput_kg);
+    const energyCostPerKg = num(kpi.energy_cost_eur_per_kg, 0.22);
+    const materialCostPerKg = num(kpi.material_cost_eur_per_kg, 1.85);
+    const laborCostPerKg = num(kpi.labor_cost_eur_per_kg, 0.18);
+
+    const reworkKg = throughputKg * (reworkPct / 100);
+    const yieldLossKg = throughputKg * (yieldLossPct / 100);
+
+    const hidden =
+      (reworkKg * (energyCostPerKg + laborCostPerKg)) +
+      (yieldLossKg * (materialCostPerKg + energyCostPerKg + laborCostPerKg));
+
+    return Math.round(hidden);
+  }
+
+  function bindKPIs(payload) {
+    const kpi = payload.kpis || {};
+    const hiddenCost = calcHiddenCost(kpi);
+
+    setCardValue(
+      ['[data-kpi="rework"]', '#kpiRework', '#reworkValue', '.kpi-rework .value'],
+      pct(kpi.rework_pct)
+    );
+
+    setCardValue(
+      ['[data-kpi="yieldLoss"]', '#kpiYieldLoss', '#yieldLossValue', '.kpi-yield-loss .value'],
+      pct(kpi.yield_loss_pct)
+    );
+
+    setCardValue(
+      ['[data-kpi="hiddenCost"]', '#kpiHiddenCost', '#hiddenCostValue', '.kpi-hidden-cost .value'],
+      money(hiddenCost)
+    );
+
+    setCardValue(
+      ['[data-kpi="co2"]', '#kpiCO2', '#co2Value', '.kpi-co2 .value'],
+      num(kpi.co2_kg_per_kg, 0).toFixed(2) + " kgCO₂/kg"
+    );
+
+    setCardValue(
+      ['[data-kpi="energy"]', '#kpiEnergy', '#energyValue', '.kpi-energy .value'],
+      num(kpi.energy_kwh_per_kg, 0).toFixed(2) + " kWh/kg"
+    );
+
+    setBadge(
+      ['[data-cto-status]', '#ctoStatus', '.cto-status'],
+      payload.executive?.cto_status || "MONITOR"
+    );
+
+    setBadge(
+      ['[data-md-status]', '#mdStatus', '.md-status'],
+      payload.executive?.md_status || "STABLE"
+    );
+
+    setCardValue(
+      ['[data-cfo-hidden-cost]', '#cfoHiddenCost', '.cfo-hidden-cost'],
+      money(hiddenCost)
+    );
+  }
+
+  function bindMeta(payload, opts) {
+    const facility = (opts.facility || payload.facility || "ekoten").toUpperCase();
+    const line = opts.line || payload.line || "LINE-1";
+
+    text(firstExisting(['[data-facility-name]', '#facilityName', '.facility-name']), facility);
+    text(firstExisting(['[data-line-name]', '#lineName', '.line-name']), line);
+  }
+
+  function bindCharts(payload) {
+    const t = payload.trends || {};
+    const m = payload.module_breakdown || {};
+
+    if (Array.isArray(t.labels)) {
+      safeChart("trendChart", t.labels, [
+        { label: "Throughput", data: t.throughput, color: ZERO_BRAND.navy },
+        { label: "Yield Loss %", data: t.yield_loss_pct, color: ZERO_BRAND.red },
+        { label: "Rework %", data: t.rework_pct, color: ZERO_BRAND.orange }
+      ]);
+    }
+
+    if (Array.isArray(m.labels)) {
+      safeBar("moduleStackedChart", m.labels, [
+        { label: "CO₂", data: m.co2, color: ZERO_BRAND.navy },
+        { label: "Energy", data: m.energy, color: ZERO_BRAND.orange },
+        { label: "Water", data: m.water, color: ZERO_BRAND.green }
+      ]);
+    }
+  }
+
+  async function loadAndBind() {
+    const facilityEl = firstExisting(['#facilitySelect', '[data-role="facility-select"]']);
+    const lineEl = firstExisting(['#lineSelect', '[data-role="line-select"]']);
+
+    const facility = ((facilityEl && facilityEl.value) || "ekoten").toLowerCase();
+    const line = (lineEl && lineEl.value) || "LINE-1";
+
+    if (!window.ZeroDataLoader || typeof window.ZeroDataLoader.loadModule !== "function") {
+      console.error("[fibre-engine] ZeroDataLoader missing");
+      return;
+    }
+
+    const result = await window.ZeroDataLoader.loadModule(MODULE, { facility, line });
+    const payload = result && (result.data || result);
+
+    if (!payload) {
+      console.error("[fibre-engine] empty payload");
+      return;
+    }
+
+    bindMeta(payload, { facility, line });
+    bindKPIs(payload);
+    bindCharts(payload);
+    window.__ZERO_FIBRE_STATE__ = payload;
+    console.log("[fibre-engine] applied", { facility, line, payload });
+  }
+
+  function ensureSelectors() {
+    let facilityEl = firstExisting(['#facilitySelect', '[data-role="facility-select"]']);
+    let lineEl = firstExisting(['#lineSelect', '[data-role="line-select"]']);
+    const host = firstExisting(['.toolbar', '.topbar', '.page-toolbar', '.controls', 'header .right']) || document.body;
+
+    if (!facilityEl) {
+      const wrap = document.createElement("div");
+      wrap.style.display = "inline-flex";
+      wrap.style.gap = "8px";
+      wrap.style.marginLeft = "12px";
+      wrap.innerHTML = `
+        <select id="facilitySelect" data-role="facility-select">
+          <option value="ekoten">Ekoten</option>
+          <option value="sun">Sun</option>
+        </select>
+        <select id="lineSelect" data-role="line-select">
+          <option value="LINE-1">LINE-1</option>
+          <option value="LINE-2">LINE-2</option>
+          <option value="LINE-3">LINE-3</option>
+        </select>
+      `;
+      host.appendChild(wrap);
+      facilityEl = wrap.querySelector("#facilitySelect");
+      lineEl = wrap.querySelector("#lineSelect");
+    }
+
+    const up = new URLSearchParams(window.location.search);
+    const facility = (up.get("facility") || "ekoten").toLowerCase();
+    const line = up.get("line") || "LINE-1";
+
+    if (facilityEl) facilityEl.value = facility;
+    if (lineEl) lineEl.value = line;
+
+    facilityEl && facilityEl.addEventListener("change", loadAndBind);
+    lineEl && lineEl.addEventListener("change", loadAndBind);
+  }
+
+  function bind() {
+    ensureSelectors();
+    loadAndBind().catch((e) => console.error("[fibre-engine]", e));
+  }
+
+  window.ZeroFibreSyntheticEngine = { bind, loadAndBind };
+})();

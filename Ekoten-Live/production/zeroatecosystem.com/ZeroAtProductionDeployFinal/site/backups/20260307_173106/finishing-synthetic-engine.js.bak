@@ -1,0 +1,258 @@
+(function () {
+  function qs(id) {
+    return document.getElementById(id);
+  }
+
+  function getLoaderResult() {
+    return window.__ZERO_FINISHING_TEST__ || null;
+  }
+
+  function getRows() {
+    return window.__ZERO_FINISHING_LINES__ || [];
+  }
+
+  function getSelectedLine() {
+    const sel = qs("finFacilitySelect");
+    const rows = getRows();
+    if (!rows.length) return null;
+    const idx = sel ? Math.max(0, sel.selectedIndex) : 0;
+    return rows[idx] || rows[0];
+  }
+
+  function euroK(value) {
+    const v = Math.round(Number(value || 0));
+    if (v >= 1000) return "€" + Math.round(v / 1000) + "K";
+    return "€" + v;
+  }
+
+  function computeAnnualLoss(line) {
+    return (
+      Number(line.rework_rate || 0) * 2400 +
+      Number(line.defect_rate || 0) * 1900 +
+      Number(line.energy_kwh || 0) * 0.10
+    ) * 12;
+  }
+
+  function computeMonthlyLoss(line) {
+    return computeAnnualLoss(line) / 12;
+  }
+
+  function computeIoT(line) {
+    return Math.min(99, Math.round(Number(line.machine_utilization || 0) + 4));
+  }
+
+  function computeOEE(line) {
+    return Math.round(Number(line.machine_utilization || 0));
+  }
+
+  function computeTrend(line) {
+    const base = Number(line.co2_ton || 0);
+    return [
+      +(base * 0.92).toFixed(1),
+      +(base * 1.01).toFixed(1),
+      +(base * 1.07).toFixed(1),
+      +(base * 0.97).toFixed(1),
+      +(base * 1.16).toFixed(1),
+      +(base * 1.08).toFixed(1)
+    ];
+  }
+
+  function computeModules(line) {
+    const baseCO2 = Number(line.co2_ton || 0) * 40;
+    const baseCost = computeMonthlyLoss(line);
+
+    return [
+      { module: "Finishing (Main)", area: "Process",    co2: baseCO2 * 0.35, cost: baseCost * 0.30, status: "MODERATE" },
+      { module: "Heat / Steam",     area: "Utilities",  co2: baseCO2 * 0.22, cost: baseCost * 0.26, status: "MODERATE" },
+      { module: "Water & ETP",      area: "Compliance", co2: baseCO2 * 0.18, cost: baseCost * 0.12, status: "HIGH" },
+      { module: "Rework & Yield Loss", area: "Quality", co2: baseCO2 * 0.15, cost: baseCost * 0.20, status: "HIGH" },
+      { module: "Lab & QC",         area: "Quality",    co2: baseCO2 * 0.10, cost: baseCost * 0.12, status: "SAFE" }
+    ];
+  }
+
+  function updateBadge(line) {
+    const badge = qs("zero-loader-badge");
+    const meta = getLoaderResult();
+    if (!badge || !meta) return;
+
+    badge.textContent =
+      "Loader: " + (meta.source || "n/a") +
+      " | Facility: " + (meta.facility || "n/a") +
+      " | Mode: " + (meta.mode || "n/a") +
+      " | Lines: " + getRows().length +
+      " | Active: " + (line.line || "n/a") +
+      " | Rework: " + Number(line.rework_rate || 0).toFixed(1) + "%" +
+      " | OEE: " + computeOEE(line) + "%";
+  }
+
+  function updateTopCards(line) {
+    const reworkEl = qs("finTotalRework");
+    const lossEl = qs("finTotalLoss");
+    const cfoEl = qs("finExecCfoMetric");
+    const ctoEl = qs("finExecCtoMetric");
+    const mdEl = qs("finExecMdMetric");
+
+    if (reworkEl) reworkEl.textContent = Number(line.rework_rate || 0).toFixed(1) + "%";
+    if (lossEl)   lossEl.textContent   = euroK(computeMonthlyLoss(line));
+    if (cfoEl)    cfoEl.textContent    = euroK(computeAnnualLoss(line));
+    if (ctoEl)    ctoEl.textContent    = computeIoT(line) + "%";
+    if (mdEl)     mdEl.textContent     = computeOEE(line) + "%";
+  }
+
+  function updateTrendSummary(line) {
+    const trendEl = qs("finTrendSummary");
+    const costEl = qs("finTrendCostSummary");
+    if (trendEl) trendEl.textContent = "Selected line: " + (line.line || "n/a") + " | CO₂: " + Number(line.co2_ton || 0).toFixed(1) + " t/month";
+    if (costEl) costEl.textContent = "Energy: " + Math.round(Number(line.energy_kwh || 0)) + " kWh | Water: " + Math.round(Number(line.water_m3 || 0)) + " m³ | Steam: " + Math.round(Number(line.steam_kg || 0)) + " kg";
+  }
+
+  function badgeHtml(status) {
+    const map = {
+      SAFE:     { bg: "#dcfce7", fg: "#166534" },
+      MODERATE: { bg: "#fef3c7", fg: "#92400e" },
+      HIGH:     { bg: "#fee2e2", fg: "#991b1b" }
+    };
+    const c = map[status] || { bg: "#f3f4f6", fg: "#374151" };
+    return '<span style="background:' + c.bg + ';color:' + c.fg + ';padding:2px 8px;border-radius:99px;font-size:11px;font-weight:700">' + status + '</span>';
+  }
+
+  function updateTable(line) {
+    const tbody = qs("finModulesTbody");
+    if (!tbody) return;
+
+    const rows = computeModules(line);
+    tbody.innerHTML = rows.map(function (r) {
+      return (
+        "<tr>" +
+          '<td style="padding:8px;font-weight:700;color:#02154e;">' + r.module + "</td>" +
+          '<td style="padding:8px;">' + r.area + "</td>" +
+          '<td style="padding:8px;font-weight:700;">' + r.co2.toFixed(1) + "t</td>" +
+          '<td style="padding:8px;font-weight:700;">' + euroK(r.cost) + "</td>" +
+          '<td style="padding:8px;">' + badgeHtml(r.status) + "</td>" +
+        "</tr>"
+      );
+    }).join("");
+  }
+
+  function updateLegacyBars(line) {
+    const modules = computeModules(line);
+    const bars = Array.from(document.querySelectorAll("div[style*='height:36px'][style*='display:flex']"));
+    if (bars.length < 2) return;
+
+    const co2Total = modules.reduce(function (a, b) { return a + b.co2; }, 0) || 1;
+    const costTotal = modules.reduce(function (a, b) { return a + b.cost; }, 0) || 1;
+    const colors = ["#02154e", "#f9ba00", "#006837", "#dc143c", "#7b8595"];
+
+    bars[0].innerHTML = modules.map(function (m, i) {
+      return '<div style="height:100%;width:' + ((m.co2 / co2Total) * 100).toFixed(2) + '%;background:' + colors[i] + ';"></div>';
+    }).join("");
+
+    bars[1].innerHTML = modules.map(function (m, i) {
+      return '<div style="height:100%;width:' + ((m.cost / costTotal) * 100).toFixed(2) + '%;background:' + colors[i] + ';"></div>';
+    }).join("");
+  }
+
+  function updateTrendCanvas(line) {
+    const canvas = qs("finTrendCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+    const values = computeTrend(line);
+
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, w, h);
+
+    const left = 50, right = 20, top = 20, bottom = 30;
+    const pw = w - left - right;
+    const ph = h - top - bottom;
+
+    const max = Math.max.apply(null, values.concat([5])) * 1.15;
+
+    ctx.strokeStyle = "rgba(2,21,78,0.10)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < 5; i++) {
+      const y = top + (ph / 4) * i;
+      ctx.beginPath();
+      ctx.moveTo(left, y);
+      ctx.lineTo(left + pw, y);
+      ctx.stroke();
+    }
+
+    ctx.strokeStyle = "#02154e";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    values.forEach(function (v, i) {
+      const x = left + (pw / (values.length - 1)) * i;
+      const y = top + ph - (v / max) * ph;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "#02154e";
+    ctx.lineWidth = 3;
+    values.forEach(function (v, i) {
+      const x = left + (pw / (values.length - 1)) * i;
+      const y = top + ph - (v / max) * ph;
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    ctx.fillStyle = "#666";
+    ctx.font = "12px sans-serif";
+    labels.forEach(function (lab, i) {
+      const x = left + (pw / (labels.length - 1)) * i - 8;
+      ctx.fillText(lab, x, h - 10);
+    });
+  }
+
+  function apply(line) {
+    if (!line) return;
+    updateBadge(line);
+    updateTopCards(line);
+    updateTrendSummary(line);
+    updateTable(line);
+    updateLegacyBars(line);
+    updateTrendCanvas(line);
+    window.__ZERO_FINISHING_ACTIVE_LINE__ = line;
+    console.log("[finishing-engine] applied:", line);
+  }
+
+  function bind() {
+    const sel = qs("finFacilitySelect");
+    if (!sel) return;
+
+    const run = function () {
+      const line = getSelectedLine();
+      apply(line);
+    };
+
+    run();
+    setTimeout(run, 50);
+    setTimeout(run, 250);
+    setTimeout(run, 700);
+
+    sel.addEventListener("change", function () {
+      run();
+      setTimeout(run, 50);
+      setTimeout(run, 250);
+      setTimeout(run, 700);
+    });
+
+    console.log("[finishing-engine] bound");
+  }
+
+  window.ZeroFinishingSyntheticEngine = {
+    bind: bind,
+    apply: apply
+  };
+})();

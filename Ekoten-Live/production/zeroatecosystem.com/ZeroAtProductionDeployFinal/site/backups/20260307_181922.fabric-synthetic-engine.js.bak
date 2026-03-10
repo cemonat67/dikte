@@ -1,0 +1,577 @@
+(function () {
+  const MODULE = "fabric";
+
+  const ZERO_BRAND = {
+    green: "#005530",
+    red: "#D51635",
+    navy: "#02154e",
+    orange: "#f9ba00",
+    grid: "rgba(2, 21, 78, 0.10)",
+    tick: "#02154e"
+  };
+
+  function rgba(hex, alpha) {
+    const h = String(hex).replace("#", "");
+    const full = h.length === 3 ? h.split("").map(c => c + c).join("") : h;
+    const n = parseInt(full, 16);
+    const r = (n >> 16) & 255;
+    const g = (n >> 8) & 255;
+    const b = n & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  function chartPalette(i) {
+    const base = [
+      ZERO_BRAND.green,
+      ZERO_BRAND.red,
+      ZERO_BRAND.navy,
+      ZERO_BRAND.orange
+    ];
+    return base[i % base.length];
+  }
+
+  function num(v, d = 0) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : d;
+  }
+
+  function money(v) {
+    return "€ " + Math.round(num(v, 0)).toLocaleString("en-GB");
+  }
+
+  function pct(v) {
+    return num(v, 0).toFixed(1) + "%";
+  }
+
+  function text(el, value) {
+    if (el) el.textContent = value;
+  }
+
+  function qs(sel, root = document) {
+    return root.querySelector(sel);
+  }
+
+  function firstExisting(selectors) {
+    for (const s of selectors) {
+      const el = qs(s);
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function setCardValue(selectors, value) {
+    const el = firstExisting(selectors);
+    if (el) el.textContent = value;
+  }
+
+  function setBadge(selectors, value) {
+    const el = firstExisting(selectors);
+    if (el) el.textContent = value;
+  }
+
+  function safeChart(id, labels, series) {
+    if (!window.Chart) return;
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    if (canvas.__chart) {
+      canvas.__chart.destroy();
+      canvas.__chart = null;
+    }
+    const datasets = series.map((s, i) => {
+      const color = s.color || chartPalette(i);
+      return {
+        label: s.label,
+        data: s.data || [],
+        borderColor: color,
+        backgroundColor: color,
+        pointBackgroundColor: color,
+        pointBorderColor: color,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        borderWidth: 2,
+        tension: 0.35,
+        fill: !!s.fill
+      };
+    });
+    canvas.__chart = new Chart(canvas.getContext("2d"), {
+      type: "line",
+      data: { labels, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: ZERO_BRAND.tick, boxWidth: 18, boxHeight: 10 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          },
+          y: {
+            beginAtZero: false,
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          }
+        }
+      }
+    });
+  }
+
+  function safeBar(id, labels, series) {
+    if (!window.Chart) return;
+    const canvas = document.getElementById(id);
+    if (!canvas) return;
+    if (canvas.__chart) {
+      canvas.__chart.destroy();
+      canvas.__chart = null;
+    }
+    canvas.__chart = new Chart(canvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels,
+        datasets: series.map((s, i) => {
+          const color = s.color || chartPalette(i);
+          return {
+            label: s.label,
+            data: s.data || [],
+            backgroundColor: color,
+            borderColor: color,
+            hoverBackgroundColor: color,
+            borderWidth: 1
+          };
+        })
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            labels: { color: ZERO_BRAND.tick, boxWidth: 18, boxHeight: 10 }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: ZERO_BRAND.tick },
+            grid: { color: ZERO_BRAND.grid }
+          }
+        }
+      }
+    });
+  }
+
+  function calcHiddenCost(kpi) {
+    const reworkPct = num(kpi.rework_pct);
+    const yieldLossPct = num(kpi.yield_loss_pct);
+    const throughputM = num(kpi.throughput_meters);
+    const energyCostPerM = num(kpi.energy_cost_eur_per_meter, 0.11);
+    const chemicalCostPerM = num(kpi.chemical_cost_eur_per_meter, 0.08);
+    const materialCostPerM = num(kpi.material_cost_eur_per_meter, 0.95);
+    const laborCostPerM = num(kpi.labor_cost_eur_per_meter, 0.06);
+
+    const reworkM = throughputM * (reworkPct / 100);
+    const yieldLossM = throughputM * (yieldLossPct / 100);
+
+    const hidden =
+      (reworkM * (energyCostPerM + chemicalCostPerM + laborCostPerM)) +
+      (yieldLossM * (materialCostPerM + energyCostPerM + chemicalCostPerM + laborCostPerM));
+
+    return Math.round(hidden);
+  }
+
+  function bindKPIs(payload) {
+    const kpi = payload.kpis || {};
+    const hiddenCost = calcHiddenCost(kpi);
+
+    setCardValue(
+      ['[data-kpi="rework"]', '#kpiRework', '#reworkValue', '.kpi-rework .value'],
+      pct(kpi.rework_pct)
+    );
+
+    setCardValue(
+      ['[data-kpi="yieldLoss"]', '#kpiYieldLoss', '#yieldLossValue', '.kpi-yield-loss .value'],
+      pct(kpi.yield_loss_pct)
+    );
+
+    setCardValue(
+      ['[data-kpi="hiddenCost"]', '#kpiHiddenCost', '#hiddenCostValue', '.kpi-hidden-cost .value'],
+      money(hiddenCost)
+    );
+
+    setCardValue(
+      ['[data-kpi="co2"]', '#kpiCO2', '#co2Value', '.kpi-co2 .value'],
+      num(kpi.co2_kg_per_meter, 0).toFixed(2) + " kgCO₂/m"
+    );
+
+    setCardValue(
+      ['[data-kpi="water"]', '#kpiWater', '#waterValue', '.kpi-water .value'],
+      num(kpi.water_l_per_meter, 0).toFixed(2) + " L/m"
+    );
+
+    setBadge(
+      ['[data-cto-status]', '#ctoStatus', '.cto-status'],
+      payload.executive?.cto_status || "MONITOR"
+    );
+
+    setBadge(
+      ['[data-md-status]', '#mdStatus', '.md-status'],
+      payload.executive?.md_status || "STABLE"
+    );
+
+    setCardValue(
+      ['[data-cfo-hidden-cost]', '#cfoHiddenCost', '.cfo-hidden-cost'],
+      money(hiddenCost)
+    );
+  }
+
+  function bindMeta(payload, opts) {
+    const facility = (opts.facility || payload.facility || "ekoten").toUpperCase();
+    const line = opts.line || payload.line || "LINE-1";
+    text(firstExisting(['[data-facility-name]', '#facilityName', '.facility-name']), facility);
+    text(firstExisting(['[data-line-name]', '#lineName', '.line-name']), line);
+  }
+
+  
+  
+  
+  function bindFabricOpsAndTrend(payload) {
+    const k = payload.kpis || {};
+    const ex = payload.executive || {};
+    const trends = payload.trends || {};
+
+    const ctoEl = document.getElementById("fabricCtoReadiness");
+    const opsEl = document.getElementById("fabricOps");
+    const trendEl = document.getElementById("fabricTrendSummary");
+    const trendCostEl = document.getElementById("fabricTrendCostSummary");
+
+    const throughput = Number(k.throughput_meters || 0);
+    const rework = Number(k.rework_pct || 0);
+    const yieldLoss = Number(k.yield_loss_pct || 0);
+
+    const dataReadiness =
+      throughput > 100000 && rework <= 4.0 && yieldLoss <= 3.0
+        ? "ML-Ready"
+        : "Monitor";
+
+    const opsStatus = String(ex.md_status || "STABLE");
+
+    const tp = Array.isArray(trends.throughput) ? trends.throughput : [];
+    const firstTp = Number(tp[0] || 0);
+    const lastTp = Number(tp[tp.length - 1] || 0);
+    const tpDelta = lastTp - firstTp;
+    const tpPct = firstTp ? ((tpDelta / firstTp) * 100) : 0;
+
+    const energy = Number(k.energy_cost_eur_per_meter || 0);
+    const chemical = Number(k.chemical_cost_eur_per_meter || 0);
+    const material = Number(k.material_cost_eur_per_meter || 0);
+    const labor = Number(k.labor_cost_eur_per_meter || 0);
+    const totalCost = throughput * (energy + chemical + material + labor);
+
+    if (ctoEl) ctoEl.textContent = dataReadiness;
+    if (opsEl) opsEl.textContent = opsStatus;
+
+    if (trendEl) {
+      trendEl.textContent =
+        "Throughput trend: " +
+        (tpDelta >= 0 ? "up " : "down ") +
+        Math.abs(tpDelta).toLocaleString("en-US") +
+        " m (" + Math.abs(tpPct).toFixed(1) + "%) vs first period";
+    }
+
+    if (trendCostEl) {
+      trendCostEl.textContent =
+        "Current estimated fabric cost: € " +
+        Math.round(totalCost).toLocaleString("en-US") +
+        " for selected period";
+    }
+  }
+
+function bindFabricExecutiveLenses(payload) {
+    const k = payload.kpis || {};
+    const rework = Number(k.rework_pct || 0);
+    const yieldLoss = Number(k.yield_loss_pct || 0);
+    const throughput = Number(k.throughput_meters || 0);
+
+    const energy = Number(k.energy_cost_eur_per_meter || 0);
+    const chemical = Number(k.chemical_cost_eur_per_meter || 0);
+    const material = Number(k.material_cost_eur_per_meter || 0);
+    const labor = Number(k.labor_cost_eur_per_meter || 0);
+
+    const reworkM = throughput * (rework / 100);
+    const yieldLossM = throughput * (yieldLoss / 100);
+
+    const hiddenCost =
+      (reworkM * (energy + chemical + labor)) +
+      (yieldLossM * (material + energy + chemical + labor));
+
+    const ceoEl = document.getElementById("fabricCeoRisk");
+    const cfoEl = document.getElementById("fabricCfoExposure");
+
+    if (ceoEl) ceoEl.textContent = (rework + yieldLoss).toFixed(1) + "%";
+    if (cfoEl) cfoEl.textContent = "€ " + Math.round(hiddenCost).toLocaleString("en-US");
+  }
+
+function bindFabricSummary(payload) {
+    const k = payload.kpis || {};
+    const throughput = Number(k.throughput_meters || 0);
+    const co2 = Number(k.co2_kg_per_meter || 0);
+
+    const energy = Number(k.energy_cost_eur_per_meter || 0);
+    const chemical = Number(k.chemical_cost_eur_per_meter || 0);
+    const material = Number(k.material_cost_eur_per_meter || 0);
+    const labor = Number(k.labor_cost_eur_per_meter || 0);
+
+    const totalCo2 = throughput * co2;
+    const totalCost = throughput * (energy + chemical + material + labor);
+
+    const co2El = document.getElementById("fabricTotalCo2");
+    const costEl = document.getElementById("fabricTotalCost");
+
+    if (co2El) co2El.textContent = (totalCo2/1000).toFixed(2) + " t";
+    if (costEl) costEl.textContent = (totalCost/1000).toFixed(1) + " K€";
+  }
+
+
+  
+  function applyFabricFilter(payload, period) {
+    const base = JSON.parse(JSON.stringify(payload || {}));
+    const labels = ((((base || {}).trends || {}).labels) || []).slice();
+    const idx = labels.indexOf(period);
+
+    if (!period || period === "all" || idx < 0) {
+      bindCharts(base);
+      bindFabricSummary(base);
+    bindFabricExecutiveLenses(base);
+    bindFabricOpsAndTrend(base);
+      return;
+    }
+
+    if (base.trends) {
+      ["labels", "throughput", "yield_loss_pct", "rework_pct"].forEach(function (k) {
+        if (Array.isArray(base.trends[k])) {
+          base.trends[k] = [base.trends[k][idx]];
+        }
+      });
+    }
+
+    const k = base.kpis || {};
+    if (Array.isArray(payload.trends && payload.trends.throughput) && payload.trends.throughput[idx] != null) {
+      k.throughput_meters = Number(payload.trends.throughput[idx] || 0);
+    }
+    if (Array.isArray(payload.trends && payload.trends.yield_loss_pct) && payload.trends.yield_loss_pct[idx] != null) {
+      k.yield_loss_pct = Number(payload.trends.yield_loss_pct[idx] || 0);
+    }
+    if (Array.isArray(payload.trends && payload.trends.rework_pct) && payload.trends.rework_pct[idx] != null) {
+      k.rework_pct = Number(payload.trends.rework_pct[idx] || 0);
+    }
+    base.kpis = k;
+
+    bindKPIs(base);
+    bindCharts(base);
+    bindFabricSummary(base);
+    bindFabricExecutiveLenses(base);
+    bindFabricOpsAndTrend(base);
+  }
+
+function bindFabricTimeframe(payload) {
+    const tf = document.getElementById("fabricTimeframe");
+    const active = document.getElementById("fabricActiveFilter");
+    const clearBtn = document.getElementById("fabricClearFilter");
+    if (!tf) return;
+
+    const labels = (((payload || {}).trends || {}).labels || []).slice();
+    tf.innerHTML = "";
+
+    const optAll = document.createElement("option");
+    optAll.value = "all";
+    optAll.textContent = "All";
+    tf.appendChild(optAll);
+
+    labels.forEach(function(label){
+      const opt = document.createElement("option");
+      opt.value = label;
+      opt.textContent = label;
+      tf.appendChild(opt);
+    });
+
+    if (active) active.textContent = "Filter: All";
+
+    tf.onchange = function () {
+      const v = tf.value || "all";
+      if (active) active.textContent = "Filter: " + (v === "all" ? "All" : v);
+      applyFabricFilter(payload, v);
+    };
+
+    if (clearBtn) {
+      clearBtn.onclick = function () {
+        tf.value = "all";
+        if (active) active.textContent = "Filter: All";
+        applyFabricFilter(payload, "all");
+      };
+    }
+  }
+
+function bindCharts(payload) {
+    const t = payload.trends || {};
+    const m = payload.module_breakdown || {};
+
+    if (Array.isArray(t.labels)) {
+      safeChart("trendChart", t.labels, [
+        { label: "Throughput", data: t.throughput, color: ZERO_BRAND.navy },
+        { label: "Yield Loss %", data: t.yield_loss_pct, color: ZERO_BRAND.red },
+        { label: "Rework %", data: t.rework_pct, color: ZERO_BRAND.orange }
+      ]);
+    }
+
+    if (Array.isArray(m.labels)) {
+      safeBar("moduleStackedChart", m.labels, [
+        { label: "CO₂", data: m.co2, color: ZERO_BRAND.navy },
+        { label: "Water", data: m.water, color: ZERO_BRAND.red },
+        { label: "Energy", data: m.energy, color: ZERO_BRAND.orange }
+      ]);
+    }
+  }
+
+  async function loadAndBind() {
+    const facilityEl = firstExisting(['#facilitySelect', '[data-role="facility-select"]']);
+    const lineEl = firstExisting(['#lineSelect', '[data-role="line-select"]']);
+
+    const facility = ((facilityEl && facilityEl.value) || "ekoten").toLowerCase();
+    const line = (lineEl && lineEl.value) || "LINE-1";
+
+    if (!window.ZeroDataLoader || typeof window.ZeroDataLoader.loadModule !== "function") {
+      console.error("[fabric-engine] ZeroDataLoader missing");
+      return;
+    }
+
+    const result = await window.ZeroDataLoader.loadModule(MODULE, { facility, line });
+    const payload = result && (result.data || result);
+
+    if (!payload) {
+      console.error("[fabric-engine] empty payload");
+      return;
+    }
+
+    bindMeta(payload, { facility, line });
+    bindKPIs(payload);
+    bindCharts(payload);
+    bindFabricSummary(payload);
+    bindEfficiencyGauge(payload);
+    bindFabricExecutiveLenses(payload);
+    bindFabricOpsAndTrend(payload);
+    bindFabricTimeframe(payload);
+    window.__ZERO_FABRIC_STATE__ = payload;
+    console.log("[fabric-engine] applied", { facility, line, payload });
+  }
+
+  function ensureSelectors() {
+    let facilityEl = firstExisting(['#facilitySelect', '[data-role="facility-select"]']);
+    let lineEl = firstExisting(['#lineSelect', '[data-role="line-select"]']);
+    const host = firstExisting(['.toolbar', '.topbar', '.page-toolbar', '.controls', 'header .right']) || document.body;
+
+    if (!facilityEl) {
+      const wrap = document.createElement("div");
+      wrap.style.display = "inline-flex";
+      wrap.style.gap = "8px";
+      wrap.style.marginLeft = "12px";
+      wrap.innerHTML = `
+        <select id="facilitySelect" data-role="facility-select">
+          <option value="ekoten">Ekoten</option>
+          <option value="sun">Sun</option>
+        </select>
+        <select id="lineSelect" data-role="line-select">
+          <option value="LINE-1">LINE-1</option>
+          <option value="LINE-2">LINE-2</option>
+          <option value="LINE-3">LINE-3</option>
+        </select>
+      `;
+      host.appendChild(wrap);
+      facilityEl = wrap.querySelector("#facilitySelect");
+      lineEl = wrap.querySelector("#lineSelect");
+    }
+
+    const up = new URLSearchParams(window.location.search);
+    const facility = (up.get("facility") || "ekoten").toLowerCase();
+    const line = up.get("line") || "LINE-1";
+
+    if (facilityEl) facilityEl.value = facility;
+    if (lineEl) lineEl.value = line;
+
+    facilityEl && facilityEl.addEventListener("change", loadAndBind);
+    lineEl && lineEl.addEventListener("change", loadAndBind);
+  }
+
+  function bind() {
+    ensureSelectors();
+    loadAndBind().catch((e) => console.error("[fabric-engine]", e));
+  }
+
+  window.ZeroFabricSyntheticEngine = { bind, loadAndBind };
+})();
+
+
+
+function bindEfficiencyGauge(payload){
+  const k = payload.kpis || {};
+  const val = Number(k.co2_kg_per_meter || 0);
+
+  const statusEl = document.getElementById("fabricGaugeStatus");
+  const valueEl  = document.getElementById("fabricGaugeValue");
+  const canvas   = document.getElementById("fabricEfficiencyGauge");
+  if(!canvas) return;
+
+  // thresholds
+  let status="GOOD", color="#005530";
+  if(val >= 0.80){ status="RISK";  color="#c1121f"; }
+  else if(val >= 0.70){ status="WATCH"; color="#f9ba00"; }
+
+  if(statusEl) statusEl.textContent = status;
+  if(statusEl) statusEl.style.color = color;
+  if(valueEl)  valueEl.textContent  = val.toFixed(2) + " kg/m";
+
+  const insightEl = document.getElementById("fabricSectionInsight");
+  if (insightEl) {
+    let txt = "—";
+    if (status === "GOOD") {
+      txt = '"Operating within optimal range."';
+    } else if (status === "WATCH") {
+      txt = '"Efficiency nearing threshold."';
+    } else {
+      txt = '"Carbon intensity above target."';
+    }
+    insightEl.textContent = txt;
+  }
+
+  // destroy previous chart if exists
+  if(canvas.__chart){ canvas.__chart.destroy(); }
+
+  const max = 1.0;
+  const ctx = canvas.getContext("2d");
+
+  canvas.__chart = new Chart(ctx,{
+    type:"doughnut",
+    data:{
+      datasets:[{
+        data:[val, Math.max(max-val,0)],
+        backgroundColor:[color,"#e5e7eb"],
+        borderWidth:0
+      }]
+    },
+    options:{
+      rotation:-90,
+      circumference:180,
+      cutout:"70%",
+      plugins:{legend:{display:false}, tooltip:{enabled:false}},
+      responsive:true,
+      maintainAspectRatio:false
+    }
+  });
+}

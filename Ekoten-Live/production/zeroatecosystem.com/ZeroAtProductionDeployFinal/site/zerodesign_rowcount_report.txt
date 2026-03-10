@@ -1,0 +1,5 @@
+accessories|0
+emissions|0
+fabrics|0
+lifecycle_master|0
+processes|0

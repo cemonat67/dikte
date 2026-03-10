@@ -1,0 +1,6 @@
+id,gender,category,product,fabric_type,fiber_combo,composition,gsm_range,use_case,usage_hint,co2_kg_per_kg,created_at,updated_at
+07badcac-c0e6-47c3-9b1d-06c546e76c48,Unisex,Bottom,Jogger,Fleece,Cotton 70% Polyester 30%,70% Cotton / 30% Polyester,240-320,Loungewear / athleisure,Brushed comfort fabric,5.8000,2026-03-08 06:31:14.063095,2026-03-08 06:31:14.063095
+7c091770-bce3-45c6-bce8-a6a1c050dc93,Unisex,Activewear,Performance Tee,Interlock,Polyester 88% Elastane 12%,88% Polyester / 12% Elastane,180-240,Sportswear,Stretch and moisture control,6.2000,2026-03-08 06:31:14.063095,2026-03-08 06:31:14.063095
+84552a9c-8391-4694-a240-440521b43e4f,Men,Top,Polo Shirt,Pique Knit,Cotton 95% Elastane 5%,95% Cotton / 5% Elastane,180-220,Smart casual,Structured knit fabric,5.1000,2026-03-08 06:31:14.063095,2026-03-08 06:31:14.063095
+f4df7387-de1b-4b8d-aedc-e82270b3b8b6,Unisex,Top,Basic T-Shirt,Single Jersey,Cotton 100%,100% Cotton,140-180,Daily casualwear,Core basic jersey fabric,4.6500,2026-03-08 06:31:14.063095,2026-03-08 06:31:14.063095
+30e56079-e5f3-47a9-81fa-4fcc3fba5f09,Women,Top,Fashion Tee,Single Jersey,Cotton 50% Polyester 50%,50% Cotton / 50% Polyester,120-160,Lightweight tops,Balanced comfort and durability,4.9000,2026-03-08 06:31:14.063095,2026-03-08 06:31:14.063095

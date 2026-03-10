@@ -1,0 +1,29 @@
+{
+  "facility": "Ekoten",
+  "module": "finishing",
+  "date": "2026-03-06",
+  "lines": [
+    {
+      "line": "Stenter 1",
+      "production_kg": 12800,
+      "energy_kwh": 4200,
+      "water_m3": 110,
+      "steam_kg": 8600,
+      "co2_ton": 3.4,
+      "defect_rate": 1.8,
+      "rework_rate": 0.7,
+      "machine_utilization": 87
+    },
+    {
+      "line": "Stenter 2",
+      "production_kg": 11500,
+      "energy_kwh": 3950,
+      "water_m3": 98,
+      "steam_kg": 8200,
+      "co2_ton": 3.0,
+      "defect_rate": 2.1,
+      "rework_rate": 1.1,
+      "machine_utilization": 82
+    }
+  ]
+}

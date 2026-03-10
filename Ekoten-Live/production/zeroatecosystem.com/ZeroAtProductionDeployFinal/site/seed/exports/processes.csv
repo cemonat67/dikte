@@ -1,0 +1,8 @@
+id,category,stage_group,stage,process_name,unit,description,applied_products,created_at,updated_at
+8bf778d8-e427-45f7-b736-4f654497a225,Wet Processing,Finishing,Compacting,Compacting / Finishing,kg,Final finishing and stabilization,All knit fabrics,2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+adb50fc6-bd27-4e7a-9856-9860d3722825,Fiber,Raw Material,Fiber Input,Cotton Fiber Production,kg,Primary cotton fiber input stage,"T-shirt, Hoodie, Sweatshirt",2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+2a65587e-83f9-4868-9c50-a8abfd550db8,Garment,Cutting & Sewing,Assembly,Cutting & Sewing,piece,Garment assembly stage,"T-shirt, Polo, Hoodie",2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+424cf9b1-97ca-46f8-bcb0-fa631fa85452,Logistics,Packaging,Packing,Packaging,piece,Final packaging before shipment,All products,2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+98bc4284-1f81-4b88-9b8e-831f78c70127,Wet Processing,Dyeing,Reactive Dyeing,Reactive Dyeing,kg,Fabric dyeing process,Garment dyed fabrics,2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+4fadd1d8-6aee-433e-874a-6fc9bcb0c9d9,Yarn,Spinning,Ring Spinning,Ring Spinning,kg,Conversion of fiber to yarn,"Knits, Jerseys, Basics",2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297
+f339a778-4a2b-49be-a693-1b5fddcc5d79,Fabric,Knitting,Single Jersey,Single Jersey Knitting,kg,Knitting process for jersey fabric,"T-shirt, Activewear",2026-03-08 06:31:13.854297,2026-03-08 06:31:13.854297

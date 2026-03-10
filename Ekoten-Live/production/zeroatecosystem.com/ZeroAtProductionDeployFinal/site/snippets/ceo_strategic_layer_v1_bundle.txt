@@ -1,0 +1,107 @@
+<!-- CEO_STRATEGIC_LAYER_V1_START -->
+<section class="ceo-strategic-shell" id="ceoStrategicLayer">
+  <div class="ceo-strategic-head">
+    <div class="ceo-strategic-kicker">CEO Strategic Layer</div>
+    <h2 class="ceo-strategic-title">Enterprise Risk Simulator</h2>
+    <div class="ceo-strategic-sub">
+      Operational signals are no longer isolated plant events. This layer translates factory volatility,
+      financial exposure and signal momentum into board-level strategic risk visibility.
+    </div>
+  </div>
+
+  <div class="ceo-strategic-body">
+    <div class="ceo-card">
+      <h3>Strategic Risk Index</h3>
+      <div class="ceo-risk-top">
+        <div class="ceo-risk-value">
+          <div class="ceo-risk-number" id="ceoStrategicRiskValue">67</div>
+          <div class="ceo-risk-den">/ 100</div>
+        </div>
+        <div class="ceo-risk-trend" id="ceoStrategicTrend">▲ Rising</div>
+      </div>
+
+      <div class="ceo-mini-note" id="ceoStrategicSummary">
+        Operational signals are beginning to translate into enterprise-level exposure.
+      </div>
+
+      <div class="ceo-bar-wrap">
+        <div class="ceo-bar-track">
+          <div class="ceo-bar-fill" id="ceoStrategicRiskBar"></div>
+        </div>
+        <div class="ceo-bar-scale">
+          <span>Low</span>
+          <span>Monitor</span>
+          <span>Board Attention</span>
+          <span>Critical</span>
+        </div>
+      </div>
+
+      <h3 style="margin-top:18px;">Enterprise Signal Map</h3>
+      <div class="ceo-signals" id="ceoSignalMap">
+        <div class="ceo-signal">
+          <div class="ceo-signal-name">Delivery volatility</div>
+          <div class="ceo-signal-badge">MONITOR</div>
+        </div>
+        <div class="ceo-signal">
+          <div class="ceo-signal-name">Margin compression</div>
+          <div class="ceo-signal-badge high">HIGH</div>
+        </div>
+        <div class="ceo-signal">
+          <div class="ceo-signal-name">Energy exposure</div>
+          <div class="ceo-signal-badge">MONITOR</div>
+        </div>
+        <div class="ceo-signal">
+          <div class="ceo-signal-name">Quality escalation</div>
+          <div class="ceo-signal-badge low">LOW</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ceo-card">
+      <h3>Board Scenario Simulator</h3>
+
+      <div class="ceo-scenarios">
+        <button class="ceo-scenario-btn active" data-scenario="stabilize" id="ceoScenarioStabilize">
+          Stabilize Operations
+          <span class="ceo-scenario-sub">Reduce volatility through immediate operational discipline</span>
+        </button>
+
+        <button class="ceo-scenario-btn" data-scenario="digital" id="ceoScenarioDigital">
+          Accelerate Digital Control
+          <span class="ceo-scenario-sub">Shrink signal delay and improve executive visibility</span>
+        </button>
+
+        <button class="ceo-scenario-btn" data-scenario="ignore" id="ceoScenarioIgnore">
+          Ignore Signals
+          <span class="ceo-scenario-sub">Let local issues grow into structural board exposure</span>
+        </button>
+      </div>
+
+      <div class="ceo-scenario-result" id="ceoScenarioResult">
+        <div class="ceo-scenario-row">
+          <div class="ceo-scenario-label">Projected Risk</div>
+          <div class="ceo-scenario-value" id="ceoScenarioRiskValue">54 / 100</div>
+        </div>
+        <div class="ceo-scenario-row">
+          <div class="ceo-scenario-label">Board Signal</div>
+          <div class="ceo-scenario-value" id="ceoScenarioStatus">Stabilizing</div>
+        </div>
+      </div>
+
+      <div class="ceo-narrative" id="ceoNarrativeOutput">
+        <strong>Operational signals are beginning to translate into structural margin pressure.</strong>
+        Current plant-level volatility is no longer a contained operational issue; it is moving upward into
+        enterprise risk visibility and requires active leadership attention.
+      </div>
+    </div>
+  </div>
+
+  <div class="ceo-foot">
+    <div class="ceo-foot-note">
+      CEO layer logic: operational signals → financial exposure → strategic risk.
+      This panel is intentionally different from the CFO layer: it does not explain cost only,
+      it explains whether cost signals are turning into enterprise risk.
+    </div>
+  </div>
+</section>
+<!-- CEO_STRATEGIC_LAYER_V1_END -->

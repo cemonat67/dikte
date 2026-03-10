@@ -1,0 +1,251 @@
+sku_code,gender,category,product,fabric_type,composition,gsm_range,garment_weight_kg,accessory_profile,process_profile,fabric_co2_factor_kg_per_kg,accessory_co2_kg,process_co2_kg,estimated_total_co2_kg,data_source
+ZD-SYN-00001,Unisex,Top,Basic T-Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.171,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.06,synthetic_v1
+ZD-SYN-00002,Men,Top,Long Sleeve Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.203,Label + Drawcord,Standard Knit Route,5.0,0.08,1.95,3.045,synthetic_v1
+ZD-SYN-00003,Unisex,Bottom,Shorts,Rib Knit,97% Cotton / 3% Elastane,180-260,0.2,Label Set,Performance Route,5.0,0.03,2.75,3.78,synthetic_v1
+ZD-SYN-00004,Women,Outerwear,Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.678,Label + Button Set,Standard Knit Route,5.0,0.07,1.95,5.41,synthetic_v1
+ZD-SYN-00005,Women,Bottom,Sweatpant,Interlock,88% Polyester / 12% Elastane,180-240,0.571,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,5.54,synthetic_v1
+ZD-SYN-00006,Men,Activewear,Performance Tee,Fleece,70% Cotton / 30% Polyester,240-320,0.225,Label Set,Dyed Knit Route,5.8,0.03,2.35,3.685,synthetic_v1
+ZD-SYN-00007,Unisex,Activewear,Performance Tee,Fleece,70% Cotton / 30% Polyester,240-320,0.148,Label Set,Dyed Knit Route,5.8,0.03,2.35,3.238,synthetic_v1
+ZD-SYN-00008,Unisex,Activewear,Active Legging,Pique Knit,95% Cotton / 5% Elastane,180-220,0.293,Label Set,Standard Knit Route,5.1,0.03,1.95,3.474,synthetic_v1
+ZD-SYN-00009,Men,Activewear,Performance Tee,Single Jersey,100% Cotton,140-180,0.185,Label + Drawcord,Dyed Knit Route,4.65,0.08,2.35,3.29,synthetic_v1
+ZD-SYN-00010,Women,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.192,Label + Hangtag,Performance Route,6.2,0.05,2.75,3.99,synthetic_v1
+ZD-SYN-00011,Unisex,Top,Long Sleeve Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.246,Label + Hangtag,Standard Knit Route,5.1,0.05,1.95,3.255,synthetic_v1
+ZD-SYN-00012,Unisex,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.259,Label Set,Standard Knit Route,6.2,0.03,1.95,3.586,synthetic_v1
+ZD-SYN-00013,Women,Activewear,Gym Short,Single Jersey,100% Cotton,140-180,0.248,Label + Hangtag,Performance Route,4.65,0.05,2.75,3.953,synthetic_v1
+ZD-SYN-00014,Unisex,Activewear,Training Top,Fleece,70% Cotton / 30% Polyester,240-320,0.215,Label + Drawcord,Performance Route,5.8,0.08,2.75,4.077,synthetic_v1
+ZD-SYN-00015,Men,Activewear,Training Top,French Terry,80% Cotton / 20% Polyester,220-300,0.23,Label + Button Set,Performance Route,5.55,0.07,2.75,4.096,synthetic_v1
+ZD-SYN-00016,Men,Outerwear,Sweatshirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.627,Label + Drawcord,Standard Knit Route,5.1,0.08,1.95,5.228,synthetic_v1
+ZD-SYN-00017,Unisex,Top,Fashion Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.145,Label + Drawcord,Performance Route,5.1,0.08,2.75,3.569,synthetic_v1
+ZD-SYN-00018,Women,Outerwear,Zip Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.758,Label + Button Set,Performance Route,5.0,0.07,2.75,6.61,synthetic_v1
+ZD-SYN-00019,Unisex,Top,Basic T-Shirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.187,Label + Button Set,Performance Route,5.0,0.07,2.75,3.755,synthetic_v1
+ZD-SYN-00020,Men,Activewear,Gym Short,Fleece,70% Cotton / 30% Polyester,240-320,0.248,Label Set,Performance Route,5.8,0.03,2.75,4.218,synthetic_v1
+ZD-SYN-00021,Unisex,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.221,Label + Button Set,Performance Route,4.65,0.07,2.75,3.848,synthetic_v1
+ZD-SYN-00022,Women,Bottom,Shorts,Pique Knit,95% Cotton / 5% Elastane,180-220,0.212,Label Set,Performance Route,5.1,0.03,2.75,3.861,synthetic_v1
+ZD-SYN-00023,Women,Top,Basic T-Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.179,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.11,synthetic_v1
+ZD-SYN-00024,Unisex,Top,Basic T-Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.221,Label Set,Performance Route,5.8,0.03,2.75,4.062,synthetic_v1
+ZD-SYN-00025,Unisex,Bottom,Sweatpant,Pique Knit,95% Cotton / 5% Elastane,180-220,0.554,Label + Button Set,Performance Route,5.1,0.07,2.75,5.645,synthetic_v1
+ZD-SYN-00026,Unisex,Outerwear,Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.544,Label + Hangtag,Performance Route,5.55,0.05,2.75,5.819,synthetic_v1
+ZD-SYN-00027,Unisex,Activewear,Gym Short,Fleece,70% Cotton / 30% Polyester,240-320,0.182,Label Set,Standard Knit Route,5.8,0.03,1.95,3.036,synthetic_v1
+ZD-SYN-00028,Unisex,Activewear,Performance Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.162,Label + Hangtag,Performance Route,5.0,0.05,2.75,3.61,synthetic_v1
+ZD-SYN-00029,Men,Top,Basic T-Shirt,Single Jersey,100% Cotton,140-180,0.166,Label Set,Dyed Knit Route,4.65,0.03,2.35,3.152,synthetic_v1
+ZD-SYN-00030,Unisex,Bottom,Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.216,Label + Hangtag,Performance Route,5.8,0.05,2.75,4.053,synthetic_v1
+ZD-SYN-00031,Women,Outerwear,Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.479,Label + Hangtag,Standard Knit Route,5.8,0.05,1.95,4.778,synthetic_v1
+ZD-SYN-00032,Women,Outerwear,Sweatshirt,Fleece,70% Cotton / 30% Polyester,240-320,0.416,Label + Drawcord,Performance Route,5.8,0.08,2.75,5.243,synthetic_v1
+ZD-SYN-00033,Women,Top,Basic T-Shirt,French Terry,80% Cotton / 20% Polyester,220-300,0.18,Label + Button Set,Standard Knit Route,5.55,0.07,1.95,3.019,synthetic_v1
+ZD-SYN-00034,Men,Bottom,Sweatpant,Fleece,70% Cotton / 30% Polyester,240-320,0.473,Label + Hangtag,Dyed Knit Route,5.8,0.05,2.35,5.143,synthetic_v1
+ZD-SYN-00035,Unisex,Top,Tank Top,Single Jersey,100% Cotton,140-180,0.18,Label Set,Performance Route,4.65,0.03,2.75,3.617,synthetic_v1
+ZD-SYN-00036,Men,Top,Basic T-Shirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.199,Label + Drawcord,Dyed Knit Route,5.1,0.08,2.35,3.445,synthetic_v1
+ZD-SYN-00037,Men,Outerwear,Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.53,Label Set,Dyed Knit Route,5.8,0.03,2.35,5.454,synthetic_v1
+ZD-SYN-00038,Women,Outerwear,Sweatshirt,French Terry,80% Cotton / 20% Polyester,220-300,0.457,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,4.566,synthetic_v1
+ZD-SYN-00039,Unisex,Bottom,Jogger,French Terry,80% Cotton / 20% Polyester,220-300,0.413,Label Set,Performance Route,5.55,0.03,2.75,5.072,synthetic_v1
+ZD-SYN-00040,Women,Top,Long Sleeve Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.296,Label + Hangtag,Standard Knit Route,5.0,0.05,1.95,3.48,synthetic_v1
+ZD-SYN-00041,Men,Top,Fashion Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.209,Label Set,Performance Route,5.0,0.03,2.75,3.825,synthetic_v1
+ZD-SYN-00042,Unisex,Outerwear,Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.475,Label Set,Performance Route,5.1,0.03,2.75,5.202,synthetic_v1
+ZD-SYN-00043,Men,Activewear,Active Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.237,Label + Button Set,Standard Knit Route,5.55,0.07,1.95,3.335,synthetic_v1
+ZD-SYN-00044,Women,Bottom,Legging,Interlock,88% Polyester / 12% Elastane,180-240,0.255,Label Set,Standard Knit Route,6.2,0.03,1.95,3.561,synthetic_v1
+ZD-SYN-00045,Unisex,Top,Basic T-Shirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.235,Label + Button Set,Standard Knit Route,5.1,0.07,1.95,3.218,synthetic_v1
+ZD-SYN-00046,Women,Top,Fashion Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.207,Label + Hangtag,Dyed Knit Route,6.2,0.05,2.35,3.683,synthetic_v1
+ZD-SYN-00047,Unisex,Activewear,Performance Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.15,Label + Button Set,Performance Route,5.0,0.07,2.75,3.57,synthetic_v1
+ZD-SYN-00048,Men,Bottom,Legging,Single Jersey,100% Cotton,140-180,0.234,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,3.488,synthetic_v1
+ZD-SYN-00049,Men,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.259,Label + Button Set,Performance Route,5.55,0.07,2.75,4.257,synthetic_v1
+ZD-SYN-00050,Unisex,Top,Basic T-Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.16,Label + Button Set,Standard Knit Route,5.8,0.07,1.95,2.948,synthetic_v1
+ZD-SYN-00051,Men,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.285,Label + Drawcord,Performance Route,5.55,0.08,2.75,4.412,synthetic_v1
+ZD-SYN-00052,Men,Top,Basic T-Shirt,French Terry,80% Cotton / 20% Polyester,220-300,0.163,Label + Hangtag,Performance Route,5.55,0.05,2.75,3.705,synthetic_v1
+ZD-SYN-00053,Women,Activewear,Training Top,Pique Knit,95% Cotton / 5% Elastane,180-220,0.204,Label Set,Dyed Knit Route,5.1,0.03,2.35,3.42,synthetic_v1
+ZD-SYN-00054,Men,Top,Polo Shirt,French Terry,80% Cotton / 20% Polyester,220-300,0.23,Label + Hangtag,Performance Route,5.55,0.05,2.75,4.076,synthetic_v1
+ZD-SYN-00055,Unisex,Outerwear,Zip Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.793,Label + Hangtag,Standard Knit Route,5.1,0.05,1.95,6.044,synthetic_v1
+ZD-SYN-00056,Men,Bottom,Sweatpant,Pique Knit,95% Cotton / 5% Elastane,180-220,0.54,Label + Button Set,Dyed Knit Route,5.1,0.07,2.35,5.174,synthetic_v1
+ZD-SYN-00057,Men,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.305,Label Set,Dyed Knit Route,5.55,0.03,2.35,4.073,synthetic_v1
+ZD-SYN-00058,Men,Outerwear,Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.696,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,6.457,synthetic_v1
+ZD-SYN-00059,Men,Bottom,Shorts,French Terry,80% Cotton / 20% Polyester,220-300,0.213,Label + Hangtag,Dyed Knit Route,5.55,0.05,2.35,3.582,synthetic_v1
+ZD-SYN-00060,Women,Top,Polo Shirt,French Terry,80% Cotton / 20% Polyester,220-300,0.318,Label + Drawcord,Performance Route,5.55,0.08,2.75,4.595,synthetic_v1
+ZD-SYN-00061,Men,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.236,Label + Hangtag,Performance Route,6.2,0.05,2.75,4.263,synthetic_v1
+ZD-SYN-00062,Men,Activewear,Performance Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.213,Label + Drawcord,Dyed Knit Route,5.0,0.08,2.35,3.495,synthetic_v1
+ZD-SYN-00063,Unisex,Activewear,Gym Short,Rib Knit,97% Cotton / 3% Elastane,180-260,0.25,Label Set,Dyed Knit Route,5.0,0.03,2.35,3.63,synthetic_v1
+ZD-SYN-00064,Men,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.262,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,3.484,synthetic_v1
+ZD-SYN-00065,Women,Bottom,Legging,Single Jersey,100% Cotton,140-180,0.238,Label + Button Set,Performance Route,4.65,0.07,2.75,3.927,synthetic_v1
+ZD-SYN-00066,Unisex,Top,Polo Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.26,Label + Drawcord,Dyed Knit Route,6.2,0.08,2.35,4.042,synthetic_v1
+ZD-SYN-00067,Men,Activewear,Training Top,Fleece,70% Cotton / 30% Polyester,240-320,0.25,Label + Drawcord,Performance Route,5.8,0.08,2.75,4.28,synthetic_v1
+ZD-SYN-00068,Women,Bottom,Legging,Rib Knit,97% Cotton / 3% Elastane,180-260,0.234,Label Set,Dyed Knit Route,5.0,0.03,2.35,3.55,synthetic_v1
+ZD-SYN-00069,Unisex,Outerwear,Zip Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.633,Label + Button Set,Dyed Knit Route,5.55,0.07,2.35,5.933,synthetic_v1
+ZD-SYN-00070,Unisex,Bottom,Sweatpant,Pique Knit,95% Cotton / 5% Elastane,180-220,0.483,Label Set,Dyed Knit Route,5.1,0.03,2.35,4.843,synthetic_v1
+ZD-SYN-00071,Men,Activewear,Performance Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.221,Label + Button Set,Standard Knit Route,5.55,0.07,1.95,3.247,synthetic_v1
+ZD-SYN-00072,Men,Bottom,Jogger,Pique Knit,95% Cotton / 5% Elastane,180-220,0.52,Label + Drawcord,Performance Route,5.1,0.08,2.75,5.482,synthetic_v1
+ZD-SYN-00073,Women,Top,Tank Top,French Terry,80% Cotton / 20% Polyester,220-300,0.156,Label + Hangtag,Performance Route,5.55,0.05,2.75,3.666,synthetic_v1
+ZD-SYN-00074,Men,Outerwear,Sweatshirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.634,Label Set,Standard Knit Route,5.1,0.03,1.95,5.213,synthetic_v1
+ZD-SYN-00075,Unisex,Bottom,Shorts,Rib Knit,97% Cotton / 3% Elastane,180-260,0.236,Label + Drawcord,Standard Knit Route,5.0,0.08,1.95,3.21,synthetic_v1
+ZD-SYN-00076,Men,Top,Tank Top,Fleece,70% Cotton / 30% Polyester,240-320,0.149,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,3.284,synthetic_v1
+ZD-SYN-00077,Women,Outerwear,Zip Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.578,Label + Drawcord,Dyed Knit Route,5.1,0.08,2.35,5.378,synthetic_v1
+ZD-SYN-00078,Unisex,Bottom,Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.253,Label + Hangtag,Dyed Knit Route,5.8,0.05,2.35,3.867,synthetic_v1
+ZD-SYN-00079,Women,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.17,Label + Button Set,Performance Route,6.2,0.07,2.75,3.874,synthetic_v1
+ZD-SYN-00080,Women,Bottom,Shorts,French Terry,80% Cotton / 20% Polyester,220-300,0.201,Label + Hangtag,Performance Route,5.55,0.05,2.75,3.916,synthetic_v1
+ZD-SYN-00081,Women,Outerwear,Sweatshirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.419,Label + Drawcord,Dyed Knit Route,5.0,0.08,2.35,4.525,synthetic_v1
+ZD-SYN-00082,Unisex,Outerwear,Sweatshirt,French Terry,80% Cotton / 20% Polyester,220-300,0.514,Label Set,Performance Route,5.55,0.03,2.75,5.633,synthetic_v1
+ZD-SYN-00083,Women,Top,Polo Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.295,Label + Drawcord,Performance Route,5.8,0.08,2.75,4.541,synthetic_v1
+ZD-SYN-00084,Men,Bottom,Sweatpant,Interlock,88% Polyester / 12% Elastane,180-240,0.386,Label + Drawcord,Dyed Knit Route,6.2,0.08,2.35,4.823,synthetic_v1
+ZD-SYN-00085,Unisex,Activewear,Gym Short,Pique Knit,95% Cotton / 5% Elastane,180-220,0.258,Label + Drawcord,Standard Knit Route,5.1,0.08,1.95,3.346,synthetic_v1
+ZD-SYN-00086,Unisex,Top,Tank Top,Rib Knit,97% Cotton / 3% Elastane,180-260,0.151,Label Set,Standard Knit Route,5.0,0.03,1.95,2.735,synthetic_v1
+ZD-SYN-00087,Men,Bottom,Sweatpant,Single Jersey,100% Cotton,140-180,0.445,Label + Button Set,Dyed Knit Route,4.65,0.07,2.35,4.489,synthetic_v1
+ZD-SYN-00088,Women,Outerwear,Sweatshirt,Fleece,70% Cotton / 30% Polyester,240-320,0.476,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,5.181,synthetic_v1
+ZD-SYN-00089,Men,Top,Tank Top,French Terry,80% Cotton / 20% Polyester,220-300,0.118,Label Set,Dyed Knit Route,5.55,0.03,2.35,3.035,synthetic_v1
+ZD-SYN-00090,Men,Top,Basic T-Shirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.21,Label + Hangtag,Standard Knit Route,5.1,0.05,1.95,3.071,synthetic_v1
+ZD-SYN-00091,Women,Bottom,Shorts,French Terry,80% Cotton / 20% Polyester,220-300,0.275,Label Set,Performance Route,5.55,0.03,2.75,4.306,synthetic_v1
+ZD-SYN-00092,Women,Outerwear,Zip Hoodie,Interlock,88% Polyester / 12% Elastane,180-240,0.682,Label + Hangtag,Performance Route,6.2,0.05,2.75,7.028,synthetic_v1
+ZD-SYN-00093,Women,Top,Fashion Tee,Single Jersey,100% Cotton,140-180,0.186,Label Set,Dyed Knit Route,4.65,0.03,2.35,3.245,synthetic_v1
+ZD-SYN-00094,Unisex,Outerwear,Sweatshirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.607,Label Set,Performance Route,5.1,0.03,2.75,5.876,synthetic_v1
+ZD-SYN-00095,Unisex,Bottom,Jogger,Interlock,88% Polyester / 12% Elastane,180-240,0.507,Label Set,Performance Route,6.2,0.03,2.75,5.923,synthetic_v1
+ZD-SYN-00096,Unisex,Activewear,Gym Short,Interlock,88% Polyester / 12% Elastane,180-240,0.225,Label Set,Performance Route,6.2,0.03,2.75,4.175,synthetic_v1
+ZD-SYN-00097,Women,Top,Tank Top,Single Jersey,100% Cotton,140-180,0.151,Label + Drawcord,Dyed Knit Route,4.65,0.08,2.35,3.132,synthetic_v1
+ZD-SYN-00098,Men,Outerwear,Zip Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.657,Label + Hangtag,Performance Route,5.8,0.05,2.75,6.611,synthetic_v1
+ZD-SYN-00099,Women,Activewear,Gym Short,Fleece,70% Cotton / 30% Polyester,240-320,0.245,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,3.841,synthetic_v1
+ZD-SYN-00100,Women,Top,Polo Shirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.281,Label + Drawcord,Performance Route,5.1,0.08,2.75,4.263,synthetic_v1
+ZD-SYN-00101,Men,Outerwear,Sweatshirt,Fleece,70% Cotton / 30% Polyester,240-320,0.546,Label + Button Set,Standard Knit Route,5.8,0.07,1.95,5.187,synthetic_v1
+ZD-SYN-00102,Women,Activewear,Active Legging,Interlock,88% Polyester / 12% Elastane,180-240,0.201,Label + Button Set,Performance Route,6.2,0.07,2.75,4.066,synthetic_v1
+ZD-SYN-00103,Men,Bottom,Jogger,French Terry,80% Cotton / 20% Polyester,220-300,0.461,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,4.989,synthetic_v1
+ZD-SYN-00104,Unisex,Bottom,Sweatpant,French Terry,80% Cotton / 20% Polyester,220-300,0.539,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,5.421,synthetic_v1
+ZD-SYN-00105,Men,Top,Polo Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.286,Label + Hangtag,Dyed Knit Route,5.8,0.05,2.35,4.059,synthetic_v1
+ZD-SYN-00106,Unisex,Activewear,Gym Short,Rib Knit,97% Cotton / 3% Elastane,180-260,0.26,Label + Button Set,Dyed Knit Route,5.0,0.07,2.35,3.72,synthetic_v1
+ZD-SYN-00107,Unisex,Activewear,Active Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.235,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,3.783,synthetic_v1
+ZD-SYN-00108,Women,Top,Fashion Tee,Single Jersey,100% Cotton,140-180,0.157,Label + Hangtag,Standard Knit Route,4.65,0.05,1.95,2.73,synthetic_v1
+ZD-SYN-00109,Unisex,Outerwear,Sweatshirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.65,Label + Button Set,Standard Knit Route,5.0,0.07,1.95,5.27,synthetic_v1
+ZD-SYN-00110,Women,Activewear,Training Top,Pique Knit,95% Cotton / 5% Elastane,180-220,0.245,Label + Button Set,Standard Knit Route,5.1,0.07,1.95,3.269,synthetic_v1
+ZD-SYN-00111,Men,Bottom,Legging,Single Jersey,100% Cotton,140-180,0.313,Label + Button Set,Performance Route,4.65,0.07,2.75,4.275,synthetic_v1
+ZD-SYN-00112,Men,Outerwear,Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.594,Label + Button Set,Dyed Knit Route,5.0,0.07,2.35,5.39,synthetic_v1
+ZD-SYN-00113,Men,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.259,Label + Drawcord,Standard Knit Route,6.2,0.08,1.95,3.636,synthetic_v1
+ZD-SYN-00114,Men,Outerwear,Sweatshirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.445,Label Set,Standard Knit Route,5.0,0.03,1.95,4.205,synthetic_v1
+ZD-SYN-00115,Men,Activewear,Performance Tee,Single Jersey,100% Cotton,140-180,0.2,Label + Drawcord,Performance Route,4.65,0.08,2.75,3.76,synthetic_v1
+ZD-SYN-00116,Women,Bottom,Sweatpant,Fleece,70% Cotton / 30% Polyester,240-320,0.578,Label + Button Set,Performance Route,5.8,0.07,2.75,6.172,synthetic_v1
+ZD-SYN-00117,Unisex,Activewear,Performance Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.203,Label Set,Standard Knit Route,5.55,0.03,1.95,3.107,synthetic_v1
+ZD-SYN-00118,Men,Activewear,Performance Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.148,Label + Hangtag,Performance Route,5.1,0.05,2.75,3.555,synthetic_v1
+ZD-SYN-00119,Women,Top,Tank Top,French Terry,80% Cotton / 20% Polyester,220-300,0.103,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,3.002,synthetic_v1
+ZD-SYN-00120,Unisex,Activewear,Active Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.233,Label Set,Performance Route,5.8,0.03,2.75,4.131,synthetic_v1
+ZD-SYN-00121,Women,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.178,Label + Hangtag,Performance Route,4.65,0.05,2.75,3.628,synthetic_v1
+ZD-SYN-00122,Men,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.231,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,3.474,synthetic_v1
+ZD-SYN-00123,Men,Activewear,Gym Short,Fleece,70% Cotton / 30% Polyester,240-320,0.2,Label + Button Set,Performance Route,5.8,0.07,2.75,3.98,synthetic_v1
+ZD-SYN-00124,Women,Activewear,Gym Short,Single Jersey,100% Cotton,140-180,0.233,Label Set,Dyed Knit Route,4.65,0.03,2.35,3.463,synthetic_v1
+ZD-SYN-00125,Men,Activewear,Performance Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.222,Label Set,Performance Route,5.1,0.03,2.75,3.912,synthetic_v1
+ZD-SYN-00126,Women,Top,Fashion Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.155,Label + Drawcord,Dyed Knit Route,5.0,0.08,2.35,3.205,synthetic_v1
+ZD-SYN-00127,Women,Outerwear,Zip Hoodie,Single Jersey,100% Cotton,140-180,0.623,Label + Drawcord,Dyed Knit Route,4.65,0.08,2.35,5.327,synthetic_v1
+ZD-SYN-00128,Men,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.19,Label + Drawcord,Performance Route,6.2,0.08,2.75,4.008,synthetic_v1
+ZD-SYN-00129,Men,Outerwear,Zip Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.576,Label Set,Dyed Knit Route,5.8,0.03,2.35,5.721,synthetic_v1
+ZD-SYN-00130,Unisex,Top,Tank Top,Single Jersey,100% Cotton,140-180,0.104,Label + Drawcord,Dyed Knit Route,4.65,0.08,2.35,2.914,synthetic_v1
+ZD-SYN-00131,Unisex,Activewear,Gym Short,Fleece,70% Cotton / 30% Polyester,240-320,0.187,Label Set,Standard Knit Route,5.8,0.03,1.95,3.065,synthetic_v1
+ZD-SYN-00132,Women,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.203,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,3.157,synthetic_v1
+ZD-SYN-00133,Women,Bottom,Shorts,Rib Knit,97% Cotton / 3% Elastane,180-260,0.221,Label Set,Performance Route,5.0,0.03,2.75,3.885,synthetic_v1
+ZD-SYN-00134,Women,Bottom,Jogger,Single Jersey,100% Cotton,140-180,0.537,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,4.897,synthetic_v1
+ZD-SYN-00135,Women,Activewear,Active Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.264,Label + Drawcord,Standard Knit Route,5.8,0.08,1.95,3.561,synthetic_v1
+ZD-SYN-00136,Men,Bottom,Sweatpant,Rib Knit,97% Cotton / 3% Elastane,180-260,0.435,Label + Hangtag,Standard Knit Route,5.0,0.05,1.95,4.175,synthetic_v1
+ZD-SYN-00137,Unisex,Outerwear,Sweatshirt,Interlock,88% Polyester / 12% Elastane,180-240,0.618,Label Set,Dyed Knit Route,6.2,0.03,2.35,6.212,synthetic_v1
+ZD-SYN-00138,Women,Outerwear,Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.55,Label + Drawcord,Dyed Knit Route,5.0,0.08,2.35,5.18,synthetic_v1
+ZD-SYN-00139,Women,Outerwear,Sweatshirt,Pique Knit,95% Cotton / 5% Elastane,180-220,0.515,Label + Hangtag,Performance Route,5.1,0.05,2.75,5.427,synthetic_v1
+ZD-SYN-00140,Women,Outerwear,Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.724,Label + Drawcord,Performance Route,5.55,0.08,2.75,6.848,synthetic_v1
+ZD-SYN-00141,Unisex,Outerwear,Sweatshirt,French Terry,80% Cotton / 20% Polyester,220-300,0.689,Label + Hangtag,Dyed Knit Route,5.55,0.05,2.35,6.224,synthetic_v1
+ZD-SYN-00142,Men,Bottom,Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.309,Label Set,Performance Route,5.8,0.03,2.75,4.572,synthetic_v1
+ZD-SYN-00143,Women,Top,Fashion Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.178,Label + Hangtag,Standard Knit Route,5.55,0.05,1.95,2.988,synthetic_v1
+ZD-SYN-00144,Unisex,Activewear,Active Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.211,Label + Drawcord,Performance Route,5.55,0.08,2.75,4.001,synthetic_v1
+ZD-SYN-00145,Women,Activewear,Gym Short,French Terry,80% Cotton / 20% Polyester,220-300,0.164,Label + Drawcord,Performance Route,5.55,0.08,2.75,3.74,synthetic_v1
+ZD-SYN-00146,Unisex,Top,Fashion Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.2,Label + Button Set,Standard Knit Route,5.55,0.07,1.95,3.13,synthetic_v1
+ZD-SYN-00147,Unisex,Outerwear,Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.5,Label Set,Dyed Knit Route,5.55,0.03,2.35,5.155,synthetic_v1
+ZD-SYN-00148,Men,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.176,Label Set,Dyed Knit Route,6.2,0.03,2.35,3.471,synthetic_v1
+ZD-SYN-00149,Men,Outerwear,Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.655,Label + Drawcord,Performance Route,5.0,0.08,2.75,6.105,synthetic_v1
+ZD-SYN-00150,Men,Bottom,Shorts,Single Jersey,100% Cotton,140-180,0.248,Label + Drawcord,Performance Route,4.65,0.08,2.75,3.983,synthetic_v1
+ZD-SYN-00151,Men,Outerwear,Zip Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.576,Label + Drawcord,Performance Route,5.1,0.08,2.75,5.768,synthetic_v1
+ZD-SYN-00152,Women,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.184,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.141,synthetic_v1
+ZD-SYN-00153,Unisex,Activewear,Active Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.318,Label + Button Set,Dyed Knit Route,5.8,0.07,2.35,4.264,synthetic_v1
+ZD-SYN-00154,Women,Bottom,Sweatpant,Single Jersey,100% Cotton,140-180,0.494,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,4.697,synthetic_v1
+ZD-SYN-00155,Men,Activewear,Active Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.201,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,3.546,synthetic_v1
+ZD-SYN-00156,Unisex,Top,Long Sleeve Tee,Fleece,70% Cotton / 30% Polyester,240-320,0.261,Label + Button Set,Standard Knit Route,5.8,0.07,1.95,3.534,synthetic_v1
+ZD-SYN-00157,Unisex,Activewear,Training Top,Pique Knit,95% Cotton / 5% Elastane,180-220,0.251,Label + Button Set,Performance Route,5.1,0.07,2.75,4.1,synthetic_v1
+ZD-SYN-00158,Unisex,Bottom,Jogger,French Terry,80% Cotton / 20% Polyester,220-300,0.508,Label Set,Dyed Knit Route,5.55,0.03,2.35,5.199,synthetic_v1
+ZD-SYN-00159,Women,Top,Long Sleeve Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.291,Label + Hangtag,Standard Knit Route,5.55,0.05,1.95,3.615,synthetic_v1
+ZD-SYN-00160,Men,Activewear,Gym Short,Pique Knit,95% Cotton / 5% Elastane,180-220,0.248,Label + Hangtag,Performance Route,5.1,0.05,2.75,4.065,synthetic_v1
+ZD-SYN-00161,Men,Activewear,Active Legging,Interlock,88% Polyester / 12% Elastane,180-240,0.305,Label + Drawcord,Dyed Knit Route,6.2,0.08,2.35,4.321,synthetic_v1
+ZD-SYN-00162,Women,Activewear,Performance Tee,Single Jersey,100% Cotton,140-180,0.226,Label + Hangtag,Standard Knit Route,4.65,0.05,1.95,3.051,synthetic_v1
+ZD-SYN-00163,Women,Outerwear,Zip Hoodie,Single Jersey,100% Cotton,140-180,0.579,Label + Drawcord,Standard Knit Route,4.65,0.08,1.95,4.722,synthetic_v1
+ZD-SYN-00164,Women,Top,Tank Top,French Terry,80% Cotton / 20% Polyester,220-300,0.13,Label + Button Set,Performance Route,5.55,0.07,2.75,3.542,synthetic_v1
+ZD-SYN-00165,Unisex,Activewear,Performance Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.202,Label + Drawcord,Standard Knit Route,5.1,0.08,1.95,3.06,synthetic_v1
+ZD-SYN-00166,Unisex,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.196,Label + Drawcord,Performance Route,4.65,0.08,2.75,3.741,synthetic_v1
+ZD-SYN-00167,Men,Outerwear,Hoodie,Single Jersey,100% Cotton,140-180,0.749,Label Set,Dyed Knit Route,4.65,0.03,2.35,5.863,synthetic_v1
+ZD-SYN-00168,Men,Top,Basic T-Shirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.196,Label + Hangtag,Dyed Knit Route,5.0,0.05,2.35,3.38,synthetic_v1
+ZD-SYN-00169,Unisex,Outerwear,Zip Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.696,Label + Hangtag,Dyed Knit Route,5.55,0.05,2.35,6.263,synthetic_v1
+ZD-SYN-00170,Women,Outerwear,Zip Hoodie,Interlock,88% Polyester / 12% Elastane,180-240,0.611,Label Set,Performance Route,6.2,0.03,2.75,6.568,synthetic_v1
+ZD-SYN-00171,Men,Outerwear,Sweatshirt,Interlock,88% Polyester / 12% Elastane,180-240,0.51,Label Set,Performance Route,6.2,0.03,2.75,5.942,synthetic_v1
+ZD-SYN-00172,Women,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.235,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.457,synthetic_v1
+ZD-SYN-00173,Unisex,Outerwear,Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.686,Label Set,Standard Knit Route,5.1,0.03,1.95,5.479,synthetic_v1
+ZD-SYN-00174,Unisex,Bottom,Shorts,Pique Knit,95% Cotton / 5% Elastane,180-220,0.201,Label Set,Performance Route,5.1,0.03,2.75,3.805,synthetic_v1
+ZD-SYN-00175,Women,Bottom,Shorts,Pique Knit,95% Cotton / 5% Elastane,180-220,0.266,Label Set,Dyed Knit Route,5.1,0.03,2.35,3.737,synthetic_v1
+ZD-SYN-00176,Unisex,Bottom,Shorts,Interlock,88% Polyester / 12% Elastane,180-240,0.246,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.525,synthetic_v1
+ZD-SYN-00177,Men,Top,Fashion Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.166,Label + Hangtag,Performance Route,6.2,0.05,2.75,3.829,synthetic_v1
+ZD-SYN-00178,Men,Bottom,Legging,Pique Knit,95% Cotton / 5% Elastane,180-220,0.214,Label + Drawcord,Performance Route,5.1,0.08,2.75,3.921,synthetic_v1
+ZD-SYN-00179,Women,Top,Tank Top,Interlock,88% Polyester / 12% Elastane,180-240,0.14,Label Set,Dyed Knit Route,6.2,0.03,2.35,3.248,synthetic_v1
+ZD-SYN-00180,Women,Top,Long Sleeve Tee,Fleece,70% Cotton / 30% Polyester,240-320,0.3,Label Set,Standard Knit Route,5.8,0.03,1.95,3.72,synthetic_v1
+ZD-SYN-00181,Unisex,Outerwear,Sweatshirt,Single Jersey,100% Cotton,140-180,0.673,Label + Drawcord,Performance Route,4.65,0.08,2.75,5.959,synthetic_v1
+ZD-SYN-00182,Women,Top,Basic T-Shirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.17,Label + Hangtag,Standard Knit Route,5.0,0.05,1.95,2.85,synthetic_v1
+ZD-SYN-00183,Unisex,Activewear,Gym Short,Rib Knit,97% Cotton / 3% Elastane,180-260,0.211,Label + Button Set,Dyed Knit Route,5.0,0.07,2.35,3.475,synthetic_v1
+ZD-SYN-00184,Unisex,Outerwear,Hoodie,Single Jersey,100% Cotton,140-180,0.585,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,5.12,synthetic_v1
+ZD-SYN-00185,Women,Bottom,Sweatpant,Fleece,70% Cotton / 30% Polyester,240-320,0.526,Label + Drawcord,Dyed Knit Route,5.8,0.08,2.35,5.481,synthetic_v1
+ZD-SYN-00186,Women,Activewear,Gym Short,French Terry,80% Cotton / 20% Polyester,220-300,0.255,Label + Button Set,Dyed Knit Route,5.55,0.07,2.35,3.835,synthetic_v1
+ZD-SYN-00187,Men,Outerwear,Hoodie,Single Jersey,100% Cotton,140-180,0.479,Label Set,Dyed Knit Route,4.65,0.03,2.35,4.607,synthetic_v1
+ZD-SYN-00188,Unisex,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.175,Label + Button Set,Performance Route,4.65,0.07,2.75,3.634,synthetic_v1
+ZD-SYN-00189,Unisex,Activewear,Gym Short,Single Jersey,100% Cotton,140-180,0.191,Label + Button Set,Performance Route,4.65,0.07,2.75,3.708,synthetic_v1
+ZD-SYN-00190,Unisex,Top,Long Sleeve Tee,Pique Knit,95% Cotton / 5% Elastane,180-220,0.248,Label + Hangtag,Performance Route,5.1,0.05,2.75,4.065,synthetic_v1
+ZD-SYN-00191,Unisex,Top,Polo Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.277,Label Set,Dyed Knit Route,6.2,0.03,2.35,4.097,synthetic_v1
+ZD-SYN-00192,Unisex,Outerwear,Zip Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.779,Label Set,Performance Route,5.0,0.03,2.75,6.675,synthetic_v1
+ZD-SYN-00193,Men,Activewear,Performance Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.175,Label + Button Set,Dyed Knit Route,6.2,0.07,2.35,3.505,synthetic_v1
+ZD-SYN-00194,Unisex,Bottom,Shorts,French Terry,80% Cotton / 20% Polyester,220-300,0.194,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,3.107,synthetic_v1
+ZD-SYN-00195,Unisex,Top,Basic T-Shirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.194,Label + Hangtag,Dyed Knit Route,5.0,0.05,2.35,3.37,synthetic_v1
+ZD-SYN-00196,Women,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.232,Label + Button Set,Performance Route,6.2,0.07,2.75,4.258,synthetic_v1
+ZD-SYN-00197,Men,Top,Fashion Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.147,Label Set,Performance Route,5.0,0.03,2.75,3.515,synthetic_v1
+ZD-SYN-00198,Women,Outerwear,Zip Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.582,Label + Drawcord,Dyed Knit Route,5.8,0.08,2.35,5.806,synthetic_v1
+ZD-SYN-00199,Women,Top,Polo Shirt,Single Jersey,100% Cotton,140-180,0.288,Label + Button Set,Performance Route,4.65,0.07,2.75,4.159,synthetic_v1
+ZD-SYN-00200,Unisex,Outerwear,Zip Hoodie,Interlock,88% Polyester / 12% Elastane,180-240,0.619,Label Set,Standard Knit Route,6.2,0.03,1.95,5.818,synthetic_v1
+ZD-SYN-00201,Men,Top,Basic T-Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.221,Label + Hangtag,Standard Knit Route,6.2,0.05,1.95,3.37,synthetic_v1
+ZD-SYN-00202,Men,Activewear,Active Legging,Single Jersey,100% Cotton,140-180,0.26,Label + Drawcord,Performance Route,4.65,0.08,2.75,4.039,synthetic_v1
+ZD-SYN-00203,Unisex,Bottom,Sweatpant,French Terry,80% Cotton / 20% Polyester,220-300,0.492,Label + Hangtag,Performance Route,5.55,0.05,2.75,5.531,synthetic_v1
+ZD-SYN-00204,Women,Activewear,Performance Tee,French Terry,80% Cotton / 20% Polyester,220-300,0.142,Label Set,Dyed Knit Route,5.55,0.03,2.35,3.168,synthetic_v1
+ZD-SYN-00205,Unisex,Top,Polo Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.284,Label + Drawcord,Performance Route,5.8,0.08,2.75,4.477,synthetic_v1
+ZD-SYN-00206,Women,Activewear,Performance Tee,Single Jersey,100% Cotton,140-180,0.22,Label + Button Set,Standard Knit Route,4.65,0.07,1.95,3.043,synthetic_v1
+ZD-SYN-00207,Women,Outerwear,Zip Hoodie,Single Jersey,100% Cotton,140-180,0.573,Label + Drawcord,Standard Knit Route,4.65,0.08,1.95,4.694,synthetic_v1
+ZD-SYN-00208,Men,Outerwear,Zip Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.602,Label + Button Set,Performance Route,5.8,0.07,2.75,6.312,synthetic_v1
+ZD-SYN-00209,Men,Activewear,Training Top,Rib Knit,97% Cotton / 3% Elastane,180-260,0.221,Label Set,Performance Route,5.0,0.03,2.75,3.885,synthetic_v1
+ZD-SYN-00210,Unisex,Activewear,Active Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.214,Label + Hangtag,Standard Knit Route,5.55,0.05,1.95,3.188,synthetic_v1
+ZD-SYN-00211,Men,Activewear,Training Top,Rib Knit,97% Cotton / 3% Elastane,180-260,0.169,Label + Hangtag,Performance Route,5.0,0.05,2.75,3.645,synthetic_v1
+ZD-SYN-00212,Unisex,Outerwear,Sweatshirt,Rib Knit,97% Cotton / 3% Elastane,180-260,0.677,Label + Drawcord,Performance Route,5.0,0.08,2.75,6.215,synthetic_v1
+ZD-SYN-00213,Men,Activewear,Active Legging,Fleece,70% Cotton / 30% Polyester,240-320,0.262,Label Set,Dyed Knit Route,5.8,0.03,2.35,3.9,synthetic_v1
+ZD-SYN-00214,Unisex,Activewear,Active Legging,Single Jersey,100% Cotton,140-180,0.21,Label + Button Set,Performance Route,4.65,0.07,2.75,3.797,synthetic_v1
+ZD-SYN-00215,Men,Outerwear,Sweatshirt,Single Jersey,100% Cotton,140-180,0.423,Label + Button Set,Dyed Knit Route,4.65,0.07,2.35,4.387,synthetic_v1
+ZD-SYN-00216,Unisex,Top,Long Sleeve Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.258,Label + Drawcord,Dyed Knit Route,5.0,0.08,2.35,3.72,synthetic_v1
+ZD-SYN-00217,Unisex,Top,Tank Top,French Terry,80% Cotton / 20% Polyester,220-300,0.148,Label + Hangtag,Dyed Knit Route,5.55,0.05,2.35,3.221,synthetic_v1
+ZD-SYN-00218,Women,Bottom,Jogger,Single Jersey,100% Cotton,140-180,0.367,Label + Button Set,Performance Route,4.65,0.07,2.75,4.527,synthetic_v1
+ZD-SYN-00219,Men,Bottom,Jogger,French Terry,80% Cotton / 20% Polyester,220-300,0.455,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,4.955,synthetic_v1
+ZD-SYN-00220,Women,Bottom,Legging,Interlock,88% Polyester / 12% Elastane,180-240,0.293,Label + Drawcord,Dyed Knit Route,6.2,0.08,2.35,4.247,synthetic_v1
+ZD-SYN-00221,Men,Top,Polo Shirt,Interlock,88% Polyester / 12% Elastane,180-240,0.288,Label Set,Performance Route,6.2,0.03,2.75,4.566,synthetic_v1
+ZD-SYN-00222,Unisex,Activewear,Active Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.211,Label + Hangtag,Dyed Knit Route,5.55,0.05,2.35,3.571,synthetic_v1
+ZD-SYN-00223,Women,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.271,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,3.534,synthetic_v1
+ZD-SYN-00224,Unisex,Top,Polo Shirt,Fleece,70% Cotton / 30% Polyester,240-320,0.287,Label + Button Set,Standard Knit Route,5.8,0.07,1.95,3.685,synthetic_v1
+ZD-SYN-00225,Unisex,Top,Tank Top,Interlock,88% Polyester / 12% Elastane,180-240,0.125,Label Set,Dyed Knit Route,6.2,0.03,2.35,3.155,synthetic_v1
+ZD-SYN-00226,Women,Bottom,Legging,Pique Knit,95% Cotton / 5% Elastane,180-220,0.219,Label + Hangtag,Standard Knit Route,5.1,0.05,1.95,3.117,synthetic_v1
+ZD-SYN-00227,Unisex,Activewear,Performance Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.174,Label Set,Performance Route,5.0,0.03,2.75,3.65,synthetic_v1
+ZD-SYN-00228,Men,Bottom,Sweatpant,Pique Knit,95% Cotton / 5% Elastane,180-220,0.534,Label + Hangtag,Performance Route,5.1,0.05,2.75,5.523,synthetic_v1
+ZD-SYN-00229,Men,Bottom,Sweatpant,Fleece,70% Cotton / 30% Polyester,240-320,0.524,Label + Button Set,Performance Route,5.8,0.07,2.75,5.859,synthetic_v1
+ZD-SYN-00230,Women,Outerwear,Zip Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.66,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,5.693,synthetic_v1
+ZD-SYN-00231,Men,Activewear,Gym Short,Interlock,88% Polyester / 12% Elastane,180-240,0.237,Label + Drawcord,Dyed Knit Route,6.2,0.08,2.35,3.899,synthetic_v1
+ZD-SYN-00232,Unisex,Outerwear,Zip Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.74,Label + Hangtag,Standard Knit Route,5.8,0.05,1.95,6.292,synthetic_v1
+ZD-SYN-00233,Men,Bottom,Legging,French Terry,80% Cotton / 20% Polyester,220-300,0.267,Label + Drawcord,Dyed Knit Route,5.55,0.08,2.35,3.912,synthetic_v1
+ZD-SYN-00234,Men,Top,Long Sleeve Tee,Interlock,88% Polyester / 12% Elastane,180-240,0.227,Label Set,Standard Knit Route,6.2,0.03,1.95,3.387,synthetic_v1
+ZD-SYN-00235,Men,Bottom,Sweatpant,Pique Knit,95% Cotton / 5% Elastane,180-220,0.566,Label + Drawcord,Dyed Knit Route,5.1,0.08,2.35,5.317,synthetic_v1
+ZD-SYN-00236,Women,Outerwear,Hoodie,Rib Knit,97% Cotton / 3% Elastane,180-260,0.566,Label + Button Set,Standard Knit Route,5.0,0.07,1.95,4.85,synthetic_v1
+ZD-SYN-00237,Men,Top,Polo Shirt,Single Jersey,100% Cotton,140-180,0.304,Label + Button Set,Standard Knit Route,4.65,0.07,1.95,3.434,synthetic_v1
+ZD-SYN-00238,Men,Activewear,Training Top,Single Jersey,100% Cotton,140-180,0.244,Label + Button Set,Dyed Knit Route,4.65,0.07,2.35,3.555,synthetic_v1
+ZD-SYN-00239,Women,Bottom,Sweatpant,Rib Knit,97% Cotton / 3% Elastane,180-260,0.384,Label Set,Standard Knit Route,5.0,0.03,1.95,3.9,synthetic_v1
+ZD-SYN-00240,Unisex,Bottom,Shorts,French Terry,80% Cotton / 20% Polyester,220-300,0.258,Label + Drawcord,Standard Knit Route,5.55,0.08,1.95,3.462,synthetic_v1
+ZD-SYN-00241,Men,Bottom,Legging,Single Jersey,100% Cotton,140-180,0.277,Label + Hangtag,Dyed Knit Route,4.65,0.05,2.35,3.688,synthetic_v1
+ZD-SYN-00242,Men,Outerwear,Hoodie,Fleece,70% Cotton / 30% Polyester,240-320,0.605,Label Set,Performance Route,5.8,0.03,2.75,6.289,synthetic_v1
+ZD-SYN-00243,Women,Bottom,Shorts,Fleece,70% Cotton / 30% Polyester,240-320,0.215,Label Set,Performance Route,5.8,0.03,2.75,4.027,synthetic_v1
+ZD-SYN-00244,Unisex,Outerwear,Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.742,Label Set,Performance Route,5.55,0.03,2.75,6.898,synthetic_v1
+ZD-SYN-00245,Unisex,Top,Long Sleeve Tee,Rib Knit,97% Cotton / 3% Elastane,180-260,0.287,Label Set,Dyed Knit Route,5.0,0.03,2.35,3.815,synthetic_v1
+ZD-SYN-00246,Women,Top,Tank Top,Interlock,88% Polyester / 12% Elastane,180-240,0.163,Label Set,Dyed Knit Route,6.2,0.03,2.35,3.391,synthetic_v1
+ZD-SYN-00247,Unisex,Activewear,Training Top,French Terry,80% Cotton / 20% Polyester,220-300,0.248,Label Set,Performance Route,5.55,0.03,2.75,4.156,synthetic_v1
+ZD-SYN-00248,Men,Activewear,Training Top,Interlock,88% Polyester / 12% Elastane,180-240,0.181,Label + Button Set,Performance Route,6.2,0.07,2.75,3.942,synthetic_v1
+ZD-SYN-00249,Women,Outerwear,Zip Hoodie,French Terry,80% Cotton / 20% Polyester,220-300,0.519,Label + Hangtag,Standard Knit Route,5.55,0.05,1.95,4.88,synthetic_v1
+ZD-SYN-00250,Women,Outerwear,Hoodie,Pique Knit,95% Cotton / 5% Elastane,180-220,0.716,Label Set,Standard Knit Route,5.1,0.03,1.95,5.632,synthetic_v1

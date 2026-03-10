@@ -98,178 +98,6 @@
       border-color:rgba(27,44,85,.95);
       color:var(--text);
     }
-
-    .esg-modal-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(2,21,78,.56);
-      backdrop-filter:blur(6px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:1200;
-      padding:24px;
-    }
-    .esg-modal-backdrop.open{
-      display:flex;
-    }
-    .esg-modal{
-      width:min(1120px,96vw);
-      max-height:92vh;
-      overflow:auto;
-      background:#ffffff;
-      color:#1f2a44;
-      border-radius:24px;
-      box-shadow:0 24px 80px rgba(2,21,78,.30);
-      border:1px solid rgba(2,21,78,.08);
-    }
-    .esg-modal-head{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:16px;
-      padding:24px 24px 12px 24px;
-      border-bottom:1px solid rgba(2,21,78,.08);
-    }
-    .esg-modal-title{
-      margin:0;
-      font-size:32px;
-      line-height:1.05;
-      letter-spacing:-.02em;
-      color:#02154e;
-      font-weight:600;
-    }
-    .esg-modal-sub{
-      margin-top:8px;
-      color:#60708f;
-      font-size:15px;
-      line-height:1.45;
-    }
-    .esg-modal-close{
-      appearance:none;
-      border:1px solid rgba(2,21,78,.12);
-      background:#fff;
-      color:#02154e;
-      border-radius:12px;
-      padding:10px 14px;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .esg-modal-body{
-      padding:22px 24px 26px 24px;
-    }
-    .esg-form-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:18px;
-    }
-    
-.esg-section.esg-hint{
-  border:2px solid #f9ba00 !important;
-  box-shadow:0 0 0 4px rgba(249,186,0,.18);
-  transition:all .25s ease;
-}
-
-.esg-section{
-      background:#f7f9fc;
-      border:1px solid rgba(2,21,78,.08);
-      border-radius:18px;
-      padding:18px;
-    }
-    .esg-section h3{
-      margin:0 0 12px 0;
-      color:#02154e;
-      font-size:20px;
-      line-height:1.15;
-      letter-spacing:-.01em;
-    }
-    .esg-field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom:12px;
-    }
-    .esg-field:last-child{
-      margin-bottom:0;
-    }
-    .esg-field label{
-      font-size:13px;
-      color:#5d6c88;
-      font-weight:700;
-    }
-    .esg-field input,
-    .esg-field select{
-      height:44px;
-      border-radius:12px;
-      border:1px solid rgba(2,21,78,.12);
-      background:#fff;
-      padding:0 12px;
-      font-size:15px;
-      color:#1f2a44;
-      outline:none;
-    }
-    .esg-field input:focus,
-    .esg-field select:focus{
-      border-color:#f9ba00;
-      box-shadow:0 0 0 3px rgba(249,186,0,.18);
-    }
-    .esg-actions{
-      display:flex;
-      gap:12px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-top:18px;
-      padding-top:18px;
-      border-top:1px solid rgba(2,21,78,.08);
-    }
-    .esg-actions-left,
-    .esg-actions-right{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-    }
-    .esg-meta{
-      font-size:13px;
-      color:#6b7893;
-    }
-    .esg-summary{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-    }
-    .esg-summary-card{
-      background:#02154e;
-      color:#fff;
-      border-radius:16px;
-      padding:14px 14px;
-      box-shadow:0 10px 28px rgba(2,21,78,.14);
-    }
-    .esg-summary-card .k{
-      font-size:12px;
-      opacity:.75;
-      margin-bottom:6px;
-    }
-    .esg-summary-card .v{
-      font-size:22px;
-      font-weight:800;
-      line-height:1.05;
-    }
-    @media (max-width:900px){
-      .esg-form-grid{
-        grid-template-columns:1fr;
-      }
-      .esg-summary{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-      }
-    }
-    @media (max-width:560px){
-      .esg-summary{
-        grid-template-columns:1fr;
-      }
-    }
     .grid{display:grid;gap:14px;margin-top:14px}
     .grid.exec{grid-template-columns: repeat(3, 1fr)}
     .grid.two{grid-template-columns: 1.35fr .65fr}
@@ -844,7 +672,7 @@ box-shadow:0 0 10px rgba(255,80,80,.5);
 </div>
 
 <div style="font-size:12px;margin-top:6px;color:#9fb0c8;">
-
+Board escalation threshold: <b>60</b>
 </div>
 </div>
 
@@ -898,7 +726,6 @@ Risk Drivers</div>
       </div>
       <div class="actions">
         <a class="btn" id="btnBackDashboard" href="index.html">← Back</a>
-        <button class="btn primary" id="openEsgDataEntryBtn" type="button">+ Enter Consumption Data</button>
         <a class="btn" id="btnGoFabric" href="fabric-dpp.html">Fabric</a>
         <a class="btn primary" id="btnGoFinishing" href="finishing-dpp.html">Finishing</a>
       </div>
@@ -1227,17 +1054,17 @@ borderWidth: 2,
   <div style="font-weight:800;margin-bottom:8px;color:#ffd86b;letter-spacing:.02em;">Risk Composition</div>
 
   <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-    <span style="color:#cfd8ea;">Signal Velocity</span>
+    <span style="color:#cfd8ea;">30 Day</span>
     <span id="riskTechValue" style="font-weight:800;color:#ff8da1;">0</span>
   </div>
 
   <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-    <span style="color:#cfd8ea;">Financial Exposure</span>
+    <span style="color:#cfd8ea;">60 Day</span>
     <span id="riskFinancialValue" style="font-weight:800;color:#ffd86b;">0</span>
   </div>
 
   <div style="display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-    <span style="color:#cfd8ea;">Operational Noise</span>
+    <span style="color:#cfd8ea;">90 Day</span>
     <span id="riskOperationalValue" style="font-weight:800;color:#7ee0ff;">0</span>
   </div>
 
@@ -1318,25 +1145,6 @@ AI Recommendation: –
                   </div>
                   <div style="margin-top:18px;border-top:1px solid rgba(255,255,255,0.08);padding-top:14px;">
                     <div style="font-weight:700;margin-bottom:8px;">Board Intervention Threshold</div>
-                  <div style="margin-top:10px;">
-                    <input
-                      id="boardThresholdSlider"
-                      type="range"
-                      min="35"
-                      max="90"
-                      step="1"
-                      value="60"
-                      style="width:100%;accent-color:#f9ba00;cursor:pointer;"
-                    />
-                    <div style="margin-top:8px;font-size:12px;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;">
-                      <span>Board escalation threshold:
-                        <strong id="boardThresholdValue" style="color:#cfd8ea;font-weight:800;">60</strong>
-                      </span>
-                      <span data-board-threshold-state style="padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.10);color:#cfd8ea;">
-                        Stable
-                      </span>
-                    </div>
-                  </div>
 
                     <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:999px;position:relative;overflow:visible;">
                       <div class="threshold-marker threshold-marker-premium" style="left:60%;"></div>
@@ -1344,7 +1152,7 @@ AI Recommendation: –
                     </div>
 
                     <div style="font-size:12px;margin-top:6px;color:#9fb0c8;">
-                      
+                      Board escalation threshold: <b>60</b>
                     </div>
 
 
@@ -2113,185 +1921,6 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
           } catch (e) {}
         }
 
-        function clamp(value, min, max) {
-          return Math.max(min, Math.min(max, value));
-        }
-
-        function getBoardThresholdValue() {
-          var slider = byId("boardThresholdSlider");
-          if (slider && slider.value !== undefined && slider.value !== null && slider.value !== "") {
-            var parsed = parseInt(slider.value, 10);
-            if (!isNaN(parsed)) return parsed;
-          }
-
-          var thresholdValueEl = byId("boardThresholdValue");
-          if (thresholdValueEl) {
-            var parsedText = parseInt(String(thresholdValueEl.textContent || "").replace(/[^0-9]/g, ""), 10);
-            if (!isNaN(parsedText)) return parsedText;
-          }
-
-          var thresholdText = document.querySelector("#boardThresholdValue")
-            ? document.querySelector("#boardThresholdValue").textContent.trim()
-            : "";
-          var parsedFallback = parseInt(String(thresholdText).replace(/[^0-9]/g, ""), 10);
-          return isNaN(parsedFallback) ? 60 : parsedFallback;
-        }
-
-        function getScenarioDriverState(name, risk, risk30, risk60, risk90) {
-          var exposurePerDay = Math.round(risk * 5.5);
-          var financialExposureScore = clamp(Math.round(exposurePerDay / 3), 0, 100);
-
-          var velocityDelta = Math.max(0, risk90 - risk30);
-          var signalVelocityScore = clamp(Math.round((velocityDelta * 4) + (name === "ignore" ? 12 : name === "digital" ? -6 : 0)), 0, 100);
-
-          var operationalNoiseScore = 42;
-          if (name === "stabilize") operationalNoiseScore = 34;
-          if (name === "digital") operationalNoiseScore = 22;
-          if (name === "ignore") operationalNoiseScore = 78;
-
-          return {
-            exposurePerDay: exposurePerDay,
-            financialExposureScore: financialExposureScore,
-            signalVelocityScore: signalVelocityScore,
-            operationalNoiseScore: operationalNoiseScore
-          };
-        }
-
-        function calculateExecutiveRiskEquation(drivers) {
-          var score =
-            (drivers.financialExposureScore * 0.45) +
-            (drivers.signalVelocityScore * 0.30) +
-            (drivers.operationalNoiseScore * 0.25);
-
-          return clamp(Math.round(score), 0, 100);
-        }
-
-        function evaluateBoardThresholdState(risk, threshold) {
-          if (risk >= threshold) return "Escalated";
-          if (risk >= (threshold - 10)) return "Watch";
-          return "Stable";
-        }
-
-        function applyBoardEscalationVisual(state, risk, threshold) {
-          var boardBar = byId("boardRiskBar");
-          if (boardBar) {
-            boardBar.style.width = risk + "%";
-            boardBar.style.transition = "width .28s ease, box-shadow .25s ease, filter .25s ease";
-            boardBar.classList.remove("safe", "alert", "escalation");
-
-            if (state === "Escalated") {
-              boardBar.classList.add("alert", "escalation");
-              boardBar.style.boxShadow = "0 0 0 2px rgba(255,92,92,.18), 0 0 18px rgba(255,92,92,.28)";
-              boardBar.style.filter = "saturate(1.08)";
-            } else if (state === "Watch") {
-              boardBar.classList.add("alert");
-              boardBar.style.boxShadow = "0 0 0 2px rgba(249,186,0,.14), 0 0 12px rgba(249,186,0,.18)";
-              boardBar.style.filter = "none";
-            } else {
-              boardBar.classList.add("safe");
-              boardBar.style.boxShadow = "0 0 0 2px rgba(61,220,151,.10)";
-              boardBar.style.filter = "none";
-            }
-          }
-
-          var thresholdValueEl = byId("boardThresholdValue");
-          if (thresholdValueEl) {
-            thresholdValueEl.textContent = String(threshold);
-            thresholdValueEl.style.color =
-              state === "Escalated" ? "#ff8da1" :
-              state === "Watch" ? "#ffd86b" :
-              "#7ae8b4";
-            thresholdValueEl.style.fontWeight = "800";
-          }
-
-          var thresholdMeta = document.querySelector('[data-board-threshold-state]');
-          if (thresholdMeta) {
-            thresholdMeta.textContent = state;
-            thresholdMeta.style.fontWeight = "800";
-            thresholdMeta.style.transition = "all .22s ease";
-
-            if (state === "Escalated") {
-              thresholdMeta.style.color = "#ffb3bd";
-              thresholdMeta.style.background = "rgba(255,92,92,.14)";
-              thresholdMeta.style.borderColor = "rgba(255,92,92,.32)";
-              thresholdMeta.style.boxShadow = "0 0 0 1px rgba(255,92,92,.16), 0 0 14px rgba(255,92,92,.12)";
-            } else if (state === "Watch") {
-              thresholdMeta.style.color = "#ffe08a";
-              thresholdMeta.style.background = "rgba(249,186,0,.14)";
-              thresholdMeta.style.borderColor = "rgba(249,186,0,.30)";
-              thresholdMeta.style.boxShadow = "0 0 0 1px rgba(249,186,0,.12), 0 0 12px rgba(249,186,0,.10)";
-            } else {
-              thresholdMeta.style.color = "#9af0c2";
-              thresholdMeta.style.background = "rgba(61,220,151,.12)";
-              thresholdMeta.style.borderColor = "rgba(61,220,151,.26)";
-              thresholdMeta.style.boxShadow = "0 0 0 1px rgba(61,220,151,.10)";
-            }
-          }
-
-          var scenarioRiskValueEl = byId("ceoModalScenarioRiskValue");
-          if (scenarioRiskValueEl) {
-            scenarioRiskValueEl.style.transition = "color .22s ease, text-shadow .22s ease";
-            if (state === "Escalated") {
-              scenarioRiskValueEl.style.color = "#ffb3bd";
-              scenarioRiskValueEl.style.textShadow = "0 0 16px rgba(255,92,92,.20)";
-            } else if (state === "Watch") {
-              scenarioRiskValueEl.style.color = "#ffe08a";
-              scenarioRiskValueEl.style.textShadow = "0 0 14px rgba(249,186,0,.16)";
-            } else {
-              scenarioRiskValueEl.style.color = "#9af0c2";
-              scenarioRiskValueEl.style.textShadow = "0 0 12px rgba(61,220,151,.14)";
-            }
-          }
-        }
-
-        function syncRiskCompositionWidget(name, drivers, risk30, risk60, risk90, threshold, thresholdState) {
-          var riskTechValueEl = byId("riskTechValue");
-          var riskFinancialValueEl = byId("riskFinancialValue");
-          var riskOperationalValueEl = byId("riskOperationalValue");
-          var riskScenarioValueEl = byId("riskScenarioValue");
-
-          if (riskTechValueEl) riskTechValueEl.textContent = String(drivers.signalVelocityScore);
-          if (riskFinancialValueEl) riskFinancialValueEl.textContent = String(drivers.financialExposureScore);
-          if (riskOperationalValueEl) riskOperationalValueEl.textContent = String(drivers.operationalNoiseScore);
-
-          if (riskScenarioValueEl) {
-            riskScenarioValueEl.textContent =
-              name === "digital" ? "Digital Control" :
-              name === "ignore" ? "Ignore" :
-              "Stabilize";
-          }
-
-          var r30 = byId("risk30");
-          var r60 = byId("risk60");
-          var r90 = byId("risk90");
-          if (r30) r30.textContent = risk30;
-          if (r60) r60.textContent = risk60;
-          if (r90) r90.textContent = risk90;
-
-          var driverBars = document.querySelectorAll(".risk-bar");
-          driverBars.forEach(function(bar){
-            var labelWrap = bar.closest(".risk-driver");
-            var labelText = labelWrap ? labelWrap.textContent.toLowerCase() : "";
-            var width = parseFloat(bar.dataset.base || "0");
-
-            if (labelText.indexOf("energy") > -1 || labelText.indexOf("signal") > -1) {
-              width = clamp(drivers.signalVelocityScore, 8, 100);
-            } else if (labelText.indexOf("supply") > -1 || labelText.indexOf("financial") > -1 || labelText.indexOf("margin") > -1) {
-              width = clamp(drivers.financialExposureScore, 8, 100);
-            } else if (labelText.indexOf("wastewater") > -1 || labelText.indexOf("quality") > -1 || labelText.indexOf("operational") > -1) {
-              width = clamp(drivers.operationalNoiseScore, 8, 100);
-            }
-
-            bar.style.width = width + "%";
-          });
-
-          var scenarioRiskEl = byId("ceoModalScenarioRiskValue");
-          if (scenarioRiskEl) {
-            scenarioRiskEl.setAttribute("data-threshold-state", thresholdState);
-          }
-        }
-
-
         function renderScenario(name) {
           var risk = baseRisk;
           var trend = "Monitor";
@@ -2311,6 +1940,8 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
             narrative = "Ignoring weak signals increases the probability of margin pressure turning into board-level risk. Enterprise posture worsens.";
           }
 
+          riskEl.textContent = risk + " / 100";
+
           var risk30 = Math.min(100, Math.max(0, risk - 2));
           var risk60 = Math.min(100, Math.max(0, risk - 5));
           var risk90 = Math.min(100, Math.max(0, risk - 8));
@@ -2329,31 +1960,29 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
             risk90 = Math.min(100, risk + 22);
           }
 
-          var drivers = getScenarioDriverState(name, risk, risk30, risk60, risk90);
-          risk = calculateExecutiveRiskEquation(drivers);
+          var r30 = byId("risk30");
+          var r60 = byId("risk60");
+          var r90 = byId("risk90");
+          if (r30) r30.textContent = risk30;
+          if (r60) r60.textContent = risk60;
+          if (r90) r90.textContent = risk90;
 
-          if (name === "digital") {
-            risk30 = clamp(risk - 1, 0, 100);
-            risk60 = clamp(risk - 4, 0, 100);
-            risk90 = clamp(risk - 7, 0, 100);
-          } else if (name === "stabilize") {
-            risk30 = clamp(risk - 1, 0, 100);
-            risk60 = clamp(risk - 2, 0, 100);
-            risk90 = clamp(risk - 4, 0, 100);
-          } else {
-            risk30 = clamp(risk + 4, 0, 100);
-            risk60 = clamp(risk + 9, 0, 100);
-            risk90 = clamp(risk + 15, 0, 100);
+          var riskTechValueEl = byId("riskTechValue");
+          var riskFinancialValueEl = byId("riskFinancialValue");
+          var riskOperationalValueEl = byId("riskOperationalValue");
+          var riskScenarioValueEl = byId("riskScenarioValue");
+
+          if (riskTechValueEl) riskTechValueEl.textContent = String(risk30);
+          if (riskFinancialValueEl) riskFinancialValueEl.textContent = String(risk60);
+          if (riskOperationalValueEl) riskOperationalValueEl.textContent = String(risk90);
+          if (riskScenarioValueEl) {
+            riskScenarioValueEl.textContent =
+              name === "digital" ? "Digital Control" :
+              name === "ignore" ? "Ignore" :
+              "Stabilize";
           }
 
-          var threshold = getBoardThresholdValue();
-          var thresholdState = evaluateBoardThresholdState(risk, threshold);
-
-          riskEl.textContent = risk + " / 100";
-
-          syncRiskCompositionWidget(name, drivers, risk30, risk60, risk90, threshold, thresholdState);
-
-          var exposurePerDay = drivers.exposurePerDay;
+          var exposurePerDay = Math.round(risk * 5.5);
           var exposureValueEl = byId("exposureValue");
           if (exposureValueEl) {
             exposureValueEl.textContent = "€" + exposurePerDay;
@@ -2366,8 +1995,7 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
 
           if (typeof renderCeoRiskTrend === "function") {
             renderCeoRiskTrend(trendValues, risk);
-            bindAiCooPanel();
-            bindBoardThresholdSlider();
+        bindAiCooPanel();
           }
           riskEl.style.transition = "color .25s ease";
           if (risk < 40) {
@@ -2388,7 +2016,33 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
             }
           }
 
-          applyBoardEscalationVisual(thresholdState, risk, threshold);
+          var boardBar = byId("boardRiskBar");
+          if (boardBar) {
+            boardBar.style.width = risk + "%";
+            boardBar.style.transition = "width .28s ease";
+            boardBar.classList.remove("safe", "alert", "escalation");
+            if (risk >= 70) {
+              boardBar.classList.add("alert", "escalation");
+            } else if (risk >= 40) {
+              boardBar.classList.add("alert");
+            } else {
+              boardBar.classList.add("safe");
+            }
+          }
+
+          var driverBars = document.querySelectorAll(".risk-bar");
+          var factor = 1;
+
+          if (risk >= 70) factor = 1.15;      // Ignore
+          else if (risk >= 50) factor = 1.0;  // Stabilize
+          else factor = 0.85;                 // Digital Control
+
+          driverBars.forEach(function(bar){
+            var base = parseFloat(bar.dataset.base);
+            if(!isNaN(base)){
+              bar.style.width = (base * factor) + "%";
+            }
+          });
           if (scenarioNarrativeEl) {
             scenarioNarrativeEl.textContent = narrative;
           }
@@ -2402,32 +2056,6 @@ var scenarioRiskEl = byId("ceoModalScenarioRisk");
           if (execNarrativeTitle) {
             var copy = execNarrativeTitle.parentElement.querySelector(".exec-modal-copy");
             if (copy) copy.textContent = narrative;
-          }
-        }
-
-        function getActiveCeoScenarioName() {
-          if (btnDigital && btnDigital.classList.contains("ceo-active")) return "digital";
-          if (btnIgnore && btnIgnore.classList.contains("ceo-active")) return "ignore";
-          return "stabilize";
-        }
-
-        function bindBoardThresholdSlider() {
-          var slider = byId("boardThresholdSlider");
-          var valueEl = byId("boardThresholdValue");
-          if (!slider) return;
-
-          if (!slider.dataset.bound) {
-            slider.addEventListener("input", function() {
-              var value = parseInt(slider.value, 10);
-              if (valueEl && !isNaN(value)) valueEl.textContent = String(value);
-              renderScenario(getActiveCeoScenarioName());
-            });
-            slider.dataset.bound = "1";
-          }
-
-          var initial = parseInt(slider.value, 10);
-          if (valueEl && !isNaN(initial)) {
-            valueEl.textContent = String(initial);
           }
         }
 
@@ -2670,137 +2298,6 @@ function applyCustomRange(){
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <div class="esg-modal-backdrop" id="esgDataEntryModal" aria-hidden="true">
-    <div class="esg-modal" role="dialog" aria-modal="true" aria-labelledby="esgDataEntryTitle">
-      <div class="esg-modal-head">
-        <div>
-          <h2 class="esg-modal-title" id="esgDataEntryTitle">Executive ESG Data Entry</h2>
-          <div class="esg-modal-sub">Manual consumption entry layer for GHG / ESG inputs. This patch stores the latest record locally and feeds a lightweight executive overlay without breaking CEO / CFO / CTO engines.</div>
-        </div>
-        <button class="esg-modal-close" id="closeEsgDataEntryBtn" type="button">✕ Close</button>
-      </div>
-
-      <div class="esg-modal-body">
-        <form id="esgDataEntryForm">
-          <div class="esg-form-grid">
-            <div class="esg-section">
-              <h3>Context</h3>
-              <div class="esg-field">
-                <label for="esgFacility">Facility</label>
-                <input id="esgFacility" name="facility" type="text" placeholder="Ekoten">
-              </div>
-              <div class="esg-field">
-                <label for="esgPeriodLabel">Period</label>
-                <input id="esgPeriodLabel" name="period_label" type="text" placeholder="2026-03">
-              </div>
-            </div>
-
-            <div class="esg-section">
-              <h3>Energy</h3>
-              <div class="esg-field">
-                <label for="esgElectricityKwh">Electricity (kWh)</label>
-                <input id="esgElectricityKwh" name="electricity_kwh" type="number" min="0" step="any" placeholder="0">
-              </div>
-              <div class="esg-field">
-                <label for="esgNaturalGasM3">Natural Gas (m3)</label>
-                <input id="esgNaturalGasM3" name="natural_gas_m3" type="number" min="0" step="any" placeholder="0">
-              </div>
-              <div class="esg-field">
-                <label for="esgSteamTon">Steam (ton)</label>
-                <input id="esgSteamTon" name="steam_ton" type="number" min="0" step="any" placeholder="0">
-              </div>
-            </div>
-
-            <div class="esg-section">
-              <h3>Water</h3>
-              <div class="esg-field">
-                <label for="esgWaterM3">Water consumption (m3)</label>
-                <input id="esgWaterM3" name="water_m3" type="number" min="0" step="any" placeholder="0">
-              </div>
-            </div>
-
-            <div class="esg-section">
-              <h3>Waste</h3>
-              <div class="esg-field">
-                <label for="esgIndustrialWasteKg">Industrial waste (kg)</label>
-                <input id="esgIndustrialWasteKg" name="industrial_waste_kg" type="number" min="0" step="any" placeholder="0">
-              </div>
-              <div class="esg-field">
-                <label for="esgDomesticWasteKg">Domestic waste (kg)</label>
-                <input id="esgDomesticWasteKg" name="domestic_waste_kg" type="number" min="0" step="any" placeholder="0">
-              </div>
-            </div>
-
-            <div class="esg-section">
-              <h3>Fuel</h3>
-              <div class="esg-field">
-                <label for="esgForkliftFuelL">Forklift fuel</label>
-                <input id="esgForkliftFuelL" name="forklift_fuel_l" type="number" min="0" step="any" placeholder="0">
-              </div>
-              <div class="esg-field">
-                <label for="esgVehicleFuelL">Vehicle fuel</label>
-                <input id="esgVehicleFuelL" name="vehicle_fuel_l" type="number" min="0" step="any" placeholder="0">
-              </div>
-            </div>
-
-            <div class="esg-section">
-              <h3>Transport</h3>
-              <div class="esg-field">
-                <label for="esgRawMaterialTransportTkm">Raw material transport</label>
-                <input id="esgRawMaterialTransportTkm" name="raw_material_transport_tkm" type="number" min="0" step="any" placeholder="0">
-              </div>
-              <div class="esg-field">
-                <label for="esgProductTransportTkm">Product transport</label>
-                <input id="esgProductTransportTkm" name="product_transport_tkm" type="number" min="0" step="any" placeholder="0">
-              </div>
-            </div>
-
-            <div class="esg-section" style="grid-column:1 / -1;">
-              <h3>Evidence / Invoice Upload</h3>
-              <div class="esg-field">
-                <label for="esgInvoiceUpload">Upload invoice or utility bill</label>
-                <input id="esgInvoiceUpload" name="invoice_upload" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp">
-              </div>
-              <div id="esgInvoiceMeta" class="esg-meta">No invoice uploaded yet.</div>
-              <div style="margin-top:10px;">
-                <button class="btn" id="removeEsgInvoiceBtn" type="button">Remove Invoice</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="esg-actions">
-            <div class="esg-actions-left">
-              <button class="btn primary" id="saveEsgConsumptionBtn" type="submit">Save ESG Entry</button>
-              <button class="btn" id="resetEsgConsumptionBtn" type="button">Reset</button>
-            </div>
-            <div class="esg-actions-right">
-              <div class="esg-meta" id="esgEntryStatus">No saved ESG record yet.</div>
-            </div>
-          </div>
-        </form>
-
-        <div class="esg-summary" id="esgSummaryCards">
-          <div class="esg-summary-card">
-            <div class="k">Estimated CO₂e</div>
-            <div class="v" id="esgSummaryCo2e">0.0 t</div>
-          </div>
-          <div class="esg-summary-card">
-            <div class="k">Energy Load</div>
-            <div class="v" id="esgSummaryEnergy">0</div>
-          </div>
-          <div class="esg-summary-card">
-            <div class="k">Water + Waste</div>
-            <div class="v" id="esgSummaryOps">0</div>
-          </div>
-          <div class="esg-summary-card">
-            <div class="k">Overlay Risk</div>
-            <div class="v" id="esgSummaryRisk">0 / 100</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="exec-modal-backdrop" id="execModalBackdrop" aria-hidden="true">
     <div class="exec-modal" role="dialog" aria-modal="true" aria-labelledby="execModalTitle">
@@ -3260,387 +2757,6 @@ document.addEventListener("click", function(e) {
 </script>
 
 
-
-<script>
-(function(){
-  const ESG_ENTRY_STORAGE_KEY = "zero_executive_esg_entry_v1";
-  const ESG_EVIDENCE_STORAGE_KEY = "zero_executive_esg_evidence_v1";
-
-  function byId(id){
-    return document.getElementById(id);
-  }
-
-  function num(v){
-    const n = Number(v || 0);
-    return Number.isFinite(n) ? n : 0;
-  }
-
-  function round1(v){
-    return Math.round(v * 10) / 10;
-  }
-
-  function getBlankData(){
-    return {
-      facility: "Ekoten",
-      period_label: "",
-      electricity_kwh: 0,
-      natural_gas_m3: 0,
-      steam_ton: 0,
-      water_m3: 0,
-      industrial_waste_kg: 0,
-      domestic_waste_kg: 0,
-      forklift_fuel_l: 0,
-      vehicle_fuel_l: 0,
-      raw_material_transport_tkm: 0,
-      product_transport_tkm: 0,
-      updated_at: null
-    };
-  }
-
-  function readStoredData(){
-    try{
-      const raw = localStorage.getItem(ESG_ENTRY_STORAGE_KEY);
-      if(!raw) return getBlankData();
-      const parsed = JSON.parse(raw);
-      return Object.assign(getBlankData(), parsed || {});
-    }catch(e){
-      console.warn("ESG storage read failed:", e);
-      return getBlankData();
-    }
-  }
-
-  function writeStoredData(data){
-    localStorage.setItem(ESG_ENTRY_STORAGE_KEY, JSON.stringify(data));
-  }
-
-  function readEvidence(){
-    try{
-      const raw = localStorage.getItem(ESG_EVIDENCE_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    }catch(e){
-      console.warn("ESG evidence read failed:", e);
-      return null;
-    }
-  }
-
-  function writeEvidence(data){
-    localStorage.setItem(ESG_EVIDENCE_STORAGE_KEY, JSON.stringify(data));
-  }
-
-  function clearEvidence(){
-    localStorage.removeItem(ESG_EVIDENCE_STORAGE_KEY);
-    window.__ZERO_ESG_EVIDENCE__ = null;
-    updateEvidenceMeta(null);
-    const input = byId("esgInvoiceUpload");
-    if(input) input.value = "";
-  }
-
-  function updateEvidenceMeta(fileMeta){
-    const el = byId("esgInvoiceMeta");
-    if(!el) return;
-    if(!fileMeta){
-      el.textContent = "No invoice uploaded yet.";
-      return;
-    }
-    const kb = Math.round((fileMeta.size || 0) / 1024);
-    el.textContent = "Attached: " + (fileMeta.name || "file") + " • " + kb + " KB • " + (fileMeta.type || "unknown") + " • " + new Date(fileMeta.uploaded_at).toLocaleString();
-  }
-
-  
-function detectInvoiceHint(filename){
-
-  const name = (filename || "").toLowerCase()
-
-  const map = {
-    energy:["electric","power","elektrik"],
-    water:["water","su"],
-    gas:["gas","dogalgaz","naturalgas"]
-  }
-
-  let hint=null
-
-  Object.keys(map).forEach(type=>{
-    map[type].forEach(k=>{
-      if(name.includes(k)) hint=type
-    })
-  })
-
-  document.querySelectorAll(".esg-section").forEach(el=>{
-    el.classList.remove("esg-hint")
-  })
-
-  if(!hint) return
-
-  const sectionTitles={
-    energy:"Energy",
-    water:"Water",
-    gas:"Energy"
-  }
-
-  document.querySelectorAll(".esg-section h3").forEach(h=>{
-    if(h.textContent.trim()===sectionTitles[hint]){
-      h.closest(".esg-section").classList.add("esg-hint")
-    }
-  })
-
-}
-
-function handleEvidenceFile(file){
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(){
-      const payload = {
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        uploaded_at: new Date().toISOString(),
-        data_url: reader.result
-      };
-      writeEvidence(payload);
-      window.__ZERO_ESG_EVIDENCE__ = payload;
-      updateEvidenceMeta(payload);
-      detectInvoiceHint(payload.name);
-      console.log("ESG evidence saved:", payload.name);
-    };
-    reader.readAsDataURL(file);
-  }
-
-  function collectFormData(){
-    return {
-      facility: (byId("esgFacility")?.value || "").trim() || "Ekoten",
-      period_label: (byId("esgPeriodLabel")?.value || "").trim(),
-      electricity_kwh: num(byId("esgElectricityKwh")?.value),
-      natural_gas_m3: num(byId("esgNaturalGasM3")?.value),
-      steam_ton: num(byId("esgSteamTon")?.value),
-      water_m3: num(byId("esgWaterM3")?.value),
-      industrial_waste_kg: num(byId("esgIndustrialWasteKg")?.value),
-      domestic_waste_kg: num(byId("esgDomesticWasteKg")?.value),
-      forklift_fuel_l: num(byId("esgForkliftFuelL")?.value),
-      vehicle_fuel_l: num(byId("esgVehicleFuelL")?.value),
-      raw_material_transport_tkm: num(byId("esgRawMaterialTransportTkm")?.value),
-      product_transport_tkm: num(byId("esgProductTransportTkm")?.value),
-      updated_at: new Date().toISOString()
-    };
-  }
-
-  function fillForm(data){
-    byId("esgFacility").value = data.facility || "Ekoten";
-    byId("esgPeriodLabel").value = data.period_label || "";
-    byId("esgElectricityKwh").value = data.electricity_kwh || "";
-    byId("esgNaturalGasM3").value = data.natural_gas_m3 || "";
-    byId("esgSteamTon").value = data.steam_ton || "";
-    byId("esgWaterM3").value = data.water_m3 || "";
-    byId("esgIndustrialWasteKg").value = data.industrial_waste_kg || "";
-    byId("esgDomesticWasteKg").value = data.domestic_waste_kg || "";
-    byId("esgForkliftFuelL").value = data.forklift_fuel_l || "";
-    byId("esgVehicleFuelL").value = data.vehicle_fuel_l || "";
-    byId("esgRawMaterialTransportTkm").value = data.raw_material_transport_tkm || "";
-    byId("esgProductTransportTkm").value = data.product_transport_tkm || "";
-  }
-
-  function computeExecutiveEsgOverlay(data){
-    const co2_kg =
-      (data.electricity_kwh * 0.42) +
-      (data.natural_gas_m3 * 2.00) +
-      (data.steam_ton * 180) +
-      (data.forklift_fuel_l * 2.68) +
-      (data.vehicle_fuel_l * 2.68) +
-      (data.raw_material_transport_tkm * 0.09) +
-      (data.product_transport_tkm * 0.09);
-
-    const co2_ton = co2_kg / 1000;
-
-    const energyLoad =
-      data.electricity_kwh +
-      (data.natural_gas_m3 * 10.55) +
-      (data.steam_ton * 700);
-
-    const opsLoad =
-      data.water_m3 +
-      ((data.industrial_waste_kg + data.domestic_waste_kg) / 100);
-
-    const signalVelocity = Math.min(35, co2_ton * 1.8);
-    const financialExposure = Math.min(35, co2_ton * 1.5);
-    const operationalNoise = Math.min(30, (data.water_m3 / 8) + ((data.industrial_waste_kg + data.domestic_waste_kg) / 120));
-
-    const overlayRisk = Math.round(
-      Math.min(100, signalVelocity + financialExposure + operationalNoise)
-    );
-
-    return {
-      co2_kg: round1(co2_kg),
-      co2_ton: round1(co2_ton),
-      energy_load: Math.round(energyLoad),
-      ops_load: Math.round(opsLoad),
-      overlay_risk: overlayRisk,
-      drivers: {
-        signal_velocity: round1(signalVelocity),
-        financial_exposure: round1(financialExposure),
-        operational_noise: round1(operationalNoise)
-      }
-    };
-  }
-
-  function updateSummaryCards(overlay){
-    const co2e = byId("esgSummaryCo2e");
-    const energy = byId("esgSummaryEnergy");
-    const ops = byId("esgSummaryOps");
-    const risk = byId("esgSummaryRisk");
-
-    if(co2e) co2e.textContent = overlay.co2_ton.toLocaleString("en-US", {minimumFractionDigits:1, maximumFractionDigits:1}) + " t";
-    if(energy) energy.textContent = overlay.energy_load.toLocaleString("en-US");
-    if(ops) ops.textContent = overlay.ops_load.toLocaleString("en-US");
-    if(risk) risk.textContent = overlay.overlay_risk + " / 100";
-  }
-
-  function updateStatus(data){
-    const el = byId("esgEntryStatus");
-    if(!el) return;
-    if(data.updated_at){
-      el.textContent = "Saved: " + data.facility + (data.period_label ? " • " + data.period_label : "") + " • " + new Date(data.updated_at).toLocaleString();
-    }else{
-      el.textContent = "No saved ESG record yet.";
-    }
-  }
-
-  function applyExecutiveEsgOverlay(data, overlay){
-    window.__ZERO_ESG_ENTRY__ = data;
-    window.__ZERO_ESG_OVERLAY__ = overlay;
-
-    const alertBadge = Array.from(document.querySelectorAll(".badge")).find(function(el){
-      return /alert/i.test((el.textContent || "").trim());
-    });
-    if(alertBadge){
-      if(overlay.overlay_risk >= 70){
-        alertBadge.textContent = "ESG alert";
-      }else if(overlay.overlay_risk >= 40){
-        alertBadge.textContent = "ESG watch";
-      }else{
-        alertBadge.textContent = "ESG stable";
-      }
-    }
-
-    const heroMetric = document.querySelector(".metric .value");
-    if(heroMetric){
-      heroMetric.setAttribute("title", "ESG overlay risk: " + overlay.overlay_risk + "/100");
-    }
-  }
-
-  function openModal(){
-    const modal = byId("esgDataEntryModal");
-    if(!modal) return;
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-  }
-
-  function closeModal(){
-    const modal = byId("esgDataEntryModal");
-    if(!modal) return;
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-  }
-
-  function hydrateFromStorage(){
-    const data = readStoredData();
-    fillForm(data);
-    const overlay = computeExecutiveEsgOverlay(data);
-    updateSummaryCards(overlay);
-    updateStatus(data);
-    applyExecutiveEsgOverlay(data, overlay);
-  }
-
-  function resetForm(){
-    const data = getBlankData();
-    fillForm(data);
-    const overlay = computeExecutiveEsgOverlay(data);
-    updateSummaryCards(overlay);
-    updateStatus(data);
-    applyExecutiveEsgOverlay(data, overlay);
-    localStorage.removeItem(ESG_ENTRY_STORAGE_KEY);
-    clearEvidence();
-  }
-
-  function bind(){
-    const openBtn = byId("openEsgDataEntryBtn");
-    const closeBtn = byId("closeEsgDataEntryBtn");
-    const backdrop = byId("esgDataEntryModal");
-    const form = byId("esgDataEntryForm");
-    const resetBtn = byId("resetEsgConsumptionBtn");
-    const invoiceInput = byId("esgInvoiceUpload");
-    const removeInvoiceBtn = byId("removeEsgInvoiceBtn");
-
-    if(openBtn){
-      openBtn.addEventListener("click", openModal);
-    }
-
-    if(closeBtn){
-      closeBtn.addEventListener("click", closeModal);
-    }
-
-    if(backdrop){
-      backdrop.addEventListener("click", function(e){
-        if(e.target === backdrop) closeModal();
-      });
-    }
-
-    document.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){
-        closeModal();
-      }
-    });
-
-    if(form){
-      form.addEventListener("submit", function(e){
-        e.preventDefault();
-        const data = collectFormData();
-        const overlay = computeExecutiveEsgOverlay(data);
-        writeStoredData(data);
-        updateSummaryCards(overlay);
-        updateStatus(data);
-        applyExecutiveEsgOverlay(data, overlay);
-        closeModal();
-        console.log("ESG entry saved:", data, overlay);
-      });
-
-      form.addEventListener("input", function(){
-        const previewData = collectFormData();
-        const overlay = computeExecutiveEsgOverlay(previewData);
-        updateSummaryCards(overlay);
-      });
-    }
-
-    if(resetBtn){
-      resetBtn.addEventListener("click", function(){
-        resetForm();
-      });
-    }
-
-    if(invoiceInput){
-      invoiceInput.addEventListener("change", function(e){
-        const file = e.target.files && e.target.files[0];
-        if(file) handleEvidenceFile(file);
-      });
-    }
-
-    if(removeInvoiceBtn){
-      removeInvoiceBtn.addEventListener("click", function(){
-        clearEvidence();
-      });
-    }
-
-    hydrateFromStorage();
-    const savedEvidence = readEvidence();
-    window.__ZERO_ESG_EVIDENCE__ = savedEvidence;
-    updateEvidenceMeta(savedEvidence);
-  }
-
-  if(document.readyState === "loading"){
-    document.addEventListener("DOMContentLoaded", bind);
-  }else{
-    bind();
-  }
-})();
-</script>
 
 <script>
 

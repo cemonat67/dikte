@@ -1,0 +1,1806 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Zero@Production — Control Center (Mock UI)</title>
+  <style>
+    :root{
+      --bg0:#071126;
+      --bg1:#0b1a36;
+      --card:#0b1633cc;
+      --card2:#0b1633a8;
+      --stroke:#1b2c55;
+      --text:#eaf0ff;
+      --muted:#aab6d6;
+      --muted2:#7f8bb0;
+
+      --green:#2ee59d;
+      --orange:#f9ba00;
+      --red:#ff4d6d;
+      --blue:#6aa9ff;
+      --chip:#0f2550;
+      --shadow: 0 20px 60px rgba(0,0,0,.35);
+      --r:18px;
+      --r2:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 80% 20%, rgba(46,229,157,.18), transparent 55%),
+        radial-gradient(900px 520px at 15% 40%, rgba(106,169,255,.14), transparent 55%),
+        radial-gradient(900px 520px at 70% 90%, rgba(249,186,0,.10), transparent 60%),
+        linear-gradient(180deg, var(--bg0), #050b18 70%);
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 60px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--stroke);border-radius:var(--r);
+      background:linear-gradient(180deg, rgba(11,26,54,.85), rgba(7,17,38,.75));
+      box-shadow: var(--shadow);
+      position:sticky;top:14px;z-index:20;backdrop-filter: blur(10px);
+    }
+    .brand{display:flex;align-items:center;gap:12px;min-width:260px}
+    .brand-logo{
+      width:126px;
+      height:auto;
+      display:block;
+      object-fit:contain;
+      border-radius:0;
+      box-shadow:none;
+      background:transparent;
+    }
+    .brand-title h1{
+      font-size:15px;
+      font-weight:500;
+      letter-spacing:.2px;
+      margin:0;
+      line-height:1.05;
+    }
+    .brand-at{
+      color:var(--text);
+      font-weight:400;
+    }
+    .brand .sub{
+      font-size:11px;
+      color:var(--muted2);
+      margin-top:4px;
+      font-weight:400;
+    }
+
+    
+    .brand h1{font-size:16px;margin:0;letter-spacing:.2px}
+    .brand .sub{font-size:12px;color:var(--muted2);margin-top:2px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+    .chip{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:7px 10px;border-radius:999px;
+      background:rgba(15,37,80,.65);border:1px solid rgba(27,44,85,.95);
+      color:var(--muted);font-size:12px;white-space:nowrap;
+    }
+    .dot{width:9px;height:9px;border-radius:50%;}
+    .dot.green{background:var(--green);box-shadow:0 0 0 4px rgba(46,229,157,.12)}
+    .dot.red{background:var(--red);box-shadow:0 0 0 4px rgba(255,77,109,.12)}
+    .actions{display:flex;gap:10px;align-items:center}
+    .btn{
+      border:1px solid rgba(27,44,85,.95);
+      background:rgba(9,18,40,.55);
+      color:var(--text);
+      padding:9px 12px;border-radius:12px;
+      font-weight:500;font-size:12px;cursor:pointer;
+    }
+    .btn.primary{
+      background:rgba(15,37,80,.55);
+      border-color:rgba(27,44,85,.95);
+      color:var(--text);
+    }
+    .grid{display:grid;gap:14px;margin-top:14px}
+    .grid.exec{grid-template-columns: repeat(3, 1fr)}
+    .grid.two{grid-template-columns: 1.35fr .65fr}
+    .grid.ops{grid-template-columns: repeat(4, 1fr)}
+    @media (max-width: 980px){
+      .grid.exec{grid-template-columns:1fr}
+      .grid.two{grid-template-columns:1fr}
+      .grid.ops{grid-template-columns:1fr 1fr}
+      .brand{min-width:auto}
+    }
+    @media (max-width: 620px){
+      .grid.ops{grid-template-columns:1fr}
+      .topbar{flex-wrap:wrap}
+    }
+    .card{
+      border:1px solid rgba(27,44,85,.92);
+      background: linear-gradient(180deg, rgba(11,22,51,.72), rgba(6,12,28,.62));
+      border-radius:var(--r);
+      box-shadow: 0 18px 50px rgba(0,0,0,.28);
+      padding:14px;
+    }
+    .card h2{margin:0 0 8px 0;font-size:14px}
+    .muted{color:var(--muted);font-size:12px}
+    .kpi{display:flex;align-items:baseline;gap:10px;margin-top:10px}
+    .kpi .num{font-size:28px;font-weight:300}
+    .kpi .unit{font-size:12px;color:var(--muted)}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:500;
+      border:1px solid rgba(27,44,85,.92);
+      background:rgba(15,37,80,.55);
+    }
+    .badge.ok{border-color: rgba(46,229,157,.35); background: rgba(46,229,157,.10)}
+    .badge.monitor{border-color: rgba(249,186,0,.40); background: rgba(249,186,0,.10)}
+    .badge.critical{border-color: rgba(255,77,109,.40); background: rgba(255,77,109,.10)}
+    .split{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+    .table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border-radius:14px;border:1px solid rgba(27,44,85,.75);background:rgba(6,12,28,.35)}
+    .table th,.table td{padding:10px 10px;font-size:12px;border-bottom:1px solid rgba(27,44,85,.55);color:var(--muted);text-align:left;white-space:nowrap}
+    .table th{color:rgba(234,240,255,.9);font-weight:500;background:rgba(15,37,80,.35)}
+    .table tr:last-child td{border-bottom:none}
+    .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:500;border:1px solid rgba(27,44,85,.75)}
+    .pill.ok{background:rgba(46,229,157,.10);border-color:rgba(46,229,157,.35)}
+    .pill.action{background:rgba(255,77,109,.10);border-color:rgba(255,77,109,.40)}
+    .pill.monitor{background:rgba(249,186,0,.10);border-color:rgba(249,186,0,.40)}
+    .mini{height:96px;border-radius:14px;border:1px dashed rgba(27,44,85,.65);background:rgba(6,12,28,.28);display:grid;place-items:center;color:rgba(170,182,214,.65);font-size:12px}
+      canvas{display:block;width:100% !important;height:140px !important;}
+    #cfoSpark{height:70px !important;}
+    .exec-persona-card{transition:transform .14s ease, box-shadow .14s ease, border-color .14s ease;}
+    .exec-persona-card:hover{transform:translateY(-2px); box-shadow:0 20px 44px rgba(0,0,0,.32); border-color:rgba(249,186,0,.42);}
+    .exec-modal-backdrop{
+      position:fixed; inset:0; z-index:10000;
+      background:rgba(3,8,20,.62); backdrop-filter:blur(6px);
+      display:none; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .exec-modal-backdrop.open{display:flex;}
+    .exec-modal{
+      width:min(1280px, 98vw); max-height:94vh; overflow:auto;
+      border:1px solid rgba(27,44,85,.92);
+      background:linear-gradient(180deg, rgba(11,22,51,.985), rgba(6,12,28,.975));
+      border-radius:22px; box-shadow:0 28px 90px rgba(0,0,0,.46);
+      padding:28px 28px 24px;
+    }
+    .exec-modal-head{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:14px;
+      margin-bottom:14px;
+    }
+    .exec-modal-title{margin:0; font-size:34px; line-height:1.05; font-weight:500; letter-spacing:-.02em;}
+    .exec-modal-sub{margin-top:8px; color:var(--muted); font-size:17px; font-weight:300; line-height:1.35;}
+    .exec-modal-close{
+      border:1px solid rgba(27,44,85,.95);
+      background:rgba(9,18,40,.55);
+      color:var(--text); padding:12px 14px; border-radius:14px;
+      font-weight:600; font-size:16px; cursor:pointer;
+    }
+    .exec-modal-grid{display:grid; grid-template-columns:1.08fr .92fr; gap:18px; margin-top:14px;}
+    .exec-modal-card{
+      border:1px solid rgba(27,44,85,.85);
+      background:rgba(15,37,80,.20);
+      border-radius:18px; padding:18px;
+    }
+    .exec-modal-card h3{margin:0 0 10px 0; font-size:20px; font-weight:500; letter-spacing:-.01em;}
+    .exec-modal-kpi{font-size:54px; font-weight:300; margin:8px 0 4px 0; letter-spacing:-.03em; line-height:1;}
+    .exec-modal-list{margin:0; padding-left:20px; color:var(--muted); font-size:20px; line-height:1.55; font-weight:300;}
+    .exec-modal-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;}
+    .exec-modal-copy{color:var(--muted); font-size:18px; font-weight:300; line-height:1.5;}
+    .exec-fintech-hero{
+      background:
+        radial-gradient(500px 220px at 80% 20%, rgba(249,186,0,.10), transparent 60%),
+        linear-gradient(180deg, rgba(12,27,62,.92), rgba(8,19,44,.90));
+      border-color: rgba(58,87,146,.42);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .exec-fintech-panel{
+      background: linear-gradient(180deg, rgba(10,22,50,.86), rgba(8,18,40,.78));
+      border-color: rgba(47,73,128,.42);
+    }
+    .exec-summary-strip{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:16px;
+    }
+    .exec-summary-pill{
+      border:1px solid rgba(47,73,128,.42);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px 14px;
+    }
+    .exec-summary-pill .label{
+      color:var(--muted);
+      font-size:13px;
+      font-weight:500;
+      margin-bottom:6px;
+      letter-spacing:.01em;
+    }
+    .exec-summary-pill .value{
+      color:var(--text);
+      font-size:26px;
+      font-weight:400;
+      letter-spacing:-.02em;
+      line-height:1.05;
+    }
+    .exec-ledger-wrap{
+      display:grid;
+      gap:8px;
+      margin-top:14px;
+    }
+    .exec-ledger-head,
+    .exec-ledger-row{
+      display:grid;
+      grid-template-columns:1.1fr 1fr .8fr 1.2fr;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:12px;
+    }
+    .exec-ledger-head{
+      background:rgba(255,255,255,.04);
+      color:#eaf0ff;
+      font-size:14px;
+      font-weight:600;
+      border:1px solid rgba(47,73,128,.34);
+    }
+    .exec-ledger-row{
+      background:rgba(255,255,255,.025);
+      color:#cfd8ee;
+      font-size:16px;
+      font-weight:300;
+      border:1px solid rgba(47,73,128,.22);
+    }
+    .exec-ledger-row strong{
+      font-weight:500;
+      color:#fff;
+    }
+    .cfo-kpi-bar{
+      display:flex;
+      gap:16px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .cfo-kpi{
+      flex:1 1 180px;
+      background:rgba(255,255,255,0.04);
+      border-radius:14px;
+      padding:12px 14px;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+    .kpi-label{
+      font-size:12px;
+      opacity:.72;
+      font-weight:500;
+      letter-spacing:.01em;
+    }
+    .kpi-value{
+      font-size:24px;
+      font-weight:500;
+      margin-top:4px;
+      letter-spacing:-.02em;
+      line-height:1.05;
+      color:#fff;
+    }
+    .shock-up{color:#f9ba00;}
+    @media (max-width: 980px){
+      .exec-summary-strip{grid-template-columns:1fr;}
+    }
+    .exec-modal-chart-wrap{
+      margin-top:10px; border:1px solid rgba(27,44,85,.72);
+      background:rgba(10,20,45,.30); border-radius:16px; padding:14px;
+    }
+    .exec-modal-chart-title{font-size:16px; font-weight:500; margin:0 0 10px 0; color:var(--text);}
+    #execModalChart{display:block; width:100% !important; height:260px !important;}
+    @media (max-width: 820px){
+      .exec-modal-grid{grid-template-columns:1fr;}
+    }
+
+
+
+
+/* === PHASE1_UX_POLISH_START === */
+#ceoModalScenarioStabilize,
+#ceoModalScenarioDigital,
+#ceoModalScenarioIgnore{
+  position:relative;
+  transition:
+    transform .18s ease,
+    box-shadow .22s ease,
+    background-color .22s ease,
+    color .22s ease,
+    border-color .22s ease,
+    opacity .22s ease;
+  will-change: transform, box-shadow;
+}
+
+#ceoModalScenarioStabilize:hover,
+#ceoModalScenarioDigital:hover,
+#ceoModalScenarioIgnore:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 24px rgba(2,21,78,.14);
+}
+
+#ceoModalScenarioStabilize:active,
+#ceoModalScenarioDigital:active,
+#ceoModalScenarioIgnore:active{
+  transform:translateY(0);
+}
+
+#ceoModalScenarioResult{
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease,
+    background-color .28s ease,
+    border-color .28s ease,
+    opacity .28s ease;
+}
+
+#ceoModalScenarioResult.phase1-result-animate{
+  transform:translateY(-1px) scale(1.01);
+  box-shadow:0 14px 34px rgba(2,21,78,.12);
+}
+
+.phase1-risk-pulse{
+  animation:phase1RiskPulse .58s ease;
+}
+
+@keyframes phase1RiskPulse{
+  0%   { transform:scale(1); filter:brightness(1); }
+  35%  { transform:scale(1.08); filter:brightness(1.08); }
+  100% { transform:scale(1); filter:brightness(1); }
+}
+/* === PHASE1_UX_POLISH_END === */
+
+</style>
+
+<style id="ceo-phase1-ux-polish-style">
+#ceoModalScenarioStabilize,
+#ceoModalScenarioDigital,
+#ceoModalScenarioIgnore{
+  position: relative;
+  transition: transform .18s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease, color .22s ease;
+  will-change: transform, box-shadow;
+}
+
+#ceoModalScenarioStabilize:hover,
+#ceoModalScenarioDigital:hover,
+#ceoModalScenarioIgnore:hover{
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(249,186,0,.98) !important;
+  box-shadow:
+    0 0 0 2px rgba(249,186,0,.24),
+    0 12px 28px rgba(249,186,0,.20),
+    0 0 20px rgba(249,186,0,.14);
+}
+
+#ceoModalScenarioResult{
+  position: relative;
+  overflow: hidden;
+  transition: transform .34s ease, box-shadow .34s ease, border-color .34s ease, opacity .34s ease;
+}
+
+#ceoModalScenarioResult.ceo-result-animate{
+  transform: translateY(4px) scale(.99);
+  border-color: rgba(249,186,0,.50) !important;
+  box-shadow:
+    0 0 0 1px rgba(249,186,0,.18) inset,
+    0 18px 40px rgba(249,186,0,.12);
+}
+
+#ceoModalScenarioResult.ceo-result-animate::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    rgba(249,186,0,0) 0%,
+    rgba(249,186,0,.08) 35%,
+    rgba(255,216,107,.18) 50%,
+    rgba(249,186,0,.08) 65%,
+    rgba(249,186,0,0) 100%);
+  animation: ceoResultSweep .55s ease;
+  pointer-events: none;
+}
+
+@keyframes ceoResultSweep{
+  0%   { transform: translateX(-55%); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { transform: translateX(55%); opacity: 0; }
+}
+
+#ceoModalScenarioRisk{
+  display: inline-block;
+}
+
+#ceoModalScenarioRiskValue{
+  display: inline-block;
+  min-width: 108px;
+  color: #ffd86b;
+  font-weight: 900;
+  transform-origin: center;
+}
+
+#ceoModalScenarioRiskValue.ceo-risk-pulse{
+  animation: ceoRiskValuePulse 1.05s cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes ceoRiskValuePulse{
+  0%{
+    transform: scale(1);
+    color:#ffd86b;
+    text-shadow: 0 0 0 rgba(249,186,0,0);
+    filter: brightness(1);
+  }
+  22%{
+    transform: scale(1.22);
+    color:#fff3a6;
+    text-shadow:
+      0 0 10px rgba(249,186,0,.32),
+      0 0 22px rgba(249,186,0,.28),
+      0 0 38px rgba(249,186,0,.18);
+    filter: brightness(1.12);
+  }
+  55%{
+    transform: scale(1.10);
+    color:#ffe082;
+    text-shadow:
+      0 0 8px rgba(249,186,0,.22),
+      0 0 16px rgba(249,186,0,.14);
+    filter: brightness(1.06);
+  }
+  100%{
+    transform: scale(1);
+    color:#ffd86b;
+    text-shadow: 0 0 0 rgba(249,186,0,0);
+    filter: brightness(1);
+  }
+}
+</style>
+
+
+<style>
+#cfoImpactSimulator button.active {
+background:#f9ba00;
+color:#02154e;
+font-weight:800;
+border:none;
+box-shadow:0 6px 14px rgba(249,186,0,0.35);
+}
+</style>
+
+
+<style id="ceo-modal-scenario-highlight-style">
+#ceoModalScenarioStabilize,
+#ceoModalScenarioDigital,
+#ceoModalScenarioIgnore{
+  position: relative;
+  transition: all .18s ease;
+}
+
+#ceoModalScenarioStabilize.ceo-active,
+#ceoModalScenarioDigital.ceo-active,
+#ceoModalScenarioIgnore.ceo-active{
+  background: linear-gradient(135deg, #f9ba00, #ffd86b) !important;
+  color: #02154e !important;
+  border: 1px solid rgba(249,186,0,.98) !important;
+  box-shadow: 0 0 0 2px rgba(249,186,0,.28), 0 10px 24px rgba(249,186,0,.24) !important;
+  transform: translateY(-1px) !important;
+  font-weight: 800 !important;
+}
+
+#ceoModalScenarioStabilize.ceo-active::after,
+#ceoModalScenarioDigital.ceo-active::after,
+#ceoModalScenarioIgnore.ceo-active::after{
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -6px;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #f9ba00, #ffd86b);
+}
+</style>
+
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="assets/img/plogo.svg" class="brand-logo" alt="Zero@Production logo">
+        <div class="brand-title">
+          <h1>Zero<span class="brand-at">@</span>Production</h1>
+          <div class="sub" id="execSubtitle">Sustainable decision support system for production stage</div>
+        </div>
+      </div>
+      <div class="chips">
+        <span class="chip"><span class="dot green"></span><b>Online</b></span>
+        <span class="chip">Facility: <b id="execFacility">Ekoten</b></span>
+        <span class="chip">Module: <b id="execModule">Executive</b></span>
+        <span class="chip">Lens: <b id="execLens">overview</b></span>
+        <span class="chip">Risk: <b id="execRisk">MONITOR</b></span>
+      </div>
+      <div class="actions">
+        <a class="btn" id="btnBackDashboard" href="index.html">← Back</a>
+        <a class="btn" id="btnGoFabric" href="fabric-dpp.html">Fabric</a>
+        <a class="btn primary" id="btnGoFinishing" href="finishing-dpp.html">Finishing</a>
+      </div>
+    </div>
+
+    <div class="grid exec">
+      <div class="card exec-persona-card" id="execCardCEO" data-role="ceo" style="cursor:pointer;">
+        <div class="split"><div><h2>CEO</h2><div class="muted">Sustainability posture</div></div><span class="badge monitor">MONITOR</span></div>
+        <div class="kpi"><div class="num">Wastewater</div></div>
+        <div class="muted">Decision status: <b>LIVE</b></div>
+      </div>
+      <div class="card exec-persona-card" id="execCardCFO" data-role="cfo" style="cursor:pointer;">
+        <div class="split"><div><h2>CFO</h2><div class="muted">Financial exposure</div></div><span class="badge">€ / Year</span></div>
+        <div class="kpi"><div class="num" id="cfoExposureValue">€ 477,440</div><div class="unit">estimated impact</div></div>
+        <div class="muted">Today: <b>€ 1,800/day</b></div>
+        <div style="margin-top:10px"><canvas id="cfoSpark" height="70"></canvas></div>
+      </div>
+      <div class="card exec-persona-card" id="execCardCTO" data-role="cto" style="cursor:pointer;">
+        <div class="split"><div><h2>CTO</h2><div class="muted">System health</div></div><span class="badge critical">CRITICAL</span></div>
+        <div class="kpi"><div class="num">API / Views</div><div class="unit">status</div></div>
+        <div class="muted">Last check: <b id="t"></b></div>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="card">
+        <div class="split"><div><h2>Executive Alerts</h2><div class="muted">Mock table</div></div><span class="badge">1 alert</span></div>
+        <div style="margin-top:10px; overflow:auto;">
+          <table class="table">
+            <thead><tr><th>Facility</th><th>Risk Today (€)</th><th>Trend</th><th>Approval</th><th>Badge</th><th>Alert</th><th>Reason</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="color:rgba(234,240,255,.95);font-weight:500;">Ekoten</td>
+                <td>€ 1,800</td><td>FLAT</td><td>APPROVED</td><td>MONITOR</td>
+                <td><span class="pill action">ACTION</span></td><td>RISK_ABOVE_THRESHOLD</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="split"><div><h2>Decision Panel</h2><div class="muted">Mock actions</div></div><span class="badge monitor">PENDING</span></div>
+        <div class="muted" style="margin-top:10px">Approve / Reject / Escalate (next step: wire Supabase)</div>
+      </div>
+    </div>
+
+    <div style="margin:18px 2px 10px;font-weight:900">Operations Layer</div>
+    <div class="grid ops">
+      <div class="card"><div class="split"><div><h2>Water</h2><div class="muted">m³/ton</div></div><span class="pill monitor">MONITOR</span></div><canvas id="waterChart" height="140"></canvas></div>
+      <div class="card"><div class="split"><div><h2>Energy</h2><div class="muted">kWh/batch</div></div><span class="pill ok">OK</span></div><canvas id="energyChart" height="140"></canvas></div>
+      <div class="card"><div class="split"><div><h2>CO₂</h2><div class="muted">tCO₂</div></div><span class="pill ok">OK</span></div><canvas id="co2Chart" height="140"></canvas></div>
+      <div class="card"><div class="split"><div><h2>Wastewater</h2><div class="muted">risk</div></div><span class="pill action">ACTION</span></div><canvas id="wwChart" height="140"></canvas></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("t").textContent = new Date().toLocaleString();
+
+    const chartText = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim() || '#aab6d6';
+    const chartGrid = 'rgba(255,255,255,0.08)';
+    const chartBorder = 'rgba(255,255,255,0.28)';
+
+    function baseOpts(){
+      return {
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{
+          x:{ ticks:{ color:chartText, maxTicksLimit:6 }, grid:{ color:chartGrid } },
+          y:{ ticks:{ color:chartText, maxTicksLimit:5 }, grid:{ color:chartGrid } }
+        }
+      };
+    }
+
+    setTimeout(() => {
+    new Chart(document.getElementById('cfoSpark'), {
+      type:'line',
+      data:{
+        labels:['D1','D2','D3','D4','D5','D6','D7'],
+        datasets:[{
+          data:[1200,1400,1600,1500,1700,1650,1800],
+          borderColor:'#f9ba00',
+          backgroundColor:'rgba(249,186,0,.16)',
+          fill:true,
+          tension:.35,
+          pointRadius:0,
+          borderWidth:2
+        }]
+      },
+      options:{
+        responsive:true,
+        maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{
+          x:{ display:false, grid:{ display:false } },
+          y:{ display:false, grid:{ display:false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('waterChart'), {
+      type:'bar',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
+        datasets:[{
+          data:[18,17,19,21,20,18],
+          backgroundColor:'rgba(106,169,255,.55)',
+          borderColor:chartBorder,
+          borderWidth:1
+        }]
+      },
+      options: baseOpts()
+    });
+
+    new Chart(document.getElementById('energyChart'), {
+      type:'line',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
+        datasets:[{
+          data:[420,435,428,440,452,446],
+          borderColor:'#2ee59d',
+          backgroundColor:'rgba(46,229,157,.12)',
+          fill:true,
+          tension:.35,
+          pointRadius:2,
+          borderWidth:2
+        }]
+      },
+      options: baseOpts()
+    });
+
+    new Chart(document.getElementById('co2Chart'), {
+      type:'line',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
+        datasets:[{
+          data:[12.2,12.5,12.1,12.8,13.0,12.7],
+          borderColor:'#6aa9ff',
+          backgroundColor:'rgba(106,169,255,.12)',
+          fill:true,
+          tension:.35,
+          pointRadius:2,
+          borderWidth:2
+        }]
+      },
+      options: baseOpts()
+    });
+
+    new Chart(document.getElementById('wwChart'), {
+      type:'line',
+      data:{
+        labels:['Mon','Tue','Wed','Thu','Fri','Sat'],
+        datasets:[{
+          data:[42,46,51,48,55,62],
+          borderColor:'#ff4d6d',
+          backgroundColor:'rgba(255,77,109,.12)',
+          fill:true,
+          tension:.35,
+          pointRadius:2,
+          borderWidth:2
+        }]
+      },
+      options: baseOpts()
+    });
+    }, 100);
+  </script>
+
+  <script>
+    (function () {
+      const up = new URLSearchParams(window.location.search);
+
+      const moduleName = (up.get("module") || "executive").toLowerCase();
+      const facility = up.get("facility") || "Ekoten";
+      const line = up.get("line") || "";
+      const lens = (up.get("lens") || "overview").toLowerCase();
+      const risk = (up.get("risk") || "MONITOR").toUpperCase();
+
+      const subtitleMap = {
+        fabric: "Executive decision layer for fabric module performance, cost and operational signals",
+        finishing: "Executive decision layer for finishing module quality, cost and risk posture",
+        executive: "Sustainable decision support system for production stage"
+      };
+
+      const prettyModule = moduleName.charAt(0).toUpperCase() + moduleName.slice(1);
+      const subtitle = subtitleMap[moduleName] || "Executive decision layer for production module signals";
+
+      const byId = (id) => document.getElementById(id);
+
+      if (byId("execFacility")) byId("execFacility").textContent = facility;
+      if (byId("execModule")) byId("execModule").textContent = prettyModule;
+      if (byId("execLens")) byId("execLens").textContent = lens;
+      if (byId("execRisk")) byId("execRisk").textContent = risk;
+      if (byId("execSubtitle")) byId("execSubtitle").textContent = subtitle;
+
+      if (line) {
+        const chips = document.querySelector(".chips");
+        if (chips && !byId("execLine")) {
+          const span = document.createElement("span");
+          span.className = "chip";
+          span.innerHTML = 'Line: <b id="execLine"></b>';
+          chips.insertBefore(span, byId("execRisk").closest(".chip"));
+          byId("execLine").textContent = line;
+        }
+      }
+
+      const backBtn = byId("btnBackDashboard");
+      const fabricBtn = byId("btnGoFabric");
+      const finishingBtn = byId("btnGoFinishing");
+
+      if (backBtn) {
+        backBtn.setAttribute("href", "index.html");
+      }
+
+      if (fabricBtn) {
+        fabricBtn.setAttribute("href", "fabric-dpp.html?facility=" + encodeURIComponent(facility) + "&line=" + encodeURIComponent(line || "LINE-1"));
+      }
+
+      if (finishingBtn) {
+        finishingBtn.setAttribute("href", "finishing-dpp.html?facility=" + encodeURIComponent(facility) + "&lens=" + encodeURIComponent(lens || "overview"));
+      }
+
+      if (moduleName === "fabric" && fabricBtn) {
+        fabricBtn.classList.add("primary");
+        if (finishingBtn) finishingBtn.classList.remove("primary");
+      }
+
+      if (moduleName === "finishing" && finishingBtn) {
+        finishingBtn.classList.add("primary");
+        if (fabricBtn) fabricBtn.classList.remove("primary");
+      }
+
+      const openModuleHref =
+        moduleName === "fabric"
+          ? "fabric-dpp.html?facility=" + encodeURIComponent(facility) + "&line=" + encodeURIComponent(line || "LINE-1")
+          : "finishing-dpp.html?facility=" + encodeURIComponent(facility) + "&lens=" + encodeURIComponent(lens || "overview");
+
+
+      function buildModal(role) {
+        const roleMap = {
+          ceo: {
+            title: "CEO Strategic Layer",
+            sub: prettyModule + " module — enterprise risk visibility and board decision posture",
+            html: `
+              <div class="exec-modal-grid">
+                <div class="exec-modal-card">
+                  <h3>Strategic Risk Index</h3>
+                  <div class="exec-modal-kpi" id="ceoModalStrategicRiskValue">67 / 100</div>
+                  <div class="exec-modal-copy" id="ceoModalStrategicRiskTrend">Trend: <b>Rising</b> — operational signals are beginning to translate into enterprise-level risk exposure.</div>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>Enterprise Signal Map</h3>
+                  <ul class="exec-modal-list">
+                    <li>Margin compression: <b>HIGH</b></li>
+                    <li>Energy exposure: <b>MONITOR</b></li>
+                    <li>Delivery volatility: <b>MONITOR</b></li>
+                    <li>Quality escalation: <b>LOW</b></li>
+                  </ul>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>Board Scenario Simulator</h3>
+
+                  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                    <button class="btn" id="ceoModalScenarioStabilize">Stabilize</button>
+                    <button class="btn" id="ceoModalScenarioDigital">Digital Control</button>
+                    <button class="btn" id="ceoModalScenarioIgnore">Ignore</button>
+                  </div>
+
+                  <div style="margin-top:12px;font-size:13px;color:#aab4c7;">
+                    Simulate board response scenarios and observe risk shift.
+                  </div>
+
+                  <div id="ceoModalScenarioResult" style="margin-top:14px;padding:12px 14px;border-radius:10px;background:rgba(249,186,0,0.08);border:1px solid rgba(249,186,0,0.28);">
+                    <div style="font-size:12px;color:#f9ba00;font-weight:700;margin-bottom:6px;">Scenario Result</div>
+                    <div id="ceoModalScenarioRisk" style="font-size:24px;font-weight:800;color:#fff;">Projected Risk: <span id="ceoModalScenarioRiskValue">62 / 100</span></div>
+                    <div id="ceoModalScenarioNarrative" style="margin-top:6px;font-size:13px;line-height:1.45;color:#dbe3f0;">
+                      Current board posture keeps the enterprise in monitor mode.
+                    </div>
+                  </div>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>Executive Narrative</h3>
+                  <div class="exec-modal-copy">Operational volatility is beginning to translate into structural margin pressure. Without visible intervention, the current signal pattern suggests a rising enterprise risk trajectory.</div>
+                  <div class="exec-modal-actions" style="margin-top:18px;">
+                    <a class="btn" href="index.html">Back to Dashboard</a>
+                    <a class="btn primary" href="${openModuleHref}">Open Module</a>
+                  </div>
+                </div>
+              </div>`
+          },
+          cfo: {
+            title: "CFO Detailed PP",
+            sub: prettyModule + " module — exposure, hidden cost and margin protection",
+            html: `
+              <div class="exec-modal-grid">
+                <div class="exec-modal-card exec-fintech-hero">
+                  <h3>Financial Exposure</h3>
+                  <div class="exec-modal-kpi" id="financialExposureValue">€ 477,440</div>
+                  <div class="exec-modal-copy">Estimated annual exposure driven by inefficiency, delay, or quality loss signals.</div>
+                  <div style="margin-top:12px;margin-bottom:14px;">
+                    <button id="cfoDecisionLayerBtn"
+                      style="background:#f9ba00;color:#02154e;border:none;border-radius:8px;padding:6px 10px;font-weight:700;font-size:12px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+                      CFO Decision Layer
+                    </button>
+
+                  <div id="cfoDecisionPanel"
+                       style="display:none;margin-top:10px;padding:12px 14px;
+                       background:rgba(249,186,0,0.08);
+                       border:1px solid rgba(249,186,0,0.35);
+                       border-radius:10px;
+                       font-size:13px;line-height:1.4;color:#e6edf6;">
+
+                    <div style="font-weight:700;margin-bottom:6px;color:#f9ba00;">
+                      CFO Decision Insight
+                    </div>
+
+                    <ul style="margin:0;padding-left:16px;">
+                      <li>Margin leakage trend active</li>
+                      <li>Escalation timing should be tightened</li>
+                      <li>Weekly exposure review recommended</li>
+                    </ul>
+
+                  <div id="cfoImpactSimulator"
+                       style="margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size:12px;color:#9fb3c8;margin-bottom:6px;">
+                      Impact Simulator
+                    </div>
+
+                    <div style="display:flex;gap:8px;margin-bottom:8px;">
+                      <button data-impact-rate="0.05"
+                        style="background:#02154e;color:#fff;border:1px solid #3a4c63;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;">
+                        5%
+                      </button>
+
+                      <button data-impact-rate="0.10"
+                        style="background:#02154e;color:#fff;border:1px solid #3a4c63;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;">
+                        10%
+                      </button>
+
+                      <button data-impact-rate="0.20"
+                        style="background:#02154e;color:#fff;border:1px solid #3a4c63;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;">
+                        20%
+                      </button>
+                    </div>
+
+                    <div id="cfoImpactResult" style="font-size:13px;color:#f9ba00;font-weight:700;"></div>
+                  </div>
+
+
+                  </div>
+
+                  </div>
+                  <div class="exec-summary-strip">
+                    <div class="exec-summary-pill">
+                      <div class="label">Annualized</div>
+                      <div class="value">€ 477k</div>
+                    </div>
+                    <div class="exec-summary-pill">
+                      <div class="label">30D Estimate</div>
+                      <div class="value">€ 39.2k</div>
+                    </div>
+                    <div class="exec-summary-pill">
+                      <div class="label">Trend</div>
+                      <div class="value">Rising</div>
+                    </div>
+                  </div>
+
+                  <div class="cfo-kpi-bar">
+                    <div class="cfo-kpi">
+                      <div class="kpi-label">Margin Impact</div>
+                      <div class="kpi-value">-0.8%</div>
+                    </div>
+                    <div class="cfo-kpi">
+                      <div class="kpi-label">Risk Velocity</div>
+                      <div class="kpi-value">+€220/day</div>
+                    </div>
+                    <div class="cfo-kpi">
+                      <div class="kpi-label">Shock Index</div>
+                      <div class="kpi-value shock-up">▲18%</div>
+                    </div>
+                  </div>
+
+                  <ul class="exec-modal-list" style="margin-top:18px;">
+                    <li>Hidden cost is behaving like margin leakage, not isolated incident cost.</li>
+                    <li>${prettyModule} should be treated as a controllable financial pocket.</li>
+                    <li>Selected range analysis should guide escalation timing.</li>
+                  </ul>
+                </div>
+
+                <div class="exec-modal-card exec-fintech-panel">
+                  <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">
+                    <h3 style="margin:0;">Period View</h3>
+                    <select id="cfoPeriodSelect" style="background:rgba(9,18,40,.65);color:#eaf0ff;border:1px solid rgba(27,44,85,.95);border-radius:12px;padding:10px 12px;font-size:16px;font-weight:500;">
+                      <option value="today">Today</option>
+                      <option value="yesterday">Yesterday</option>
+                      <option value="last7" selected>Last 7 Days</option>
+                      <option value="last30">Last 30 Days</option>
+                      <option value="custom">Custom Range</option>
+                    </select>
+
+                    <div id="cfoCustomRange" style="display:none;gap:8px;align-items:center;flex-wrap:wrap;">
+                      <input type="date" id="cfoFromDate" style="background:#08142b;border:1px solid #1b2c55;color:#eaf0ff;padding:8px;border-radius:8px;">
+                      <input type="date" id="cfoToDate" style="background:#08142b;border:1px solid #1b2c55;color:#eaf0ff;padding:8px;border-radius:8px;">
+                      <button id="cfoApplyRange" class="btn primary" style="padding:8px 14px;">Apply</button>
+                    </div>
+                  </div>
+
+                  <div class="exec-modal-kpi" id="cfoRangeValue">€ 12,600</div>
+                  <div class="exec-modal-copy" id="cfoRangeLabel">Selected range total exposure</div>
+
+                  <div class="exec-summary-strip">
+                    <div class="exec-summary-pill">
+                      <div class="label">Average</div>
+                      <div class="value" id="cfoAvgValue">€ 1,800</div>
+                    </div>
+                    <div class="exec-summary-pill">
+                      <div class="label">Peak</div>
+                      <div class="value" id="cfoPeakValue">€ 2,150</div>
+                    </div>
+                    <div class="exec-summary-pill">
+                      <div class="label">Alert Days</div>
+                      <div class="value" id="cfoAlertDays">4</div>
+                    </div>
+                  </div>
+
+                  <div class="exec-modal-chart-wrap" style="margin-top:18px;">
+                    <div class="exec-modal-chart-title">Exposure trend</div>
+                    <canvas id="execModalChart"></canvas>
+                  </div>
+                </div>
+
+                <div class="exec-modal-card exec-fintech-panel">
+                  <h3>Exposure Ledger</h3>
+                  <div class="exec-modal-copy">Bank-style recent exposure history for executive review.</div>
+                  <div class="exec-ledger-wrap">
+                    <div class="exec-ledger-head">
+                      <div>Date</div><div>Exposure</div><div>Status</div><div>Driver</div>
+                    </div>
+                    <div class="exec-ledger-row">
+                      <div>2026-03-07</div><div><strong>€ 1,800</strong></div><div>ACTION</div><div>Quality drift</div>
+                    </div>
+                    <div class="exec-ledger-row">
+                      <div>2026-03-06</div><div><strong>€ 1,650</strong></div><div>MONITOR</div><div>Delay pressure</div>
+                    </div>
+                    <div class="exec-ledger-row">
+                      <div>2026-03-05</div><div><strong>€ 1,700</strong></div><div>ACTION</div><div>Rework loss</div>
+                    </div>
+                    <div class="exec-ledger-row">
+                      <div>2026-03-04</div><div><strong>€ 1,500</strong></div><div>MONITOR</div><div>Yield variance</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="exec-modal-card exec-fintech-panel">
+                  <h3>Suggested Actions</h3>
+                  <ul class="exec-modal-list">
+                    <li>Validate cost drivers against current facility setup: <b>${facility}</b></li>
+                    <li>Check line relevance: <b>${line || 'n/a'}</b></li>
+                    <li>Use module drill-down before formal escalation.</li>
+                  </ul>
+                  <div class="exec-modal-actions">
+                    <a class="btn" href="index.html">Back to Dashboard</a>
+                    <a class="btn primary" href="${openModuleHref}">Open Module</a>
+                  </div>
+                </div>
+              </div>`
+          },
+          cto: {
+            title: "CTO Detailed PP",
+            sub: prettyModule + " module — system reliability, data readiness and signal integrity",
+            html: `
+              <div class="exec-modal-grid">
+                <div class="exec-modal-card">
+                  <h3>System Health</h3>
+                  <div class="exec-modal-kpi">CRITICAL</div>
+                  <div class="exec-modal-copy">API / Views health should be stabilized before wider executive automation depends on it.</div>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>Observed Context</h3>
+                  <ul class="exec-modal-list">
+                    <li>Facility: <b>${facility}</b></li>
+                    <li>Module: <b>${prettyModule}</b></li>
+                    <li>Lens: <b>${lens}</b></li>
+                    <li>Line: <b>${line || 'n/a'}</b></li>
+                  </ul>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>What the CTO needs to know</h3>
+                  <ul class="exec-modal-list">
+                    <li>Broken trust usually starts with data ambiguity, not code failure alone.</li>
+                    <li>Executive pages must never show stale or contextless numbers.</li>
+                    <li>Routing, payload consistency and visual clarity are part of system reliability.</li>
+                  </ul>
+                </div>
+                <div class="exec-modal-card">
+                  <h3>Suggested Actions</h3>
+                  <div class="exec-modal-actions">
+                    <a class="btn" href="index.html">Back to Dashboard</a>
+                    <a class="btn primary" href="${openModuleHref}">Open Module</a>
+                  </div>
+                </div>
+              </div>`
+          }
+        };
+        return roleMap[role] || roleMap.ceo;
+      }
+
+
+      function getCfoPeriodData(period) {
+        const map = {
+          today: {
+            total: "€ 1,800",
+            label: "Today total exposure",
+            avg: "€ 1,800",
+            peak: "€ 1,800",
+            alerts: "1",
+            labels: ["08:00","10:00","12:00","14:00","16:00","18:00"],
+            data: [180, 260, 320, 410, 300, 330]
+          },
+          yesterday: {
+            total: "€ 1,650",
+            label: "Yesterday total exposure",
+            avg: "€ 1,650",
+            peak: "€ 1,900",
+            alerts: "1",
+            labels: ["08:00","10:00","12:00","14:00","16:00","18:00"],
+            data: [140, 220, 280, 390, 310, 310]
+          },
+          last7: {
+            total: "€ 12,600",
+            label: "Selected range total exposure",
+            avg: "€ 1,800",
+            peak: "€ 2,150",
+            alerts: "4",
+            labels: ["D1","D2","D3","D4","D5","D6","D7"],
+            data: [1200, 1400, 1600, 1500, 1700, 1650, 1800]
+          },
+          last30: {
+            total: "€ 39,200",
+            label: "Last 30 days total exposure",
+            avg: "€ 1,307",
+            peak: "€ 2,250",
+            alerts: "11",
+            labels: ["W1","W2","W3","W4","W5","W6"],
+            data: [5200, 6100, 5800, 6700, 7200, 8200]
+          }
+        };
+        return map[period] || map.last7;
+      }
+
+      function renderExecModalChart(role, period, customLabels, customData) {
+        const cv = byId("execModalChart");
+        if (!cv || !window.Chart) return;
+        try {
+          if (window.__EXEC_MODAL_CHART__) {
+            window.__EXEC_MODAL_CHART__.destroy();
+          }
+        } catch (e) {}
+
+        let data = [1200, 1400, 1600, 1500, 1700, 1650, 1800];
+        let labels = ["D1","D2","D3","D4","D5","D6","D7"];
+
+        if (role === "cfo" && period === "custom" && Array.isArray(customLabels) && Array.isArray(customData)) {
+          labels = customLabels;
+          data = customData;
+        } else if (role === "cfo") {
+          const cfo = getCfoPeriodData(period || "last7");
+          data = cfo.data;
+          labels = cfo.labels;
+        } else if (role === "ceo") {
+          data = [72, 74, 73, 76, 78, 77, 79];
+        } else if (role === "cto") {
+          data = [91, 88, 86, 84, 80, 82, 79];
+        }
+
+        window.__EXEC_MODAL_CHART__ = new Chart(cv, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              borderColor: "#f9ba00",
+              backgroundColor: "rgba(249,186,0,.14)",
+              fill: true,
+              tension: .35,
+              pointRadius: 2,
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: chartText }, grid: { color: chartGrid } },
+              y: { ticks: { color: chartText }, grid: { color: chartGrid } }
+            }
+          }
+        });
+      }
+
+      function bindCfoPeriodControls() {
+        const sel = byId("cfoPeriodSelect");
+        const rangeValue = byId("cfoRangeValue");
+        const rangeLabel = byId("cfoRangeLabel");
+        const avgValue = byId("cfoAvgValue");
+        const peakValue = byId("cfoPeakValue");
+        const alertDays = byId("cfoAlertDays");
+        const custom = byId("cfoCustomRange");
+        const applyBtn = byId("cfoApplyRange");
+        const fromEl = byId("cfoFromDate");
+        const toEl = byId("cfoToDate");
+        if (!sel || !rangeValue || !rangeLabel || !avgValue || !peakValue) return;
+
+        function applyPreset() {
+          const cfg = getCfoPeriodData(sel.value || "last7");
+          rangeValue.textContent = cfg.total;
+          rangeLabel.textContent = cfg.label;
+          avgValue.textContent = cfg.avg;
+          peakValue.textContent = cfg.peak;
+          if (alertDays) alertDays.textContent = cfg.alerts || "0";
+          renderExecModalChart("cfo", sel.value || "last7");
+        }
+
+        sel.onchange = function () {
+          if (sel.value === "custom") {
+            if (custom) custom.style.display = "flex";
+            return;
+          }
+          if (custom) custom.style.display = "none";
+          applyPreset();
+        };
+
+        if (applyBtn) {
+          applyBtn.onclick = function (e) {
+            e.preventDefault();
+            const from = fromEl && fromEl.value;
+            const to = toEl && toEl.value;
+            if (!from || !to) return;
+
+            const start = new Date(from);
+            const end = new Date(to);
+            if (String(start) === "Invalid Date" || String(end) === "Invalid Date" || end < start) return;
+
+            const days = Math.max(1, Math.round((end - start) / 86400000) + 1);
+            const labels = [];
+            const data = [];
+
+            for (let i = 0; i < days; i++) {
+              const d = new Date(start.getTime() + i * 86400000);
+              labels.push(String(d.getMonth() + 1).padStart(2, "0") + "/" + String(d.getDate()).padStart(2, "0"));
+              data.push(1350 + (i * 47) + ((i % 3) * 90));
+            }
+
+            const total = data.reduce((a, b) => a + b, 0);
+            const avg = Math.round(total / data.length);
+            const peak = Math.max(...data);
+
+            rangeValue.textContent = "€ " + total.toLocaleString("en-US");
+            rangeLabel.textContent = "Custom range total exposure";
+            avgValue.textContent = "€ " + avg.toLocaleString("en-US");
+            peakValue.textContent = "€ " + peak.toLocaleString("en-US");
+            if (alertDays) alertDays.textContent = String(data.filter(v => v >= 1700).length);
+            renderExecModalChart("cfo", "custom", labels, data);
+          };
+        }
+
+        applyPreset();
+      }
+
+      function updateCeoStrategicModal() {
+        function parseMoney(text) {
+          if (!text) return 0;
+          var cleaned = String(text)
+            .replace(/€/g, "")
+            .replace(/,/g, "")
+            .replace(/[^0-9.\-]/g, "")
+            .trim();
+          var n = Number(cleaned);
+          return Number.isFinite(n) ? n : 0;
+        }
+
+        var exposureEl = byId("cfoExposureValue") || byId("financialExposureValue");
+        var riskEl = byId("ceoModalStrategicRiskValue");
+        var trendEl = byId("ceoModalStrategicRiskTrend");
+        var scenarioRiskEl = byId("ceoModalScenarioRisk");
+        var scenarioNarrativeEl = byId("ceoModalScenarioNarrative");
+        var narrativeCard = byId("execModalBody") ? byId("execModalBody").querySelector("h3 + .exec-modal-copy, .exec-modal-card .exec-modal-copy") : null;
+
+        if (!exposureEl || !riskEl || !trendEl) return;
+
+        var exposure = parseMoney(exposureEl.textContent);
+        var alerts = document.querySelectorAll(".badge.monitor,.badge.alert,.badge.critical,.shock-up,.action-state").length || 2;
+        var velocity = exposure >= 450000 ? 72 : (exposure >= 300000 ? 58 : 42);
+
+        var exposureScore = Math.max(0, Math.min(100, Math.round((exposure / 800000) * 100)));
+        var alertScore = Math.max(0, Math.min(100, alerts * 18));
+        var baseRisk = Math.max(0, Math.min(100, Math.round(
+          (exposureScore * 0.40) +
+          (alertScore * 0.30) +
+          (velocity * 0.30)
+        )));
+
+        function renderScenario(name) {
+          var risk = baseRisk;
+          var trend = "Monitor";
+          var narrative = "Current board posture keeps the enterprise in monitor mode.";
+
+          if (name === "stabilize") {
+            risk = Math.max(0, baseRisk - 8);
+            trend = risk >= 65 ? "Rising" : (risk >= 45 ? "Monitor" : "Stable");
+            narrative = "Operational discipline reduces signal noise and lowers enterprise exposure. Board posture shifts toward controlled monitoring.";
+          } else if (name === "digital") {
+            risk = Math.max(0, baseRisk - 17);
+            trend = risk >= 65 ? "Rising" : (risk >= 45 ? "Monitor" : "Stable");
+            narrative = "Digital control compresses delay, improves visibility and lowers strategic uncertainty. This is the strongest executive containment path.";
+          } else if (name === "ignore") {
+            risk = Math.min(100, baseRisk + 14);
+            trend = risk >= 65 ? "Rising" : (risk >= 45 ? "Monitor" : "Stable");
+            narrative = "Ignoring weak signals increases the probability of margin pressure turning into board-level risk. Enterprise posture worsens.";
+          }
+
+          riskEl.textContent = risk + " / 100";
+          trendEl.innerHTML = "Trend: <b>" + trend + "</b> — strategic risk is now calculated from live financial exposure, alert intensity and signal velocity.";
+
+          if (scenarioRiskEl) {
+            var scenarioRiskValueEl = byId("ceoModalScenarioRiskValue");
+            if (scenarioRiskValueEl) {
+              scenarioRiskValueEl.textContent = risk + " / 100";
+            } else {
+              scenarioRiskEl.textContent = "Projected Risk: " + risk + " / 100";
+            }
+          }
+          if (scenarioNarrativeEl) {
+            scenarioNarrativeEl.textContent = narrative;
+          }
+
+          var execNarrativeTitle = Array.from(document.querySelectorAll("#execModalBody .exec-modal-card h3")).find(function(el){
+            return el.textContent.trim() === "Executive Narrative";
+          });
+          if (execNarrativeTitle) {
+            var copy = execNarrativeTitle.parentElement.querySelector(".exec-modal-copy");
+            if (copy) copy.textContent = narrative;
+          }
+        }
+
+        var btnStabilize = byId("ceoModalScenarioStabilize");
+        var btnDigital = byId("ceoModalScenarioDigital");
+        var btnIgnore = byId("ceoModalScenarioIgnore");
+
+        [btnStabilize, btnDigital, btnIgnore].forEach(function(btn){
+          if (!btn) return;
+          btn.onclick = null;
+        });
+
+        function setScenarioActive(mode){
+          [btnStabilize, btnDigital, btnIgnore].forEach(function(btn){
+            if (btn) btn.classList.remove("ceo-active");
+          });
+          if (mode === "stabilize" && btnStabilize) btnStabilize.classList.add("ceo-active");
+          if (mode === "digital" && btnDigital) btnDigital.classList.add("ceo-active");
+          if (mode === "ignore" && btnIgnore) btnIgnore.classList.add("ceo-active");
+        }
+
+        if (btnStabilize) btnStabilize.onclick = function(){ renderScenario("stabilize"); setScenarioActive("stabilize"); };
+        if (btnDigital) btnDigital.onclick = function(){ renderScenario("digital"); setScenarioActive("digital"); };
+        if (btnIgnore) btnIgnore.onclick = function(){ renderScenario("ignore"); setScenarioActive("ignore"); };
+
+        setScenarioActive("stabilize");
+
+        renderScenario("stabilize");
+      }
+
+      function openExecModal(role) {
+        const modalBackdrop = byId("execModalBackdrop");
+        const modalTitle = byId("execModalTitle");
+        const modalSub = byId("execModalSub");
+        const modalBody = byId("execModalBody");
+        if (!modalBackdrop || !modalTitle || !modalSub || !modalBody) return;
+        const cfg = buildModal(role);
+        modalTitle.textContent = cfg.title;
+        modalSub.textContent = cfg.sub;
+        modalBody.innerHTML = cfg.html;
+        modalBackdrop.classList.add("open");
+        modalBackdrop.setAttribute("aria-hidden", "false");
+        setTimeout(function(){
+          if (role === "cfo") {
+            bindCfoPeriodControls();
+          } else {
+            renderExecModalChart(role);
+          }
+          if (role === "ceo") {
+            updateCeoStrategicModal();
+          }
+        }, 30);
+      }
+
+      function closeExecModal() {
+        const modalBackdrop = byId("execModalBackdrop");
+        if (!modalBackdrop) return;
+        modalBackdrop.classList.remove("open");
+        modalBackdrop.setAttribute("aria-hidden", "true");
+      }
+
+      ["execCardCEO", "execCardCFO", "execCardCTO"].forEach(function(id){
+        const el = byId(id);
+        if (!el) return;
+        el.addEventListener("click", function(){
+          openExecModal(el.getAttribute("data-role") || "ceo");
+        });
+      });
+
+      document.addEventListener("click", function(e){
+        const closeBtn = e.target && e.target.closest ? e.target.closest("#execModalClose") : null;
+        if (closeBtn) {
+          e.preventDefault();
+          closeExecModal();
+          return;
+        }
+        const backdrop = byId("execModalBackdrop");
+        if (backdrop && e.target === backdrop) {
+          closeExecModal();
+        }
+      });
+
+      document.addEventListener("keydown", function(e){
+        if (e.key === "Escape") closeExecModal();
+      });
+
+      
+function applyCustomRange(){
+  const from = byId("cfoFromDate").value;
+  const to = byId("cfoToDate").value;
+  if(!from || !to) return;
+
+  const rangeValue = byId("cfoRangeValue");
+  const avgValue = byId("cfoAvgValue");
+  const peakValue = byId("cfoPeakValue");
+
+  const days = 5;
+  const base = 1500;
+
+  const data = [];
+  const labels = [];
+
+  for(let i=0;i<days;i++){
+    data.push(base + Math.round(Math.random()*400));
+    labels.push("D"+(i+1));
+  }
+
+  const total = data.reduce((a,b)=>a+b,0);
+  const avg = Math.round(total/data.length);
+  const peak = Math.max(...data);
+
+  rangeValue.textContent = "€ " + total.toLocaleString();
+  avgValue.textContent = "€ " + avg.toLocaleString();
+  peakValue.textContent = "€ " + peak.toLocaleString();
+
+  renderExecModalChart("cfo","custom",labels,data);
+}
+
+
+
+      document.title = "Zero@Production — " + prettyModule + " Executive";
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <div class="exec-modal-backdrop" id="execModalBackdrop" aria-hidden="true">
+    <div class="exec-modal" role="dialog" aria-modal="true" aria-labelledby="execModalTitle">
+      <div class="exec-modal-head">
+        <div>
+          <h2 class="exec-modal-title" id="execModalTitle">Detailed PP</h2>
+          <div class="exec-modal-sub" id="execModalSub">Executive lens popup</div>
+        </div>
+        <button class="exec-modal-close" id="execModalClose" type="button">✕ Close</button>
+      </div>
+      <div id="execModalBody"></div>
+    </div>
+  </div>
+
+<script>
+document.addEventListener("click", function(e) {
+  const btn = e.target.closest("#cfoDecisionLayerBtn");
+  if (!btn) return;
+
+  const panel = document.getElementById("cfoDecisionPanel");
+  if (!panel) return;
+
+  const current = window.getComputedStyle(panel).display;
+  panel.style.display = (current === "none") ? "block" : "none";
+});
+</script>
+
+
+
+<!-- CFO_DYNAMIC_ROI_UPGRADE_START -->
+<script>
+(function () {
+  function parseEuroValue(text) {
+    if (!text) return 0;
+    const cleaned = String(text)
+      .replace(/€/g, "")
+      .replace(/,/g, "")
+      .replace(/\s+/g, "")
+      .trim();
+    const value = Number(cleaned);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function formatEuro(value) {
+    return "€ " + Math.round(value).toLocaleString("en-IE");
+  }
+
+  function findFinancialExposureValue() {
+    const all = Array.from(document.querySelectorAll("div,span,p,strong,h1,h2,h3,h4,h5,h6"));
+    for (const el of all) {
+      const txt = (el.textContent || "").trim();
+      if (/€\s*\d[\d,]*/.test(txt)) {
+        const parentText = ((el.parentElement && el.parentElement.textContent) || "").toLowerCase();
+        const ownText = txt.toLowerCase();
+        if (
+          parentText.includes("financial exposure") ||
+          parentText.includes("estimated impact") ||
+          ownText.includes("€")
+        ) {
+          return parseEuroValue(txt);
+        }
+      }
+    }
+
+    const bodyText = document.body.innerText || "";
+    const m = bodyText.match(/Financial Exposure[\s\S]{0,120}?€\s*([\d,]+)/i);
+    if (m) return parseEuroValue("€ " + m[1]);
+
+    return 477440;
+  }
+
+  function ensureSimulatorButtons() {
+    const simulator = document.getElementById("cfoImpactSimulator");
+    if (!simulator) return [];
+
+    let buttons = Array.from(simulator.querySelectorAll("button[data-impact-rate]"));
+
+    if (!buttons.length) {
+      const candidateButtons = Array.from(simulator.querySelectorAll("button"));
+      candidateButtons.forEach((btn) => {
+        const txt = (btn.textContent || "").trim();
+        const m = txt.match(/(\d+)%/);
+        if (m) btn.setAttribute("data-impact-rate", String(Number(m[1]) / 100));
+      });
+      buttons = Array.from(simulator.querySelectorAll("button[data-impact-rate]"));
+    }
+
+    buttons.forEach((btn) => {
+      btn.style.transition = "all .18s ease";
+      btn.style.border = "1px solid rgba(2,21,78,0.12)";
+      btn.style.borderRadius = "10px";
+      btn.style.padding = "8px 12px";
+      btn.style.cursor = "pointer";
+    });
+
+    return buttons;
+  }
+
+  function setActiveButton(buttons, activeBtn) {
+    buttons.forEach((btn) => {
+      const active = btn === activeBtn;
+      btn.style.background = active ? "#f9ba00" : "#0b2a5a";
+      btn.style.color = active ? "#02154e" : "#ffffff";
+      btn.style.fontWeight = active ? "800" : "700";
+      btn.style.boxShadow = active ? "0 8px 18px rgba(249,186,0,.28)" : "none";
+      btn.style.transform = active ? "translateY(-1px)" : "translateY(0)";
+      btn.style.borderColor = active ? "#f9ba00" : "rgba(255,255,255,0.16)";
+    });
+  }
+
+  function buildExecutiveText(baseExposure, upliftPct, impactValue) {
+    const upliftLabel = Math.round(upliftPct * 100) + "%";
+    return "Value protection potential: " + formatEuro(impactValue) + " / year — under a " + upliftLabel + " recovery scenario.";
+  }
+
+  function bindImpactSimulator() {
+    const result = document.getElementById("cfoImpactResult");
+    const simulator = document.getElementById("cfoImpactSimulator");
+    if (!result || !simulator) return;
+
+    const baseExposure = findFinancialExposureValue();
+    const buttons = ensureSimulatorButtons();
+    if (!buttons.length) return;
+
+    function update(rate, btn) {
+      const impactValue = baseExposure * rate;
+      setActiveButton(buttons, btn);
+      result.textContent = buildExecutiveText(baseExposure, rate, impactValue);
+      result.setAttribute("data-base-exposure", String(baseExposure));
+      result.setAttribute("data-impact-rate", String(rate));
+      result.setAttribute("data-impact-value", String(Math.round(impactValue)));
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", function () {
+        const rate = Number(btn.getAttribute("data-impact-rate") || "0");
+        update(rate, btn);
+      });
+    });
+
+    const defaultBtn =
+      buttons.find((b) => b.textContent.includes("10%")) ||
+      buttons[0];
+
+    update(Number(defaultBtn.getAttribute("data-impact-rate") || "0.1"), defaultBtn);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindImpactSimulator);
+  } else {
+    bindImpactSimulator();
+  }
+})();
+</script>
+<!-- CFO_DYNAMIC_ROI_UPGRADE_END -->
+
+<script>
+(function () {
+  function parseEuroValue(text) {
+    if (!text) return 0;
+    const cleaned = String(text)
+      .replace(/€/g, "")
+      .replace(/,/g, "")
+      .replace(/\s+/g, "")
+      .trim();
+    const value = Number(cleaned);
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function formatEuro(value) {
+    return "€ " + Math.round(value).toLocaleString("en-IE");
+  }
+
+  function getBaseExposure() {
+    const kpi = document.querySelector(".exec-fintech-hero .exec-modal-kpi");
+    if (kpi) {
+      const v = parseEuroValue(kpi.textContent || "");
+      if (v > 0) return v;
+    }
+
+    const all = Array.from(document.querySelectorAll("div,span,strong,h1,h2,h3"));
+    for (const el of all) {
+      const txt = (el.textContent || "").trim();
+      if (/€\s*\d[\d,]*/.test(txt)) {
+        const v = parseEuroValue(txt);
+        if (v > 1000) return v;
+      }
+    }
+    return 477440;
+  }
+
+  function getSimulatorButtons() {
+    return Array.from(document.querySelectorAll('#cfoImpactSimulator button[data-impact-rate]'));
+  }
+
+  function paintButtons(activeBtn) {
+    getSimulatorButtons().forEach((btn) => {
+      const active = btn === activeBtn;
+      btn.style.background = active ? "#f9ba00" : "#0b2a5a";
+      btn.style.color = active ? "#02154e" : "#ffffff";
+      btn.style.fontWeight = active ? "800" : "700";
+      btn.style.boxShadow = active ? "0 8px 18px rgba(249,186,0,.28)" : "none";
+      btn.style.transform = active ? "translateY(-1px)" : "translateY(0)";
+      btn.style.borderColor = active ? "#f9ba00" : "rgba(255,255,255,0.16)";
+    });
+  }
+
+  function updateImpact(rate, btn) {
+    const result = document.getElementById("cfoImpactResult");
+    if (!result) return;
+
+    const base = getBaseExposure();
+    const impact = Math.round(base * rate);
+
+    paintButtons(btn);
+    result.textContent =
+      "Value protection potential: " + formatEuro(impact) +
+      " / year — under a " + Math.round(rate * 100) + "% recovery scenario.";
+  }
+
+  document.addEventListener("click", function (e) {
+    const btn = e.target.closest('#cfoImpactSimulator button[data-impact-rate]');
+    if (!btn) return;
+
+    const rate = Number(btn.getAttribute("data-impact-rate") || "0");
+    if (!rate) return;
+
+    updateImpact(rate, btn);
+  });
+
+  document.addEventListener("click", function (e) {
+    const layerBtn = e.target.closest("#cfoDecisionLayerBtn");
+    if (!layerBtn) return;
+
+    setTimeout(function () {
+      const buttons = getSimulatorButtons();
+      const defaultBtn =
+        buttons.find((b) => (b.textContent || "").includes("10%")) ||
+        buttons[0];
+
+      if (!defaultBtn) return;
+
+      const panel = document.getElementById("cfoDecisionPanel");
+      const result = document.getElementById("cfoImpactResult");
+      if (!panel || !result) return;
+
+      const visible = window.getComputedStyle(panel).display !== "none";
+      if (!visible) return;
+
+      const rate = Number(defaultBtn.getAttribute("data-impact-rate") || "0.10");
+      updateImpact(rate, defaultBtn);
+    }, 0);
+  });
+})();
+</script>
+
+
+
+
+
+
+
+<script>
+
+</script>
+
+
+
+<!-- === PHASE1_UX_POLISH_SCRIPT_START === -->
+<script>
+(function () {
+  if (window.__PHASE1_UX_POLISH_APPLIED__) return;
+  window.__PHASE1_UX_POLISH_APPLIED__ = true;
+
+  function repulse(el){
+    if(!el) return;
+    el.classList.remove("phase1-risk-pulse");
+    void el.offsetWidth;
+    el.classList.add("phase1-risk-pulse");
+  }
+
+  function animateResult(){
+    var result = document.getElementById("ceoModalScenarioResult");
+    if(!result) return;
+    result.classList.remove("phase1-result-animate");
+    void result.offsetWidth;
+    result.classList.add("phase1-result-animate");
+    setTimeout(function(){
+      result.classList.remove("phase1-result-animate");
+    }, 320);
+  }
+
+  function findRiskTargets(){
+    var ids = [
+      "strategicRiskIndexValue",
+      "ceoStrategicRiskValue",
+      "ceoRiskValue",
+      "riskValue",
+      "strategicRiskValue"
+    ];
+
+    var found = [];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) found.push(el);
+    });
+
+    if(found.length) return found;
+
+    var fallbacks = Array.from(document.querySelectorAll(
+      ".risk-value, .strategic-risk-value, [data-role='risk-value']"
+    ));
+
+    if(fallbacks.length) return fallbacks;
+
+    var textHits = Array.from(document.querySelectorAll("div,span,strong")).filter(function(el){
+      var t = (el.textContent || "").trim();
+      return /^(\d{1,3})$/.test(t) || /^(\d{1,3})%$/.test(t);
+    }).slice(0, 3);
+
+    return textHits;
+  }
+
+  function afterScenarioVisuals(){
+    animateResult();
+    findRiskTargets().forEach(repulse);
+  }
+
+  if (typeof window.renderScenario === "function") {
+    var originalRenderScenario = window.renderScenario;
+    window.renderScenario = function () {
+      var out = originalRenderScenario.apply(this, arguments);
+      setTimeout(afterScenarioVisuals, 30);
+      return out;
+    };
+  }
+
+  window.addEventListener("DOMContentLoaded", function(){
+    setTimeout(afterScenarioVisuals, 120);
+  });
+})();
+</script>
+<!-- === PHASE1_UX_POLISH_SCRIPT_END === -->
+
+
+<script id="ceo-phase1-ux-polish-script">
+(function () {
+  function bindCeoPhase1UxPolish() {
+    var result = document.getElementById("ceoModalScenarioResult");
+    var risk = document.getElementById("ceoModalScenarioRisk");
+    var riskValue = document.getElementById("ceoModalScenarioRiskValue");
+    var buttons = [
+      document.getElementById("ceoModalScenarioStabilize"),
+      document.getElementById("ceoModalScenarioDigital"),
+      document.getElementById("ceoModalScenarioIgnore")
+    ].filter(Boolean);
+
+    if (!result || !risk || !buttons.length) return;
+    if (window.__CEO_PHASE1_UX_POLISH_BOUND__) return;
+    window.__CEO_PHASE1_UX_POLISH_BOUND__ = true;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        result.classList.remove("ceo-result-animate");
+        if (riskValue) {
+          riskValue.classList.remove("ceo-risk-pulse");
+        } else {
+          if (riskValue) {
+            riskValue.classList.remove("ceo-risk-pulse");
+          } else {
+            risk.classList.remove("ceo-risk-pulse");
+          }
+        }
+
+        void result.offsetWidth;
+        if (riskValue) {
+          void riskValue.offsetWidth;
+        } else {
+          void risk.offsetWidth;
+        }
+
+        result.classList.add("ceo-result-animate");
+        if (riskValue) {
+          riskValue.classList.add("ceo-risk-pulse");
+        } else {
+          risk.classList.add("ceo-risk-pulse");
+        }
+
+        setTimeout(function () {
+          result.classList.remove("ceo-result-animate");
+        }, 360);
+
+        setTimeout(function () {
+          if (riskValue) {
+          riskValue.classList.remove("ceo-risk-pulse");
+        } else {
+          if (riskValue) {
+            riskValue.classList.remove("ceo-risk-pulse");
+          } else {
+            risk.classList.remove("ceo-risk-pulse");
+          }
+        }
+        }, 920);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCeoPhase1UxPolish);
+  } else {
+    bindCeoPhase1UxPolish();
+  }
+})();
+</script>
+
+</body>
+</html>

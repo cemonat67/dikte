@@ -1,0 +1,29 @@
+{
+  "facility": "Sun Tekstil",
+  "module": "finishing",
+  "date": "2026-03-06",
+  "lines": [
+    {
+      "line": "Compactor 1",
+      "production_kg": 14200,
+      "energy_kwh": 4600,
+      "water_m3": 102,
+      "steam_kg": 9100,
+      "co2_ton": 3.8,
+      "defect_rate": 1.5,
+      "rework_rate": 0.5,
+      "machine_utilization": 89
+    },
+    {
+      "line": "Stenter 3",
+      "production_kg": 11900,
+      "energy_kwh": 4100,
+      "water_m3": 94,
+      "steam_kg": 7900,
+      "co2_ton": 3.2,
+      "defect_rate": 1.9,
+      "rework_rate": 0.8,
+      "machine_utilization": 84
+    }
+  ]
+}
