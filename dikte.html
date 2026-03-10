@@ -123,6 +123,11 @@
     background: linear-gradient(135deg, #ef4444, #dc2626);
     box-shadow: 0 4px 18px rgba(239,68,68,0.4);
   }
+  .btn-para {
+    background: linear-gradient(135deg, #7e22ce, #6b21a8);
+    box-shadow: 0 4px 18px rgba(126,34,206,0.35);
+  }
+  .btn-para:disabled { background: rgba(255,255,255,0.08); box-shadow: none; }
   .btn-grammar {
     background: linear-gradient(135deg, #0ea5e9, #0284c7);
     box-shadow: 0 4px 18px rgba(14,165,233,0.35);
@@ -213,9 +218,13 @@
   <!-- Buttons -->
   <div class="buttons">
     <button class="btn btn-mic" id="btnMic" onclick="toggleMic()">🎙 Başlat</button>
+    <button class="btn btn-para" id="btnPara" onclick="addParagraph()" disabled>¶ Paragraf</button>
     <button class="btn btn-grammar" id="btnGrammar" onclick="checkGrammar()" disabled>✏️ Gramer Kontrol</button>
     <button class="btn btn-save" id="btnSave" onclick="saveText()" disabled>💾 Kaydet</button>
     <button class="btn btn-clear" id="btnClear" onclick="clearCurrent()" disabled>🗑</button>
+  </div>
+  <div style="text-align:center; color:rgba(167,139,250,0.45); font-size:0.8rem; margin-top:-12px; margin-bottom:16px;">
+    💡 "yeni paragraf" veya "paragraf sonu" diyerek de paragraf ekleyebilirsiniz
   </div>
 
   <!-- Saved Text -->
@@ -247,6 +256,7 @@
   const statusLabel = document.getElementById("statusLabel");
   const correctionBadge = document.getElementById("correctionBadge");
   const btnMic = document.getElementById("btnMic");
+  const btnPara = document.getElementById("btnPara");
   const btnGrammar = document.getElementById("btnGrammar");
   const btnSave = document.getElementById("btnSave");
   const btnClear = document.getElementById("btnClear");
@@ -275,7 +285,23 @@
         else interim += r[0].transcript;
       }
       if (final) {
-        transcript += final;
+        // Sesli paragraf komutu kontrolü
+        const PARA_COMMANDS = ["yeni paragraf", "paragraf sonu", "yeni paragraphe", "paragraf"];
+        let cleanFinal = final;
+        let paraAdded = false;
+        for (const cmd of PARA_COMMANDS) {
+          const regex = new RegExp(cmd + "\\s*", "gi");
+          if (regex.test(cleanFinal)) {
+            cleanFinal = cleanFinal.replace(regex, "");
+            paraAdded = true;
+            break;
+          }
+        }
+        transcript += cleanFinal;
+        if (paraAdded) {
+          transcript = transcript.trimEnd() + "\n\n";
+          setStatus("¶ Paragraf eklendi", true);
+        }
         interimText = "";
       } else {
         interimText = interim;
@@ -322,7 +348,7 @@
   }
 
   function escHtml(t) {
-    return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n\n/g,"<br><br>").replace(/\n/g,"<br>");
   }
 
   // --- Status ---
@@ -342,6 +368,15 @@
     btnGrammar.disabled = !hasText || isChecking;
     btnSave.disabled = !hasActive;
     btnClear.disabled = !hasText && !correctedText;
+    btnPara.disabled = !isListening && !hasText;
+  }
+
+  // --- Add Paragraph ---
+  function addParagraph() {
+    if (!transcript.trim()) return;
+    transcript = transcript.trimEnd() + "\n\n";
+    setStatus("¶ Paragraf eklendi", true);
+    renderText();
   }
 
   function updateMicBtn() {
