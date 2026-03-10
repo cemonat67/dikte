@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesli Yazım - Türkçe Dikte</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0c29;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(167,139,250,0.25);
+    --border-active: rgba(74,222,128,0.5);
+    --accent: #a78bfa;
+    --accent2: #f0abfc;
+    --green: #4ade80;
+    --red: #ef4444;
+    --blue: #0ea5e9;
+    --text: #e8e0ff;
+    --muted: rgba(167,139,250,0.45);
+  }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    font-family: 'Crimson Pro', Georgia, serif;
+    color: var(--text);
+    padding: 28px 16px;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  /* Header */
+  .header { text-align: center; margin-bottom: 32px; }
+  .header .icon { font-size: 52px; margin-bottom: 10px; }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p { color: var(--accent); margin-top: 6px; font-size: 1rem; font-style: italic; }
+
+  /* Status Bar */
+  .status-bar {
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.3);
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .status-dot.active {
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: pulse 1.2s infinite;
+  }
+  .status-label { font-size: 0.9rem; color: #c4b5fd; flex: 1; }
+  .badge {
+    font-size: 0.75rem;
+    background: rgba(74,222,128,0.15);
+    border: 1px solid rgba(74,222,128,0.4);
+    color: var(--green);
+    padding: 2px 12px;
+    border-radius: 20px;
+  }
+
+  /* Text Area */
+  .text-area {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    min-height: 200px;
+    margin-bottom: 16px;
+    line-height: 1.85;
+    font-size: 1.05rem;
+    transition: border-color 0.3s;
+    word-break: break-word;
+    position: relative;
+  }
+  .text-area.listening { border-color: var(--border-active); }
+  .text-area .placeholder { color: var(--muted); font-style: italic; }
+  .text-area .corrected { color: var(--green); }
+  .text-area .interim { color: rgba(167,139,250,0.5); font-style: italic; }
+
+  /* Buttons */
+  .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+  .btn {
+    flex: 1;
+    min-width: 130px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-family: 'Crimson Pro', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .btn-mic {
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    box-shadow: 0 4px 18px rgba(124,58,237,0.4);
+  }
+  .btn-mic.active {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 18px rgba(239,68,68,0.4);
+  }
+  .btn-grammar {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    box-shadow: 0 4px 18px rgba(14,165,233,0.35);
+  }
+  .btn-grammar:disabled { background: rgba(255,255,255,0.08); box-shadow: none; }
+  .btn-save {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 4px 18px rgba(16,185,129,0.35);
+  }
+  .btn-save:disabled { background: rgba(255,255,255,0.08); box-shadow: none; }
+  .btn-clear {
+    flex: 0;
+    min-width: auto;
+    padding: 14px 18px;
+    background: transparent;
+    border: 1px solid rgba(239,68,68,0.3) !important;
+    color: rgba(239,68,68,0.7);
+    box-shadow: none;
+  }
+  .btn-clear:disabled { opacity: 0.25; }
+
+  /* Saved Area */
+  .saved-area {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 8px;
+    display: none;
+  }
+  .saved-area.visible { display: block; }
+  .saved-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .saved-header span { color: var(--green); font-weight: 600; font-size: 0.9rem; }
+  .saved-header button {
+    background: none; border: none;
+    color: rgba(239,68,68,0.6);
+    cursor: pointer; font-size: 0.85rem;
+    font-family: 'Crimson Pro', serif;
+  }
+  .saved-content { color: #d1fae5; line-height: 1.85; white-space: pre-wrap; font-size: 0.98rem; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.35); }
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="icon">🎙️</div>
+    <h1>Sesli Yazım</h1>
+    <p>Türkçe Dikte &amp; Gramer Kontrol Uygulaması</p>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <div class="status-dot" id="statusDot"></div>
+    <span class="status-label" id="statusLabel">Hazır</span>
+    <span class="badge" id="correctionBadge" style="display:none">Düzeltilmiş Görüntüleniyor</span>
+  </div>
+
+  <!-- Text Display Area -->
+  <div class="text-area" id="textArea">
+    <span class="placeholder" id="placeholder">Mikrofonu başlatmak için aşağıdaki butona basın...</span>
+  </div>
+
+  <!-- Buttons -->
+  <div class="buttons">
+    <button class="btn btn-mic" id="btnMic" onclick="toggleMic()">🎙 Başlat</button>
+    <button class="btn btn-grammar" id="btnGrammar" onclick="checkGrammar()" disabled>✏️ Gramer Kontrol</button>
+    <button class="btn btn-save" id="btnSave" onclick="saveText()" disabled>💾 Kaydet</button>
+    <button class="btn btn-clear" id="btnClear" onclick="clearCurrent()" disabled>🗑</button>
+  </div>
+
+  <!-- Saved Text -->
+  <div class="saved-area" id="savedArea">
+    <div class="saved-header">
+      <span>📄 Kaydedilen Metin</span>
+      <button onclick="clearSaved()">Temizle</button>
+    </div>
+    <div class="saved-content" id="savedContent"></div>
+  </div>
+
+</div>
+
+<script>
+  // --- State ---
+  let transcript = "";
+  let interimText = "";
+  let correctedText = "";
+  let showCorrection = false;
+  let isListening = false;
+  let isChecking = false;
+  let savedText = "";
+  let recognition = null;
+
+  // --- DOM ---
+  const textArea = document.getElementById("textArea");
+  const placeholder = document.getElementById("placeholder");
+  const statusDot = document.getElementById("statusDot");
+  const statusLabel = document.getElementById("statusLabel");
+  const correctionBadge = document.getElementById("correctionBadge");
+  const btnMic = document.getElementById("btnMic");
+  const btnGrammar = document.getElementById("btnGrammar");
+  const btnSave = document.getElementById("btnSave");
+  const btnClear = document.getElementById("btnClear");
+  const savedArea = document.getElementById("savedArea");
+  const savedContent = document.getElementById("savedContent");
+
+  // --- Init Speech Recognition ---
+  function initRecognition() {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      setStatus("❌ Tarayıcınız ses tanımayı desteklemiyor. Chrome kullanın.");
+      btnMic.disabled = true;
+      return;
+    }
+    recognition = new SR();
+    recognition.lang = "tr-TR";
+    recognition.continuous = true;
+    recognition.interimResults = true;
+
+    recognition.onresult = (event) => {
+      let interim = "";
+      let final = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const r = event.results[i];
+        if (r.isFinal) final += r[0].transcript + " ";
+        else interim += r[0].transcript;
+      }
+      if (final) {
+        transcript += final;
+        interimText = "";
+      } else {
+        interimText = interim;
+      }
+      renderText();
+      updateButtons();
+    };
+
+    recognition.onerror = (e) => {
+      if (e.error !== "no-speech") {
+        setStatus("Hata: " + e.error);
+        isListening = false;
+        updateMicBtn();
+      }
+    };
+
+    recognition.onend = () => {
+      if (isListening) recognition.start();
+    };
+  }
+
+  // --- Render Text ---
+  function renderText() {
+    const activeText = showCorrection ? correctedText : transcript;
+    const display = activeText + (interimText && !showCorrection ? " " + interimText : "");
+
+    if (!display.trim() && !interimText) {
+      placeholder.style.display = "";
+      textArea.innerHTML = "";
+      textArea.appendChild(placeholder);
+    } else {
+      placeholder.style.display = "none";
+      if (showCorrection) {
+        textArea.innerHTML = `<span class="corrected">${escHtml(correctedText)}</span>`;
+      } else {
+        textArea.innerHTML =
+          escHtml(transcript) +
+          (interimText ? `<span class="interim"> ${escHtml(interimText)}</span>` : "");
+      }
+    }
+
+    correctionBadge.style.display = showCorrection ? "" : "none";
+    textArea.classList.toggle("listening", isListening);
+  }
+
+  function escHtml(t) {
+    return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  }
+
+  // --- Status ---
+  function setStatus(msg, temporary = false) {
+    statusLabel.textContent = msg;
+    if (temporary) {
+      setTimeout(() => {
+        statusLabel.textContent = isListening ? "Dinleniyor..." : "Hazır";
+      }, 2000);
+    }
+  }
+
+  // --- Update Buttons ---
+  function updateButtons() {
+    const hasText = transcript.trim().length > 0;
+    const hasActive = (showCorrection ? correctedText : transcript).trim().length > 0;
+    btnGrammar.disabled = !hasText || isChecking;
+    btnSave.disabled = !hasActive;
+    btnClear.disabled = !hasText && !correctedText;
+  }
+
+  function updateMicBtn() {
+    if (isListening) {
+      btnMic.textContent = "⏹ Durdur";
+      btnMic.classList.add("active");
+      statusDot.classList.add("active");
+    } else {
+      btnMic.textContent = "🎙 Başlat";
+      btnMic.classList.remove("active");
+      statusDot.classList.remove("active");
+    }
+  }
+
+  // --- Toggle Mic ---
+  function toggleMic() {
+    if (!recognition) return;
+    if (isListening) {
+      recognition.stop();
+      isListening = false;
+      interimText = "";
+      setStatus("Durduruldu");
+    } else {
+      showCorrection = false;
+      recognition.start();
+      isListening = true;
+      setStatus("Dinleniyor...");
+    }
+    updateMicBtn();
+    renderText();
+    updateButtons();
+  }
+
+  // --- Grammar Check ---
+  async function checkGrammar() {
+    if (!transcript.trim() || isChecking) return;
+    isChecking = true;
+    showCorrection = false;
+    btnGrammar.innerHTML = '<span class="spinner"></span>Kontrol...';
+    btnGrammar.disabled = true;
+    setStatus("Gramer kontrol ediliyor...");
+
+    try {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: "Sen bir Türkçe dil uzmanısın. Kullanıcının metnini dilbilgisi, noktalama ve yazım açısından düzelt. Sadece düzeltilmiş metni döndür, açıklama yapma.",
+          messages: [{ role: "user", content: "Şu metni düzelt: " + transcript }]
+        })
+      });
+      const data = await response.json();
+      const corrected = (data.content?.find(c => c.type === "text")?.text) || transcript;
+      correctedText = corrected;
+      showCorrection = true;
+      setStatus("✏️ Gramer kontrolü tamamlandı", true);
+    } catch (err) {
+      setStatus("❌ Gramer kontrolü başarısız", true);
+    }
+
+    isChecking = false;
+    btnGrammar.innerHTML = "✏️ Gramer Kontrol";
+    renderText();
+    updateButtons();
+  }
+
+  // --- Save ---
+  function saveText() {
+    const toSave = (showCorrection ? correctedText : transcript).trim();
+    if (!toSave) return;
+    savedText = savedText ? savedText + "\n\n" + toSave : toSave;
+    savedContent.textContent = savedText;
+    savedArea.classList.add("visible");
+
+    // Reset current
+    transcript = "";
+    correctedText = "";
+    showCorrection = false;
+    interimText = "";
+    setStatus("✅ Kaydedildi", true);
+    renderText();
+    updateButtons();
+  }
+
+  // --- Clear Current ---
+  function clearCurrent() {
+    transcript = "";
+    correctedText = "";
+    showCorrection = false;
+    interimText = "";
+    setStatus("Temizlendi", true);
+    renderText();
+    updateButtons();
+  }
+
+  // --- Clear Saved ---
+  function clearSaved() {
+    savedText = "";
+    savedContent.textContent = "";
+    savedArea.classList.remove("visible");
+  }
+
+  // --- Boot ---
+  initRecognition();
+  renderText();
+</script>
+</body>
+</html>
