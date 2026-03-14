@@ -1,0 +1,16 @@
+
+# local backup / snapshot clutter
+/docs/_local_backups/
+/docs/_local_snapshots/
+/docs/*.bak_*
+/docs/snapshots/docs_before_data_intake_reporting_*.tar.gz
+*.bak_*
+*.work_*
+*.sha256
+/snapshots/agents/
+/supabase/
+/assets/js/*.bak_*
+agents/intake_agent/logs/
+agents/intake_agent/ingestion/pending/
+agents/intake_agent/ingestion/sent/
+agents/intake_agent/ingestion/failed/

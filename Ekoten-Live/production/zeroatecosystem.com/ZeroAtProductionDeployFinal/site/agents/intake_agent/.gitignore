@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+
+normalized/*.json
+normalized/*.csv
+
+review/*.review.json
+
+staging/*
+incoming/*
+approved/*
+rejected/*
+archive/*

@@ -1,0 +1,3 @@
+facility,order_id,batch_id,process_line,asset_id,event_timestamp,production_kg,energy_kwh,water_m3,natural_gas_m3,wastewater_m3,cod_mg_l,bod_mg_l,tss_mg_l,ph,co2_kg
+ekoten,ORD-20260314-0001,BAT-20260314-0001,dyeing,JET01,2026-03-13T21:20:17.489095+00:00,450,200.36,9.36,21.92,9.03,469.55,368.77,158.94,6.94,176.34
+ekoten,ORD-20260314-0001,BAT-20260314-0001,dyeing,JET01,2026-03-13T21:20:27.510358+00:00,227,322.05,9.16,22.53,4.78,759.37,311.28,410.79,8.02,89.91

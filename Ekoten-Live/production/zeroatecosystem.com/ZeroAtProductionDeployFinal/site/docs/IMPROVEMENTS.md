@@ -1,170 +1,102 @@
-# Zero@Design — Improvements & Ideas Backlog
+# IMPROVEMENTS
 
-Last updated: 2026-03-08
+## Completed Improvements
 
-This document captures ideas and improvements that are **not implemented yet** but should not be forgotten.
+### Executive UI stabilization
+- recovered working `executive.html`
+- removed blank / partial render issue
+- protected stable render state
 
----
+### Card consistency
+- CFO mini chart visually aligned with CEO / CTO cards
+- CEO mini trend converted to green
+- CTO card rendering stabilized
 
-# Data Layer
+### Header improvements
+- green header action styling applied
+- Back button cleaned
+- Enter Consumption Data button cleaned (“+” removed)
 
-## Larger Synthetic Dataset
+### Decision layer
+- Decision Panel filled and interactive
+- executive decision area made visually complete
 
-Current dataset:
+### Operations Layer chart cleanup
+- Water chart converted to line
+- Energy chart normalized to clean green line
+- CO2 chart normalized to blue line
+- Wastewater chart normalized to red line
 
-~500 garments
+### Deployment improvement
+- working branch fast-forward merged into `main`
+- GitHub repository now reflects stable executive UI
 
-Potential expansion:
+## Strategic Product Improvements Agreed
 
-- 5,000 garments
-- regional production factors
-- supplier variability
-- transport emissions
-- washing lifecycle impact
+### Executive alert model
+Decision:
+Use **consolidated executive alert logic** instead of multi-row raw alert display.
 
----
+Reason:
+This product is positioned as an Executive Decision System, not a raw operations console.
 
-## Carbon Calculator Engine
+### New module approved: Universal Data Intake Agent
+Purpose:
+Convert heterogeneous source data into the canonical manual-form schema.
 
-Develop a product-level carbon calculator.
+Capabilities planned:
+- source intake from files, images, scans, spreadsheets, text
+- extraction and normalization
+- schema mapping
+- CSV generation
+- source archiving
+- review/approval workflow
 
-Formula concept:
+### New module approved: Report Generator Agent
+Purpose:
+Generate management-ready reports in multiple standards and formats.
 
-fabric_weight × fabric_co2_factor  
-+ accessories_co2  
-+ process_emissions  
-+ lifecycle emissions
+Capabilities planned:
+- Zero@ standard report generation
+- executive board report generation
+- ESG / sustainability reporting
+- audit report generation
+- customizable templates
 
-= estimated garment CO₂ footprint
+## Recommended Next Improvements
 
----
-
-## Material Substitution Simulation
-
-Example:
-
-Cotton → Recycled Cotton  
-Polyester → Recycled Polyester
-
-Calculate CO₂ impact difference.
-
----
-
-## Carbon Benchmark Bands
-
-Add industry benchmark comparison:
-
-LOW  
-MEDIUM  
-HIGH  
-
-based on product category averages.
-
----
-
-# Platform
-
-## Scenario Simulation Engine
-
-Allow scenarios like:
-
-Base  
-Stress  
-Shock
-
-Used by executive dashboard.
+1. Define canonical intake schema
+2. Design intake review flow
+3. Design report generator template system
+4. Connect normalized data to manual form autofill
+5. Add drilldown from Executive Alert to root-cause detail
 
 ---
 
-## Recommendation Engine
+## 2026-03-11 — Intake Agent Phase 2 / 2.1 Completed
 
-Suggest:
+### Done
+- Universal Data Intake Agent architecture defined
+- MVP skeleton created
+- CSV parsing added
+- pasted text parsing added
+- normalized JSON output added
+- flat CSV export added
+- review manifest output added
+- hardening layer added
+- source hash added
+- fingerprinting added
+- validation added
+- confidence scoring added
+- TR / EU numeric normalization fix completed
+- CSV raw numeric string preservation fix completed
 
-- lower carbon fabric alternatives
-- process improvements
-- accessory substitutions
+### Why This Matters
+This closes the main ingestion reliability gap between raw user input and canonical project data structures.
 
----
-
-## ML Readiness
-
-Prepare dataset for:
-
-- similarity search
-- carbon prediction
-- material substitution modeling
-
----
-
-# Executive Layer
-
-## CEO Card
-
-Strategic overview
-
-Elements:
-
-- Strategic Risk Index
-- Enterprise Signals
-- Executive Narrative
-- Scenario Toggle
-
----
-
-## CTO Card
-
-Platform technical health
-
-Elements:
-
-- platform stability
-- architecture integrity
-- execution velocity
-- deployment risk
-
----
-
-## CFO Card (future)
-
-Financial carbon exposure.
-
-Possible metrics:
-
-carbon cost exposure  
-carbon price risk  
-supplier carbon intensity
-
----
-
-# UI
-
-## Product Simulation Page
-
-User selects:
-
-- fabric
-- accessories
-- processes
-
-System calculates estimated CO₂ footprint.
-
----
-
-## Carbon Impact Visualizations
-
-Charts:
-
-- CO₂ by product
-- CO₂ by fabric
-- CO₂ by lifecycle stage
-
----
-
-# Data Import
-
-Future:
-
-Import real ERP / PLM / supplier data.
-
-Synthetic dataset will then act as fallback baseline.
-
+### Next Improvement Block
+- Report Generator MVP skeleton
+- first report templates
+- report input contract
+- report artifact manifest
+- approval-ready output flow

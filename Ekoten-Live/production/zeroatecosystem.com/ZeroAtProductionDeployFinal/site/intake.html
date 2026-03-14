@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero@Production — Data Intake Operations [PATCH ACTIVE]</title>
+  <style>
+    :root{
+      --bg:#08101b;
+      --card:#101a2a;
+      --muted:#9fb0c7;
+      --line:rgba(255,255,255,.08);
+      --green:#005530;
+      --navy:#02154e;
+      --orange:#f9ba00;
+      --red:#d51635;
+      --white:#f5f7fb;
+      --ok:#27c281;
+      --warn:#ffb020;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1000px 600px at 85% -10%, rgba(249,186,0,.08), transparent 45%),
+        linear-gradient(180deg,#07111d 0%, #0b1624 100%);
+      color:var(--white);
+    }
+    .wrap{
+      max-width:1280px;
+      margin:0 auto;
+      padding:32px 20px 64px;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      flex-wrap:wrap;
+      margin-bottom:22px;
+    }
+    .title{
+      font-size:30px;
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .subtitle{
+      color:var(--muted);
+      margin-top:6px;
+      font-size:14px;
+      line-height:1.5;
+    }
+    .toolbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .btn{
+      appearance:none;
+      border:none;
+      border-radius:12px;
+      padding:11px 16px;
+      font-weight:700;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition:.18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      background:var(--orange);
+      color:#111;
+    }
+    .btn-secondary{
+      background:rgba(255,255,255,.06);
+      color:var(--white);
+      border:1px solid var(--line);
+    }
+    .btn-green{
+      background:rgba(0,85,48,.22);
+      color:#b9f5d8;
+      border:1px solid rgba(0,85,48,.45);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:16px;
+    }
+    .card{
+      grid-column:span 12;
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      backdrop-filter:blur(8px);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+    }
+    .card.half{grid-column:span 6}
+    .card.third{grid-column:span 4}
+    .card.quarter{grid-column:span 3}
+
+    .row-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      margin-bottom:8px;
+    }
+    .value{
+      font-size:30px;
+      font-weight:800;
+      line-height:1.1;
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.5;
+    }
+    .muted{
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+    .mono{
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      border:1px solid transparent;
+    }
+    .pill.ok{
+      background:rgba(39,194,129,.12);
+      color:#9ef0c5;
+      border-color:rgba(39,194,129,.28);
+    }
+    .pill.warn{
+      background:rgba(255,176,32,.12);
+      color:#ffd67a;
+      border-color:rgba(255,176,32,.28);
+    }
+    .pill.red{
+      background:rgba(213,22,53,.12);
+      color:#ff9bad;
+      border-color:rgba(213,22,53,.28);
+    }
+
+    .controls{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .select, .input{
+      appearance:none;
+      background:rgba(255,255,255,.05);
+      color:var(--white);
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:11px 14px;
+      font-size:14px;
+      outline:none;
+      min-width:180px;
+    }
+    .upload-box{
+      border:1.5px dashed rgba(249,186,0,.35);
+      background:rgba(249,186,0,.05);
+      border-radius:16px;
+      padding:22px;
+    }
+    .upload-box .big{
+      font-size:20px;
+      font-weight:800;
+      margin-bottom:8px;
+    }
+
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .mini{
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px;
+    }
+    .mini .k{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.07em;
+      margin-bottom:6px;
+    }
+    .mini .v{
+      font-size:22px;
+      font-weight:800;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      font-size:14px;
+    }
+    th,td{
+      text-align:left;
+      padding:11px 8px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    th{
+      color:var(--muted);
+      font-weight:600;
+      font-size:13px;
+    }
+    code{
+      color:#ffd86b;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+    }
+
+    .footer-note{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.6;
+    }
+
+    @media (max-width:1024px){
+      .card.half,.card.third,.card.quarter{grid-column:span 12}
+      .kpi-grid{grid-template-columns:1fr}
+    }
+  </style>
+  <script src="assets/js/intake-api-config.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="title">Zero@Production — Data Intake Operations</div>
+        <div class="subtitle">
+          Intake visibility layer for latest batch, acceptance status, processor events, and facility daily snapshot.
+        </div>
+      </div>
+      <div class="toolbar">
+        <a class="btn btn-secondary" href="executive.html">← Back to Executive</a>
+        <button class="btn btn-green" id="refreshBtn" type="button">Refresh</button>
+        <button class="btn btn-primary" id="uploadBtn" type="button">Upload Intake File</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="row-head">
+          <div>
+            <div class="label">Operations Filter</div>
+            <div class="small">Start simple. Facility-first, auditable, no circus.</div>
+          </div>
+          <div class="controls">
+            <select id="facilitySelect" class="select">
+              <option value="Ekoten">Ekoten</option>
+              <option value="Merkez">Merkez</option>
+              <option value="Boya">Boya</option>
+              <option value="Finish">Finish</option>
+            </select>
+            <div class="pill ok" id="readLayerState">Read layer live</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card quarter">
+        <div class="label">Latest Batch</div>
+        <div class="value mono" id="latestBatchId">csv_20260311_123956</div>
+        <div class="small" id="latestBatchMeta">source: csv · facility: Ekoten · status: processed</div>
+      </div>
+
+      <div class="card quarter">
+        <div class="label">Accepted Records</div>
+        <div class="value" id="acceptedCount">18</div>
+        <div class="small">Accepted into normalized intake flow</div>
+      </div>
+
+      <div class="card quarter">
+        <div class="label">Rejected Records</div>
+        <div class="value" id="rejectedCount">2</div>
+        <div class="small">Validation or quality rejection count</div>
+      </div>
+
+      <div class="card quarter">
+        <div class="label">Processor Status</div>
+        <div class="value" id="processorStatus">Processed</div>
+        <div class="small" id="processorStatusNote">Last processor run completed successfully</div>
+      </div>
+
+      <div class="card half">
+        <div class="row-head">
+          <div>
+            <div class="label">Latest Processor Events</div>
+            <div class="small">Most recent sender / staging / processor trace for visibility.</div>
+          </div>
+          <div class="pill warn">Simple audit view</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Stage</th>
+              <th>Status</th>
+              <th>Detail</th>
+            </tr>
+          </thead>
+          <tbody id="eventsTableBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card half">
+        <div class="row-head">
+          <div>
+            <div class="label">CSV Upload</div>
+            <div class="small">Phase-3.4 placeholder block. Safe now, wire later.</div>
+          </div>
+          <div class="pill warn">Upload binding next</div>
+        </div>
+        <div class="upload-box">
+          <div class="big">Drop CSV here or choose a file</div>
+          <div class="muted">
+            This block is intentionally simple for now. Next step is binding it to the intake endpoint or local review workflow.
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+            <input id="csvFileInput" type="file" accept=".csv" class="input" />
+            <button class="btn btn-primary" id="fakeUploadBtn" type="button">Prepare Upload</button>
+          </div>
+          <div class="footer-note" id="uploadNote">
+            No upload action is wired yet. This is a controlled placeholder for Phase-3.4.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="row-head">
+          <div>
+            <div class="label">Latest Daily Snapshot</div>
+            <div class="small">Latest read model values for selected facility from <code>v_dashboard_daily_facility</code>.</div>
+          </div>
+          <div class="pill ok" id="snapshotFacilityPill">Facility: Ekoten</div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="mini">
+            <div class="k">Water</div>
+            <div class="v" id="water_m3">32.0 m³</div>
+          </div>
+          <div class="mini">
+            <div class="k">Wastewater</div>
+            <div class="v" id="wastewater_m3">29.0 m³</div>
+          </div>
+          <div class="mini">
+            <div class="k">Energy</div>
+            <div class="v" id="energy_kwh">1,200 kWh</div>
+          </div>
+          <div class="mini">
+            <div class="k">Natural Gas</div>
+            <div class="v" id="natural_gas_m3">40.0 m³</div>
+          </div>
+          <div class="mini">
+            <div class="k">Steam</div>
+            <div class="v" id="steam_ton">3.0 ton</div>
+          </div>
+          <div class="mini">
+            <div class="k">Production</div>
+            <div class="v" id="production_kg">850 kg</div>
+          </div>
+          <div class="mini">
+            <div class="k">CO₂</div>
+            <div class="v" id="co2_kg">418 kg</div>
+          </div>
+          <div class="mini">
+            <div class="k">COD</div>
+            <div class="v" id="cod_mg_l">310 mg/L</div>
+          </div>
+          <div class="mini">
+            <div class="k">BOD</div>
+            <div class="v" id="bod_mg_l">145 mg/L</div>
+          </div>
+          <div class="mini">
+            <div class="k">TSS</div>
+            <div class="v" id="tss_mg_l">92 mg/L</div>
+          </div>
+          <div class="mini">
+            <div class="k">pH</div>
+            <div class="v" id="ph">14.3</div>
+          </div>
+          <div class="mini">
+            <div class="k">Snapshot Date</div>
+            <div class="v" id="snapshot_date">2026-03-11</div>
+          </div>
+        </div>
+
+        <div class="footer-note">
+          Note: <code>ph=14.3</code> looks suspicious and should later be handled with data-quality guardrails. The read layer can still be operational while quality rules evolve.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const demoState = {
+      selectedFacility: "Ekoten",
+      latestBatch: {
+        batch_id: "csv_20260311_123956",
+        source: "csv",
+        facility: "Ekoten",
+        status: "processed"
+      },
+      counts: {
+        accepted: 18,
+        rejected: 2
+      },
+      processor: {
+        status: "Processed",
+        note: "Last processor run completed successfully"
+      },
+      events: [
+        { ts: "2026-03-11 21:12", stage: "sender_worker", status: "sent", detail: "payload inserted into public.intake_staging" },
+        { ts: "2026-03-11 21:13", stage: "staging_processor", status: "processed", detail: "readings written into public.core_metric_readings" },
+        { ts: "2026-03-11 21:14", stage: "read_layer", status: "live", detail: "daily view record available for selected facility" }
+      ],
+      snapshot: {
+        snapshot_date: "2026-03-11",
+        water_m3: "32.0 m³",
+        wastewater_m3: "29.0 m³",
+        energy_kwh: "1,200 kWh",
+        natural_gas_m3: "40.0 m³",
+        steam_ton: "3.0 ton",
+        production_kg: "850 kg",
+        co2_kg: "418 kg",
+        cod_mg_l: "310 mg/L",
+        bod_mg_l: "145 mg/L",
+        tss_mg_l: "92 mg/L",
+        ph: "14.3"
+      }
+    };
+
+    function renderEvents(events){
+      const tbody = document.getElementById("eventsTableBody");
+      tbody.innerHTML = "";
+      events.forEach(ev => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="mono">${ev.ts}</td>
+          <td>${ev.stage}</td>
+          <td>${ev.status}</td>
+          <td>${ev.detail}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    let hasLiveOpsData = false;
+
+    function formatMetricValue(key, value){
+      if (value === null || value === undefined || value === "") return "—";
+
+      const num = Number(value);
+      const isNumeric = !Number.isNaN(num);
+
+      if (!isNumeric) return value;
+
+      if (key === "water_m3" || key === "wastewater_m3" || key === "natural_gas_m3") {
+        return `${num.toLocaleString("en-US", {minimumFractionDigits: 1, maximumFractionDigits: 1})} m³`;
+      }
+
+      if (key === "energy_kwh") {
+        return `${num.toLocaleString("en-US")} kWh`;
+      }
+
+      if (key === "steam_ton") {
+        return `${num.toLocaleString("en-US", {minimumFractionDigits: 1, maximumFractionDigits: 1})} ton`;
+      }
+
+      if (key === "production_kg" || key === "co2_kg") {
+        return `${num.toLocaleString("en-US")} kg`;
+      }
+
+      if (key === "cod_mg_l" || key === "bod_mg_l" || key === "tss_mg_l") {
+        return `${num.toLocaleString("en-US")} mg/L`;
+      }
+
+      if (key === "ph") {
+        return `${num}`;
+      }
+
+      return `${num}`;
+    }
+
+    function renderSnapshot(snapshot){
+      Object.keys(snapshot).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) el.textContent = formatMetricValue(key, snapshot[key]);
+      });
+    }
+
+    function renderState(state, options = {}){
+      if (hasLiveOpsData && options.source === "demo") {
+        console.warn("[OPS] Demo render blocked because live API data is already active.");
+        return;
+      }
+
+      document.getElementById("facilitySelect").value = state.selectedFacility || "Ekoten";
+      document.getElementById("snapshotFacilityPill").textContent = "Facility: " + (state.selectedFacility || "Ekoten");
+
+      document.getElementById("latestBatchId").textContent = state.latestBatch.batch_id || "—";
+      document.getElementById("latestBatchMeta").textContent =
+        `source: ${state.latestBatch.source || "—"} · facility: ${state.latestBatch.facility || "—"} · status: ${state.latestBatch.status || "—"}`;
+
+      document.getElementById("acceptedCount").textContent = state.counts.accepted ?? "0";
+      document.getElementById("rejectedCount").textContent = state.counts.rejected ?? "0";
+      document.getElementById("processorStatus").textContent = state.processor.status || "—";
+      document.getElementById("processorStatusNote").textContent = state.processor.note || "—";
+
+      renderEvents(state.events || []);
+      renderSnapshot(state.snapshot || {});
+    }
+
+    function buildFacilityDemoState(facility){
+      const cloned = JSON.parse(JSON.stringify(demoState));
+      cloned.selectedFacility = facility;
+      cloned.latestBatch.facility = facility;
+
+      if (facility === "Merkez") {
+        cloned.latestBatch.batch_id = "csv_20260311_101200";
+        cloned.counts.accepted = 11;
+        cloned.counts.rejected = 1;
+        cloned.snapshot.water_m3 = "18.0 m³";
+        cloned.snapshot.energy_kwh = "860 kWh";
+        cloned.snapshot.production_kg = "640 kg";
+        cloned.snapshot.co2_kg = "296 kg";
+        cloned.snapshot.ph = "7.4";
+      }
+
+      if (facility === "Boya") {
+        cloned.latestBatch.batch_id = "csv_20260311_155020";
+        cloned.counts.accepted = 14;
+        cloned.counts.rejected = 3;
+        cloned.snapshot.water_m3 = "44.0 m³";
+        cloned.snapshot.wastewater_m3 = "41.0 m³";
+        cloned.snapshot.energy_kwh = "1,540 kWh";
+        cloned.snapshot.production_kg = "900 kg";
+        cloned.snapshot.co2_kg = "562 kg";
+        cloned.snapshot.cod_mg_l = "420 mg/L";
+        cloned.snapshot.ph = "10.1";
+      }
+
+      if (facility === "Finish") {
+        cloned.latestBatch.batch_id = "csv_20260311_173340";
+        cloned.counts.accepted = 9;
+        cloned.counts.rejected = 0;
+        cloned.snapshot.water_m3 = "15.0 m³";
+        cloned.snapshot.energy_kwh = "720 kWh";
+        cloned.snapshot.production_kg = "510 kg";
+        cloned.snapshot.co2_kg = "221 kg";
+        cloned.snapshot.ph = "6.8";
+      }
+
+      return cloned;
+    }
+
+    window.loadOpsFromApi = async function loadOpsFromApi(){
+      const facility = document.getElementById("facilitySelect").value || "Ekoten";
+
+      if (!window.ZeroIntakeConfig || typeof window.ZeroIntakeConfig.opsUrl !== "function") {
+        console.warn("[OPS] ZeroIntakeConfig not ready yet");
+        return;
+      }
+
+      try{
+        console.log("[OPS] loading live data for facility:", facility);
+
+        const res = await fetch(window.ZeroIntakeConfig.opsUrl(facility), {
+          cache: "no-store"
+        });
+
+        if(!res.ok) throw new Error(`ops api failed: ${res.status}`);
+
+        const data = await res.json();
+        console.log("[OPS] live payload:", data);
+
+        hasLiveOpsData = true;
+
+        renderState({
+          selectedFacility: data.facility || facility,
+          latestBatch: data.latest_batch || {},
+          counts: data.counts || {accepted:0,rejected:0},
+          processor: data.processor || {},
+          events: data.events || [],
+          snapshot: {
+            snapshot_date: data.snapshot?.snapshot_date ?? "—",
+            water_m3: data.snapshot?.water_m3 ?? "—",
+            wastewater_m3: data.snapshot?.wastewater_m3 ?? "—",
+            energy_kwh: data.snapshot?.energy_kwh ?? "—",
+            natural_gas_m3: data.snapshot?.natural_gas_m3 ?? "—",
+            steam_ton: data.snapshot?.steam_ton ?? "—",
+            production_kg: data.snapshot?.production_kg ?? "—",
+            co2_kg: data.snapshot?.co2_kg ?? "—",
+            cod_mg_l: data.snapshot?.cod_mg_l ?? data.snapshot?.cod ?? "—",
+            bod_mg_l: data.snapshot?.bod_mg_l ?? data.snapshot?.bod ?? "—",
+            tss_mg_l: data.snapshot?.tss_mg_l ?? data.snapshot?.tss ?? "—",
+            ph: data.snapshot?.ph ?? "—"
+          }
+        }, { source: "api" });
+
+      }catch(err){
+        console.error("[OPS] live load failed:", err);
+        hasLiveOpsData = false;
+        renderState(buildFacilityDemoState(facility), { source: "demo" });
+      }
+    }
+
+    document.getElementById("facilitySelect").addEventListener("change", function(){
+      loadOpsFromApi();
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", function(){
+      loadOpsFromApi();
+    });
+
+    document.getElementById("uploadBtn").addEventListener("click", function(){
+      document.getElementById("csvFileInput").click();
+    });
+
+
+    loadOpsFromApi();
+  </script>
+  
+  <script src="assets/js/intake-upload-binding.js"></script>
+</body>
+</html>

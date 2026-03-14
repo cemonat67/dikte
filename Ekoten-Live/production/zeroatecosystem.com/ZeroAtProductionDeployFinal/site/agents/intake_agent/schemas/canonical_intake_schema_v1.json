@@ -1,0 +1,73 @@
+{
+  "$schema_version": "1.0.0",
+  "record_type": "resource_intake",
+  "meta": {
+    "source_id": "",
+    "source_type": "",
+    "source_name": "",
+    "source_hash": "",
+    "source_language": "",
+    "received_at": "",
+    "processed_at": "",
+    "facility": "",
+    "site_area": "",
+    "period_start": "",
+    "period_end": "",
+    "uploader": "",
+    "review_status": "draft",
+    "confidence_score": 0,
+    "parser_version": ""
+  },
+  "metrics": {
+    "water_m3": null,
+    "energy_kwh": null,
+    "natural_gas_m3": null,
+    "steam_ton": null,
+    "co2_kg": null,
+    "wastewater_m3": null,
+    "waste_kg": null,
+    "production_kg": null
+  },
+  "wastewater_quality": {
+    "cod_mg_l": null,
+    "bod_mg_l": null,
+    "tss_mg_l": null,
+    "ph": null,
+    "conductivity_us_cm": null,
+    "temperature_c": null,
+    "color_ptco": null
+  },
+  "production_context": {
+    "product_family": "",
+    "material_code": "",
+    "batch_no": "",
+    "order_no": "",
+    "process_step": "",
+    "machine_line": "",
+    "shift": ""
+  },
+  "financial_overlay": {
+    "energy_cost_try": null,
+    "water_cost_try": null,
+    "wastewater_cost_try": null,
+    "carbon_cost_try": null,
+    "estimated_total_cost_try": null
+  },
+  "evidence": {
+    "raw_text_excerpt": "",
+    "table_refs": [],
+    "image_refs": [],
+    "file_refs": []
+  },
+  "normalization": {
+    "unit_map": {},
+    "field_map": {},
+    "transform_notes": []
+  },
+  "review": {
+    "reviewer": "",
+    "reviewed_at": "",
+    "approval_notes": "",
+    "rejection_reason": ""
+  }
+}

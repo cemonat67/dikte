@@ -1,0 +1,15 @@
+{
+  "review_id": "example-review-001",
+  "source_name": "sample_upload.csv",
+  "normalized_file": "sample_upload.normalized.json",
+  "review_status": "in_review",
+  "review_checks": {
+    "source_identity_confirmed": false,
+    "facility_confirmed": false,
+    "period_confirmed": false,
+    "units_checked": false,
+    "duplicates_checked": false
+  },
+  "reviewer": "",
+  "notes": ""
+}

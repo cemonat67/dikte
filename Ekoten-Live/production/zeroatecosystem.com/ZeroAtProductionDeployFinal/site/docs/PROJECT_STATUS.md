@@ -1,157 +1,126 @@
-# Zero@Design — Project Status
+# PROJECT STATUS
 
-Last updated: 2026-03-08
+## Project
+Zero@Production
 
----
+## Current Stable Status
+The project is currently stable on the executive dashboard and documentation side.
+The working UI must remain untouched in this documentation-only phase.
 
-# Platform Overview
+## Latest Completed Track
+Universal Data Intake Agent — Phase 2 / 2.1
 
-Zero@Design is a carbon estimation and simulation platform for textile products.
+### Completed and already committed
+- Agent architecture docs
+- Canonical intake schema
+- Intake workflow
+- Review / approval flow
+- Report generator architecture draft
+- Intake MVP skeleton
+- CSV parser
+- Pasted text parser
+- Normalized JSON writer
+- Flat CSV writer
+- Review manifest writer
+- Hardening layer
+- Source hash
+- Record fingerprint
+- Validation
+- Confidence scoring
+- TR/EU numeric coercion fix
+- CSV string-preserve fix before normalization
 
-The platform models:
+## Stable Checkpoints
+- Add Data Intake and Report Generator agent architecture docs
+- Add Intake Agent MVP skeleton with CSV and text parsers
+- Fix intake numeric coercion for TR and EU number formats
+- Fix CSV parsing to preserve raw numeric strings before normalization
 
-- textile lifecycle processes
-- material compositions
-- accessories
-- process emissions
-- garment level CO₂ estimates
+## What this means
+Zero@Production now has a documented and working foundation for a universal intake layer that can accept heterogeneous source data, preserve raw values safely, normalize records into a canonical structure, and prepare a controlled review flow before downstream use.
 
-The goal is to support **design, sourcing and executive decision making**.
+## Current Scope Lock
+This phase updates documentation only.
+No UI, dashboard, modal, or runtime behavior should be changed in this phase.
 
----
+## Next Phase
+Report Generator MVP Skeleton
 
-# Environment
+### Target for next phase
+- Build report generator agent skeleton
+- Define report input contract from reviewed intake data
+- Generate Zero@ standard report payloads
+- Support structured report outputs for internal and customer-facing use
+- Keep review / approval gate before report generation
+- Prepare docs and repo structure for later PDF / DOCX / board-report expansion
 
-Host:
+## Operational Rule
+- Terminal-first
+- One safe step at a time
+- Backup before patch
+- No blind overwrite
+- Docs-only commit for this phase
 
-MacBook M1  
-Docker
+## Repo Documentation Status
+The following docs are now the primary source of truth for this stage:
+- PROJECT_STATUS.md
+- PROJECT_STRUCTURE.md
+- IMPROVEMENTS.md
+- AGENTS.md
+- DATA_INTAKE_AND_REPORTING_PLAN.md
+- AGENTS_ROADMAP_2026-03-11.md
 
-Database:
-
-PostgreSQL 16 (postgres:16-alpine)
-
-Container:
-
-zerodesign-db
-
-Port:
-
-5432
-
-Database name:
-
-zero_design_co2
-
----
-
-# Database Structure
-
-Core tables:
-
-processes  
-emissions  
-lifecycle_master  
-fabrics  
-accessories  
-
-Synthetic simulation table:
-
-synthetic_garments
-
----
-
-# Baseline Seed Data
-
-processes        : 7  
-emissions        : 7  
-lifecycle_master : 7  
-fabrics          : 5  
-accessories      : 5  
-
----
-
-# Synthetic Dataset
-
-Table:
-
-synthetic_garments
-
-Rows:
-
-~500 synthetic garment SKUs
-
-Purpose:
-
-- simulation
-- demo scenarios
-- UI dataset
-- CO₂ estimation testing
 
 ---
 
-# Data Views
+## 2026-03-14 — SAP Mock Feeder Migration Simulator
 
-v_synthetic_carbon_bands  
-v_synthetic_garment_summary
+A new **SAP-like operational data migration simulator** was implemented to emulate
+live ERP → Zero@Production data ingestion.
 
-Used by:
+Module location:
 
-- dashboard
-- UI layer
-- analytics
+agents/sap_mock_feeder
 
----
+Capabilities:
 
-# Seed & Data Scripts
+• deterministic event generator  
+• order + batch continuity  
+• realistic factory metrics generation  
+• API ingestion simulation  
+• CSV export simulation  
+• burst migration mode  
 
-seed/scripts/bootstrap_zerodesign.sh  
-seed/scripts/reset_and_reseed.sh  
-seed/scripts/import_synthetic_garments.sh  
-seed/scripts/export_seed_csvs.sh  
-seed/scripts/generate_synthetic_garment_dataset.py  
+Pipeline:
 
----
+SAP Mock Feeder  
+→ Event Generator  
+→ API Sender / CSV Writer  
+→ /api/intake/raw  
+→ intake_agent  
+→ normalized JSON  
+→ review manifest
 
-# Current Product Focus
+Runner features:
 
-Executive Layer
+mode:
+- api
+- csv
+- both
 
-Priority sequence:
+burst_size:
+- configurable event batching
 
-1️⃣ CEO Card (finalize)
+Test results:
 
-2️⃣ CTO Card (design + implement)
+✓ API ingestion confirmed  
+✓ CSV export confirmed  
+✓ hybrid mode confirmed  
 
-3️⃣ Executive dashboard structure
+Golden snapshot created:
 
-The database layer is considered **stable enough for UI development**.
+.golden/golden-sap-feeder-v1-ui-ready-*
 
-Further DB changes should only happen if required by executive features.
+Next phase:
 
----
-
-# Architectural Layers
-
-Data Layer
-PostgreSQL + seed datasets
-
-Simulation Layer
-synthetic garment generator
-
-Analytics Layer
-SQL views
-
-Executive Layer
-Dashboard cards (CEO / CTO)
-
----
-
-# Next Milestone
-
-Finish CEO Strategic Card.
-
-After that:
-
-Implement CTO Technical Health Card.
-
+Executive Dashboard **Live Data Intake Monitor**

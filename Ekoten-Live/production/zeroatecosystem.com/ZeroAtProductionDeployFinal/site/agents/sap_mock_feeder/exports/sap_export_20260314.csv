@@ -1,0 +1,2 @@
+facility,order_id,batch_id,process_line,asset_id,event_timestamp,production_kg,energy_kwh,water_m3,natural_gas_m3,wastewater_m3,cod_mg_l,bod_mg_l,tss_mg_l,ph,co2_kg
+ekoten,ORD-TEST-0001,BAT-TEST-0001,dyeing,JET01,2026-03-13T20:00:00+00:00,500,220.5,7.8,12.4,6.2,800.0,350.0,240.0,7.2,145.0

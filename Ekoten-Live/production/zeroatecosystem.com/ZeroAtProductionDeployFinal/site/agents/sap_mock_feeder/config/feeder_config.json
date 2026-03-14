@@ -1,0 +1,73 @@
+{
+  "facility": "ekoten",
+  "mode": "both",
+  "interval_seconds": 10,
+  "api_endpoint": "http://127.0.0.1:8010/api/intake/raw",
+  "order": {
+    "prefix": "ORD",
+    "daily_reset": true
+  },
+  "batch": {
+    "min_events": 3,
+    "max_events": 6
+  },
+  "process_lines": [
+    "dyeing",
+    "finishing",
+    "compacting",
+    "stenter"
+  ],
+  "assets": [
+    "JET01",
+    "JET02",
+    "JET03",
+    "FIN01",
+    "FIN02",
+    "STENTER01"
+  ],
+  "ranges": {
+    "production_kg": [
+      200,
+      900
+    ],
+    "energy_kwh": [
+      120,
+      480
+    ],
+    "water_m3": [
+      2,
+      12
+    ],
+    "natural_gas_m3": [
+      5,
+      30
+    ],
+    "wastewater_m3": [
+      1,
+      10
+    ],
+    "cod_mg_l": [
+      400,
+      1200
+    ],
+    "bod_mg_l": [
+      200,
+      600
+    ],
+    "tss_mg_l": [
+      150,
+      450
+    ],
+    "ph": [
+      6.5,
+      8.5
+    ],
+    "co2_kg": [
+      50,
+      300
+    ]
+  },
+  "burst_size": 1,
+  "csv_export_dir": "agents/sap_mock_feeder/exports",
+  "csv_file_name": "sap_export_live.csv"
+}

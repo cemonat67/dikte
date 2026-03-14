@@ -1,0 +1,14 @@
+{
+  "seq": 2,
+  "mode": "both",
+  "burst_size": 1,
+  "event_count": 1,
+  "order_id": "ORD-20260314-0001",
+  "batch_id": "BAT-20260314-0001",
+  "process_line": "dyeing",
+  "asset_id": "JET01",
+  "api_ok": true,
+  "api_status_code": 200,
+  "csv_ok": true,
+  "csv_rows_written": 1
+}
