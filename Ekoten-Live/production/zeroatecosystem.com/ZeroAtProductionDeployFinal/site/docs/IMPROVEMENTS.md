@@ -100,3 +100,90 @@ This closes the main ingestion reliability gap between raw user input and canoni
 - report input contract
 - report artifact manifest
 - approval-ready output flow
+
+---
+
+## 2026-03-14 — Production Decision Engine Phase
+
+Zero@Production artık sadece veri görüntüleyen bir dashboard değil, aynı zamanda **production decision support layer** olarak çalışmaktadır.
+
+### Implemented Capabilities
+
+Production Decision Engine artık aşağıdaki karar metriklerini üretmektedir:
+
+- recommended machine
+- machine capacity
+- load percentage
+- estimated water usage
+- estimated energy consumption
+- estimated CO₂ impact
+- capacity verdict
+- decision note
+
+### Machine Alternatives Layer
+
+Dashboard ayrıca üç makine alternatifi göstermektedir:
+
+- Recommended machine
+- Alternative machine A
+- Alternative machine B
+
+Her kart aşağıdaki metrikleri içerir:
+
+- machine load %
+- energy kWh
+- CO₂ kg
+- capacity verdict
+
+### Machine Switch Simulation
+
+Kullanıcı alternatif makineye tıkladığında sistem:
+
+- load delta
+- energy delta
+- water delta
+- CO₂ delta
+
+hesaplayarak **impact comparison panel** üretir.
+
+### Sustainability Impact Score
+
+Impact score aşağıdaki ağırlıklarla hesaplanır:
+
+Impact Score =
+0.4 * Energy Δ
++0.3 * CO₂ Δ
++0.2 * Water Δ
++0.1 * Load Δ
+
+Severity levels:
+
+- LOW
+- MODERATE
+- HIGH
+
+### Production What-If Simulator
+
+Dashboard içinde bulunan **machine load slider** ile kullanıcı:
+
+- machine load %
+- energy
+- water
+- CO₂
+
+metriklerini canlı olarak simüle edebilir.
+
+### Next Development Phase
+
+The next step of Zero@Production is to introduce a **Machine Optimizer Layer**.
+
+Planned capabilities:
+
+1. Machine Ranking Engine  
+2. Decision Score calculation  
+3. Automatic Best Machine suggestion  
+4. Multi-scenario comparison  
+5. Executive Optimization Panel
+
+The goal is to transform the system from a comparison dashboard into a **Production Optimization Engine**.
+

@@ -157,3 +157,50 @@ Golden snapshot:
 Next planned feature:
 
 Executive Dashboard **Live Data Intake Monitor**
+
+---
+
+## Production Decision Engine Agent — 2026-03-14
+
+The Production Decision Engine acts as a lightweight **Factory Intelligence Agent** within the Zero@Production dashboard.
+
+Responsibilities:
+
+- evaluate machine candidates for a production order
+- verify capacity compatibility
+- estimate sustainability metrics
+- generate operational decision guidance
+
+Inputs:
+
+- production_orders
+- process_benchmarks
+- machine_status_live
+
+Core decision view:
+
+public.v_production_decision_engine
+
+Output signals:
+
+- recommended machine
+- capacity verdict
+- estimated energy
+- estimated water
+- estimated CO₂
+- decision note
+
+### Next Evolution
+
+The agent will evolve into a **Machine Optimizer Agent**.
+
+Planned capabilities:
+
+- ranking candidate machines
+- computing decision score
+- identifying best machine automatically
+- supporting multi-scenario comparison
+- producing executive optimization insight
+
+This layer will extend the current decision engine without redesigning the database or dashboard architecture.
+

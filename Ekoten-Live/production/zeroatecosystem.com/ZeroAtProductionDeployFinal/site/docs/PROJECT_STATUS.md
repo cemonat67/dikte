@@ -124,3 +124,95 @@ Golden snapshot created:
 Next phase:
 
 Executive Dashboard **Live Data Intake Monitor**
+
+---
+
+# Project Checkpoint — 2026-03-14
+
+## Zero@Production — Executive Decision Engine
+
+The Zero@Production dashboard is currently operating as a **Factory Decision Support System** for textile dyehouse production planning.
+
+The system integrates operational data and sustainability indicators to help production managers evaluate machine allocation decisions.
+
+### Current Capabilities
+
+The Production Decision Engine currently provides:
+
+- recommended machine selection
+- machine capacity verification
+- machine load percentage
+- estimated water usage
+- estimated energy consumption
+- estimated CO₂ emissions
+- capacity verdict
+- decision explanation
+
+### Machine Alternatives
+
+The system automatically presents **three candidate machines**:
+
+- Recommended machine
+- Alternative machine A
+- Alternative machine B
+
+Each candidate includes:
+
+- load %
+- estimated energy
+- estimated CO₂
+- capacity verdict
+
+### Machine Switch Simulation
+
+Users can click an alternative machine to simulate switching.
+
+The system calculates:
+
+- load delta
+- energy delta
+- water delta
+- CO₂ delta
+
+and generates a sustainability comparison.
+
+### Impact Score
+
+A weighted sustainability score is calculated using:
+
+Impact Score =
+0.4 * Energy Δ  
++0.3 * CO₂ Δ  
++0.2 * Water Δ  
++0.1 * Load Δ  
+
+Severity levels:
+
+- LOW
+- MODERATE
+- HIGH
+
+### What-If Simulation
+
+The dashboard includes a **machine load slider** allowing users to simulate:
+
+- different load scenarios
+- recalculated energy
+- recalculated water
+- recalculated CO₂
+- updated impact score
+
+### Next Development Phase
+
+The next phase of development is **Machine Optimizer**.
+
+This layer will introduce:
+
+- automatic machine ranking
+- decision score calculation
+- best machine recommendation
+- scenario comparison
+- executive optimization panel
+
+Goal: evolve Zero@Production into a **Machine Optimization Engine for industrial production planning**.
+
