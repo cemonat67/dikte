@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero@Hospital — Demo Hospital Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css?v=202604041344" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-block">
+      <div class="brand-left">
+        <img src="/static/assets/zah_logo.png" alt="Zero@Hospital Logo" class="brand-logo" style="width:96px;height:96px;min-width:96px;min-height:96px;max-width:none;max-height:none;display:block;object-fit:contain;flex:0 0 96px;" />
+        <div class="brand-copy">
+          <div class="brand-kicker">DEMO LIVE MODE</div>
+          <h1>Zero<span class="brand-at" style="color:#f9ba00 !important;">@</span>Hospital</h1>
+          <p class="subtitle">Demo Hospital — Yerel Yönetici Paneli</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <select id="facilitySelect"></select>
+        <button id="refreshBtn">Yenile</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero hero-4">
+      <div class="hero-card">
+        <div class="label">Durum</div>
+        <div id="healthStatus" class="value">Kontrol ediliyor...</div>
+        <div class="card-meta">Sistem, dashboard ve veri akışı kontrolü</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="label">Kapsam</div>
+        <div id="scopeLabel" class="value">Tüm Tesisler</div>
+        <div class="card-meta">Seçilen kurum / operasyon görünümü</div>
+      </div>
+
+      <div class="hero-card">
+        <div class="label">İçgörü Katmanı</div>
+        <div class="value">AI Commentary Aktif</div>
+        <div class="card-meta">Yönetici özeti ve karar desteği hazır</div>
+      </div>
+
+      <div class="hero-card hero-live">
+        <div class="label">Akış Modu</div>
+        <div class="value">Demo Live Feed</div>
+        <div class="card-meta">Gerçek baseline + sentetik operasyon akışı</div>
+      </div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Yönetici Rolleri</h2>
+        <p class="section-subtitle">Aynı operasyon, farklı yönetim bakışları</p>
+      </div>
+    </section>
+
+    <section id="personaCards" class="persona-grid">
+      <article class="persona-card persona-ceo">
+        <div class="persona-role">CEO</div>
+        <div class="persona-title">Genel Kurumsal Risk</div>
+        <div class="persona-value" id="personaCeoValue">Hazırlanıyor...</div>
+        <div class="persona-note">Kurumsal görünürlük, sürdürülebilirlik algısı ve genel yön</div>
+      </article>
+
+      <article class="persona-card persona-cfo">
+        <div class="persona-role">CFO</div>
+        <div class="persona-title">Maliyet ve Verim Baskısı</div>
+        <div class="persona-value" id="personaCfoValue">Hazırlanıyor...</div>
+        <div class="persona-note">Enerji, su, atık ve finansal etkilerin yorum katmanı</div>
+      </article>
+
+      <article class="persona-card persona-cto">
+        <div class="persona-role">CTO / VTO</div>
+        <div class="persona-title">Sistem ve Operasyon Performansı</div>
+        <div class="persona-value" id="personaCtoValue">Hazırlanıyor...</div>
+        <div class="persona-note">Altyapı, proses kararlılığı ve veri güvenilirliği</div>
+      </article>
+
+      <article class="persona-card persona-chief">
+        <div class="persona-role">Başhekim</div>
+        <div class="persona-title">Klinik Süreklilik ve Hasta Güveni</div>
+        <div class="persona-value" id="personaChiefValue">Hazırlanıyor...</div>
+        <div class="persona-note">Sağlık hizmetinin kesintisiz ve güvenli akışı</div>
+      </article>
+
+      <article class="persona-card persona-manager">
+        <div class="persona-role">Hastane Müdürü</div>
+        <div class="persona-title">Günlük Operasyon Hakimiyeti</div>
+        <div class="persona-value" id="personaManagerValue">Hazırlanıyor...</div>
+        <div class="persona-note">Saha akışı, kaynak kullanımı ve günlük yönetim görünümü</div>
+      </article>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Tesis Özeti</h2>
+        <p class="section-subtitle">Seçili tesis için özet kart görünümü</p>
+      </div>
+    </section>
+    <section>
+      <div id="facilitySummary" class="grid"></div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Yönetici Yorumu</h2>
+        <p class="section-subtitle">AI destekli kısa yorum ve öneri katmanı</p>
+      </div>
+    </section>
+    <section>
+      <div id="aiSummary" class="grid"></div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Güncel KPI'lar</h2>
+        <p class="section-subtitle">Son günlük snapshot üzerinden hesaplanan görünüm</p>
+      </div>
+    </section>
+    <section>
+      <div id="latestKpis" class="grid"></div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Executive Sustainability Summary</h2>
+        <p class="section-subtitle">Yönetim seviyesi sürdürülebilirlik skoru, risk ve aksiyon önerisi</p>
+      </div>
+    </section>
+
+    <section>
+      <div id="executiveSummary" class="grid"></div>
+    </section>
+
+    <section>
+
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Operasyon Grafik Alanı</h2>
+        <p class="section-subtitle">Demo live anlatımı için görsel karar desteği</p>
+      </div>
+    </section>
+
+    <section class="chart-grid">
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-kicker">TREND</div>
+            <h3>Enerji ve Su Eğilimi</h3>
+          </div>
+          <div class="chart-badge">14 Gün</div>
+        </div>
+        <canvas id="trendChart" height="140"></canvas>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-head">
+          <div>
+            <div class="chart-kicker">IMPACT</div>
+            <h3>CO₂ ve Üretim Karşılaştırması</h3>
+          </div>
+          <div class="chart-badge">Güncel</div>
+        </div>
+        <canvas id="impactChart" height="140"></canvas>
+      </article>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Klinik Risk & Atık Analizi</h2>
+        <p class="section-subtitle">Departman bazlı risk görünürlüğü, atık yoğunluğu ve günlük operasyon sinyalleri</p>
+      </div>
+    </section>
+
+    <section class="intake-section intake-launcher">
+      <div class="section-head">
+        <h2>Hospital Intake</h2>
+        <p class="section-subtitle">Demo Hospital için ilk müşteri / tesis kayıt akışı</p>
+      </div>
+      <div class="intake-launcher-row">
+        <div class="intake-launcher-copy">
+          Intake formu artık dashboard akışını bölmeden popup içinde açılır.
+        </div>
+        <button id="openHospitalIntakeBtn" type="button" class="intake-open-btn">Hospital Intake Aç</button>
+        <div class="visual-popup-actions">
+          <button id="openIntakeHubBtn" type="button" class="visual-popup-btn">Intake Hub</button>
+          <button id="openReportsCenterBtn" type="button" class="visual-popup-btn">Executive Reports Center</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="clinic-section">
+      <div class="clinic-kicker">Demo Hospital — Klinik bazlı canlı görünüm</div>
+      <div id="clinicHighlights" class="grid"></div>
+      <div id="clinicDailyMiniChart" class="clinic-mini-chart"></div>
+      <div id="clinicWaste" class="grid"></div>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <h2>Son Günlük Kayıtlar</h2>
+        <p class="section-subtitle">Demo live feed olarak sunulan operasyon listesi</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="trend-card" style="margin:0 0 18px 0;padding:16px 18px;border:1px solid rgba(255,255,255,.08);border-radius:18px;background:linear-gradient(180deg,rgba(12,23,42,.88),rgba(8,18,37,.82));">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+          <div>
+            <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#8fa3bf;font-weight:700;">Trend Layer</div>
+            <div style="font-size:20px;font-weight:800;color:#fff;">Son 14 Gün Trend</div>
+          </div>
+          <div id="trendSummaryPill" style="padding:8px 12px;border-radius:999px;background:rgba(245,196,81,.12);color:#f5c451;font-size:12px;font-weight:700;">
+            Yükleniyor...
+          </div>
+        </div>
+        <svg id="dailyTrendChart" viewBox="0 0 860 220" preserveAspectRatio="none" style="width:100%;height:220px;display:block;"></svg>
+      </div>
+    </section>
+
+    <section>
+      <div class="table-wrap">
+        <table id="dailyTable">
+          <thead>
+            <tr>
+              <th>Tarih</th>
+              <th>Tesis</th>
+              <th>Üretim (kg)</th>
+              <th>Enerji (kWh)</th>
+              <th>Su (m³)</th>
+              <th>CO₂ (kg)</th>
+              <th>Kalite</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js?v=202604041344"></script>
+
+
+<div id="hospitalIntakeTemplate" style="display:none;">
+  <div class="intake-modal-shell">
+    <div class="intake-modal-head">
+      <div>
+        <h2>Hospital Intake</h2>
+        <p class="section-subtitle">Demo Hospital için ilk müşteri / tesis kayıt akışı</p>
+      </div>
+      <button type="button" class="intake-modal-close" onclick="closeModal()">× Kapat</button>
+    </div>
+
+    <form id="hospitalIntakeForm" class="intake-form">
+      <div class="intake-grid">
+        <label>
+          <span>Hastane Adı</span>
+          <input type="text" name="hospital_name" value="Demo Hospital" required />
+        </label>
+
+        <label>
+          <span>İletişim Kişisi</span>
+          <input type="text" name="contact_name" placeholder="Ad Soyad" />
+        </label>
+
+        <label>
+          <span>Unvan</span>
+          <input type="text" name="contact_title" placeholder="Örn. Hastane Müdürü" />
+        </label>
+
+        <label>
+          <span>E-posta</span>
+          <input type="email" name="contact_email" placeholder="ornek@demo.com" />
+        </label>
+
+        <label>
+          <span>Telefon</span>
+          <input type="text" name="contact_phone" placeholder="+90..." />
+        </label>
+
+        <label>
+          <span>Tesis Tipi</span>
+          <input type="text" name="facility_type" placeholder="private_hospital" />
+        </label>
+
+        <label>
+          <span>Yatak Sayısı</span>
+          <input type="number" name="bed_count" min="0" />
+        </label>
+
+        <label>
+          <span>Çalışan Sayısı</span>
+          <input type="number" name="employee_count" min="0" />
+        </label>
+
+        <label>
+          <span>Günlük Hasta Sayısı</span>
+          <input type="number" name="daily_patient_count" min="0" />
+        </label>
+
+        <label>
+          <span>Öncelik</span>
+          <select name="priority_level">
+            <option value="normal" selected>Normal</option>
+            <option value="low">Düşük</option>
+            <option value="high">Yüksek</option>
+            <option value="critical">Kritik</option>
+          </select>
+        </label>
+
+        <label class="intake-wide">
+          <span>Mevcut Sistemler</span>
+          <input type="text" name="current_systems" placeholder="Excel, manuel raporlama, HBYS..." />
+        </label>
+
+        <label class="intake-wide">
+          <span>İstenen Modüller (virgülle)</span>
+          <input type="text" name="requested_modules" placeholder="dashboard, waste, water, co2" />
+        </label>
+
+        <label class="intake-wide">
+          <span>Notlar</span>
+          <textarea name="notes" rows="4" placeholder="Kısa intake notu..."></textarea>
+        </label>
+      </div>
+
+      <div class="intake-actions">
+        <button type="submit">Intake Kaydet</button>
+        <div id="intakeFormStatus" class="intake-status"></div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;">
+  <div style="max-width:800px;margin:80px auto;background:#0b1220;padding:24px;border-radius:16px;">
+    <h3 id="modalTitle">Detay</h3>
+    <div id="modalContent"></div>
+    <button onclick="document.getElementById('modal').style.display='none'">Kapat</button>
+  </div>
+</div>
+
+</body>
+</html>

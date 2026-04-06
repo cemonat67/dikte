@@ -1,0 +1,144 @@
+{
+  "name": "ZH_MASTER_ORCHESTRATOR",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 15
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        260,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "const fs = require('fs');\nconst path = '/docs/facility_registry.json';\nconst raw = fs.readFileSync(path, 'utf8');\nconst data = JSON.parse(raw);\nconst activeFacilities = (data.facilities || []).filter(f => f.active);\nreturn activeFacilities.map(f => ({ json: {\n  run_date: new Date().toISOString().slice(0,10),\n  mode: 'daily',\n  facility_code: f.facility_code,\n  facility_name: f.facility_name,\n  metric_profile: f.metric_profile,\n  tags: f.tags || []\n}}));"
+      },
+      "id": "load-facilities",
+      "name": "Load Active Facilities",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        520,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "split-facilities",
+      "name": "Split Facilities",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "workflowId": "PFOyc86ZjgwaVRlq",
+        "mode": "each",
+        "options": {}
+      },
+      "id": "execute-facility-runner",
+      "name": "Execute ZH_FACILITY_RUNNER",
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const itemsIn = $input.all();\nlet ok_count = 0;\nlet failed_count = 0;\nlet warning_count = 0;\nfor (const item of itemsIn) {\n  const s = item.json.status || 'unknown';\n  if (s === 'ok') ok_count++;\n  else if (s === 'warning') warning_count++;\n  else failed_count++;\n}\nreturn [{ json: {\n  run_date: new Date().toISOString().slice(0,10),\n  total_facilities: itemsIn.length,\n  ok_count,\n  failed_count,\n  warning_count,\n  note: 'skeleton summary'\n}}];"
+      },
+      "id": "build-summary",
+      "name": "Build Run Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Load Active Facilities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Active Facilities": {
+      "main": [
+        [
+          {
+            "node": "Split Facilities",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Facilities": {
+      "main": [
+        [
+          {
+            "node": "Execute ZH_FACILITY_RUNNER",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute ZH_FACILITY_RUNNER": {
+      "main": [
+        [
+          {
+            "node": "Build Run Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "zh-master-orchestrator-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {},
+  "tags": [
+    {
+      "name": "zero-hospital"
+    },
+    {
+      "name": "orchestration"
+    }
+  ],
+  "id": "eIVKT6edvIeqHYU8"
+}

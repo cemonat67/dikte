@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zero@Hospital — Bazekol Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Zero@Hospital</h1>
+      <p class="subtitle">Bazekol Sağlık Grubu — Local Executive Dashboard</p>
+    </div>
+    <div class="topbar-actions">
+      <select id="facilitySelect"></select>
+      <button id="refreshBtn">Refresh</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <div class="label">Status</div>
+        <div id="healthStatus" class="value">Checking...</div>
+      </div>
+      <div class="hero-card">
+        <div class="label">Scope</div>
+        <div id="scopeLabel" class="value">All Facilities</div>
+      </div>
+      <div class="hero-card">
+        <div class="label">Insight Layer</div>
+        <div class="value">Ready for OpenClaw Bridge</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Facility Summary</h2>
+      <div id="facilitySummary" class="grid"></div>
+    </section>
+
+    <section>
+      <h2>Latest KPIs</h2>
+      <div id="latestKpis" class="grid"></div>
+    </section>
+
+    <section>
+      <h2>Recent Daily Records</h2>
+      <div class="table-wrap">
+        <table id="dailyTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Facility</th>
+              <th>Metric</th>
+              <th>Value</th>
+              <th>Unit</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

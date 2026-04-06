@@ -1,0 +1,64 @@
+{
+  "version": "v1",
+  "profiles": {
+    "hospital_standard": {
+      "description": "Demo hospital standard synthetic profile",
+      "producer_groups": [
+        "utilities",
+        "waste",
+        "emissions",
+        "operations",
+        "sustainability"
+      ],
+      "metrics": {
+        "utilities": [
+          "water_m3",
+          "wastewater_m3",
+          "energy_kwh",
+          "natural_gas_m3",
+          "steam_ton"
+        ],
+        "waste": [
+          "total_waste_kg",
+          "medical_waste_kg",
+          "pathological_waste_kg",
+          "recycled_waste_kg"
+        ],
+        "emissions": [
+          "co2_kg",
+          "scope1_tco2e",
+          "scope2_location_tco2e",
+          "scope2_market_tco2e"
+        ],
+        "operations": [
+          "production_kg",
+          "patient_count",
+          "surgery_count",
+          "occupancy_rate"
+        ],
+        "sustainability": [
+          "green_hospital_score",
+          "waste_segregation_score",
+          "water_efficiency_score",
+          "energy_efficiency_score"
+        ]
+      },
+      "required_for_dashboard": [
+        "water_m3",
+        "energy_kwh",
+        "total_waste_kg",
+        "medical_waste_kg",
+        "pathological_waste_kg",
+        "scope2_location_tco2e"
+      ],
+      "required_for_scoring": [
+        "water_m3",
+        "wastewater_m3",
+        "energy_kwh",
+        "natural_gas_m3",
+        "steam_ton",
+        "co2_kg"
+      ]
+    }
+  }
+}

@@ -1,0 +1,163 @@
+const els = {
+  facilitySelect: document.getElementById("facilitySelect"),
+  refreshBtn: document.getElementById("refreshBtn"),
+  healthStatus: document.getElementById("healthStatus"),
+  scopeLabel: document.getElementById("scopeLabel"),
+  facilitySummary: document.getElementById("facilitySummary"),
+  latestKpis: document.getElementById("latestKpis"),
+  dailyTableBody: document.querySelector("#dailyTable tbody"),
+};
+
+function api(path) {
+  return fetch(path).then(async (res) => {
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt || `HTTP ${res.status}`);
+    }
+    return res.json();
+  });
+}
+
+function safe(v) {
+  return v === null || v === undefined || v === "" ? "—" : v;
+}
+
+function selectedFacility() {
+  const v = els.facilitySelect.value;
+  return v === "__all__" ? null : v;
+}
+
+function queryForFacility(base) {
+  const facilityId = selectedFacility();
+  if (!facilityId) return base;
+  const sep = base.includes("?") ? "&" : "?";
+  return `${base}${sep}facility_id=${encodeURIComponent(facilityId)}`;
+}
+
+function makeCard(title, value, meta = "") {
+  const div = document.createElement("div");
+  div.className = "card";
+  div.innerHTML = `
+    <div class="card-title">${title}</div>
+    <div class="card-value">${safe(value)}</div>
+    <div class="card-meta">${meta}</div>
+  `;
+  return div;
+}
+
+async function loadHealth() {
+  try {
+    const data = await api("/health");
+    els.healthStatus.textContent = "Connected";
+    els.healthStatus.className = "value status-ok";
+  } catch (err) {
+    els.healthStatus.textContent = "Offline";
+    els.healthStatus.className = "value status-bad";
+  }
+}
+
+async function loadFacilities() {
+  const rows = await api("/api/facilities");
+  els.facilitySelect.innerHTML = "";
+  const allOpt = document.createElement("option");
+  allOpt.value = "__all__";
+  allOpt.textContent = "All Facilities";
+  els.facilitySelect.appendChild(allOpt);
+
+  rows.forEach((row) => {
+    const opt = document.createElement("option");
+    opt.value = row.facility_id;
+    opt.textContent = row.facility_name || row.facility_id;
+    els.facilitySelect.appendChild(opt);
+  });
+}
+
+async function loadSummary() {
+  const rows = await api(queryForFacility("/api/facility-summary"));
+  els.facilitySummary.innerHTML = "";
+
+  if (!rows.length) {
+    els.facilitySummary.appendChild(makeCard("Facility Summary", "No data", ""));
+    return;
+  }
+
+  rows.forEach((row) => {
+    const title = row.facility_name || row.facility_id || "Facility";
+    const meta = Object.entries(row)
+      .filter(([k]) => !["facility_id", "facility_name"].includes(k))
+      .slice(0, 4)
+      .map(([k, v]) => `${k}: ${safe(v)}`)
+      .join(" · ");
+    els.facilitySummary.appendChild(makeCard(title, row.facility_id || "—", meta));
+  });
+}
+
+async function loadLatest() {
+  const rows = await api(queryForFacility("/api/dashboard/latest"));
+  els.latestKpis.innerHTML = "";
+
+  if (!rows.length) {
+    els.latestKpis.appendChild(makeCard("Latest KPIs", "No data", ""));
+    return;
+  }
+
+  rows.slice(0, 12).forEach((row) => {
+    const title = `${safe(row.facility_name)} — ${safe(row.metric_name || row.metric_code)}`;
+    const value = `${safe(row.metric_value)} ${safe(row.unit || "")}`.trim();
+    const meta = [
+      row.metric_date ? `date: ${row.metric_date}` : null,
+      row.status ? `status: ${row.status}` : null
+    ].filter(Boolean).join(" · ");
+    els.latestKpis.appendChild(makeCard(title, value, meta));
+  });
+}
+
+async function loadDaily() {
+  const rows = await api(queryForFacility("/api/dashboard/daily?days=14"));
+  els.dailyTableBody.innerHTML = "";
+
+  if (!rows.length) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td colspan="5">No data</td>`;
+    els.dailyTableBody.appendChild(tr);
+    return;
+  }
+
+  rows.slice(0, 60).forEach((row) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${safe(row.metric_date)}</td>
+      <td>${safe(row.facility_name)}</td>
+      <td>${safe(row.metric_name || row.metric_code)}</td>
+      <td>${safe(row.metric_value)}</td>
+      <td>${safe(row.unit)}</td>
+    `;
+    els.dailyTableBody.appendChild(tr);
+  });
+}
+
+async function refreshAll() {
+  const selectedText = els.facilitySelect.options[els.facilitySelect.selectedIndex]?.text || "All Facilities";
+  els.scopeLabel.textContent = selectedText;
+
+  await Promise.all([
+    loadHealth(),
+    loadSummary(),
+    loadLatest(),
+    loadDaily(),
+  ]);
+}
+
+async function boot() {
+  await loadFacilities();
+  await refreshAll();
+
+  els.facilitySelect.addEventListener("change", refreshAll);
+  els.refreshBtn.addEventListener("click", refreshAll);
+}
+
+boot().catch((err) => {
+  console.error(err);
+  els.healthStatus.textContent = "Boot failed";
+  els.healthStatus.className = "value status-bad";
+});

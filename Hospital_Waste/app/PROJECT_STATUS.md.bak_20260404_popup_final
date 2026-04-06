@@ -1,0 +1,81 @@
+# Hospital Zero – UI & Modal System Status (April 2026)
+
+## ✅ Completed
+
+### Modal System Stabilization
+- Fixed broken `closeIntake()` function (invalid JS syntax removed)
+- Eliminated modal conflict between:
+  - #modal (legacy visual popup)
+  - #intakeModal (new intake system)
+- Implemented reliable close behavior:
+  - Button (× Kapat) → working
+  - ESC key → working
+- Added hard fallback close (inline DOM control)
+
+### Cache & Deployment
+- Cache bust applied:
+  - styles.css → v=20260403e
+  - app.js → v=20260403e
+- Verified live production sync
+
+### Intake System
+- Hospital Intake modal fully functional
+- Form rendering stable
+- Overlay UX consistent (dark enterprise style)
+
+---
+
+## ⚠️ Pending (Critical for Demo)
+
+### Visual Popups (Incomplete)
+The following components are still placeholder-level:
+
+- Intake Hub
+- Executive Reports Center
+
+Current state:
+- Static content
+- No real data
+- No decision layer
+- Not suitable for client/demo usage
+
+---
+
+## 🎯 Next Objective
+
+Transform visual popups into **decision-grade dashboards**
+
+### Intake Hub → should become:
+- Onboarding pipeline overview
+- Facility summary snapshot
+- Intake status tracking
+
+### Executive Reports Center → should become:
+- CFO / Executive dashboard
+- CO₂ footprint estimation
+- Cost exposure (€)
+- Risk classification (Low / Medium / High)
+- KPI cards + insight layer
+
+---
+
+## 🧠 Product Direction
+
+We are NOT building:
+> a form system
+
+We ARE building:
+> a decision intelligence layer for hospitals
+
+---
+
+## 🚀 Next Step
+
+Implement:
+- Data model (fake but realistic)
+- Executive KPI cards
+- Impact messaging (cost / risk / sustainability)
+
+Goal:
+👉 Convert demo → sales-ready system
+

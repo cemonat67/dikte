@@ -1,0 +1,33 @@
+{
+  "version": "v1",
+  "facilities": [
+    {
+      "facility_code": "CIGLI_HOSP",
+      "facility_name": "Demo Hospital Çiğli Hastanesi",
+      "active": true,
+      "metric_profile": "hospital_standard",
+      "tags": ["demo", "hospital", "main"]
+    },
+    {
+      "facility_code": "BORNOVA_HOSP",
+      "facility_name": "Demo Hospital Bornova",
+      "active": true,
+      "metric_profile": "hospital_standard",
+      "tags": ["demo", "hospital"]
+    },
+    {
+      "facility_code": "KONAK_HOSP",
+      "facility_name": "Demo Hospital Konak",
+      "active": true,
+      "metric_profile": "hospital_standard",
+      "tags": ["demo", "hospital"]
+    },
+    {
+      "facility_code": "BALCOVA_HOSP",
+      "facility_name": "Demo Hospital Balçova",
+      "active": true,
+      "metric_profile": "hospital_standard",
+      "tags": ["demo", "hospital"]
+    }
+  ]
+}

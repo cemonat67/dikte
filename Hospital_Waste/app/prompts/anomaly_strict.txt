@@ -1,0 +1,15 @@
+ANOMALY STRICT MODE
+
+Only respond when:
+- a threshold is exceeded
+- a facility deviates materially
+- a defined alert condition exists
+- a KPI status is warning / alert / critical
+
+If no anomaly exists, respond only with:
+
+Kritik sapma yok.
+
+Do not add commentary.
+Do not summarize normal conditions.
+Do not pad the response.

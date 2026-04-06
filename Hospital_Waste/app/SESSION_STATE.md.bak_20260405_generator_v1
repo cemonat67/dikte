@@ -1,0 +1,109 @@
+# ZERO@HOSPITAL — SESSION STATE
+## Checkpoint Date: 2026-04-05
+
+---
+
+## ✅ CURRENT VERIFIED STATE
+
+### Backend
+- Production backend running and stable
+- No legacy facility mapping in main endpoints
+- Direct `facility_code` usage across APIs
+
+### API Status
+
+#### Dashboard
+- /api/dashboard/latest → ✅ WORKING (multi-hospital)
+- /api/dashboard/daily → ✅ WORKING (vw_dashboard_daily)
+
+#### Clinic Layer
+- /api/dashboard/clinic-daily → ✅ WORKING (DEMO_BORNOVA verified)
+- /api/dashboard/clinic-highlights → ✅ WORKING (DEMO_BORNOVA verified)
+
+### Verified Facilities
+- CIGLI_HOSP → OK
+- DEMO_BORNOVA → OK
+- DEMO_KONAK → OK (latest only)
+- DEMO_KSK → OK (latest only)
+
+---
+
+## ⚠️ DATA REALITY
+
+- Clinic-level data originally existed only for Çiğli
+- DEMO_BORNOVA → clinic data SEEDED and verified
+- DEMO_KONAK → clinic data NOT VERIFIED
+- DEMO_KSK → clinic data NOT VERIFIED
+
+---
+
+## ✅ FRONTEND STATUS
+
+- static/app.js cleaned:
+  - ❌ demo_hospital REMOVED
+  - ❌ hardcoded facility REMOVED
+  - ✅ dynamic facility selection ACTIVE
+
+- loadAll() → dynamic
+- loadClinicDashboard() → dynamic
+- intake payload → dynamic
+
+---
+
+## 🔥 SYSTEM ARCHITECTURE (NOW)
+
+- TRUE multi-hospital system
+- No fallback hacks
+- No demo-only shortcuts
+- Facility-driven pipeline end-to-end
+
+---
+
+## 🎯 NEXT STEPS
+
+1. Verify clinic coverage:
+   - DEMO_KONAK
+   - DEMO_KSK
+
+2. If missing:
+   - Apply same clinic seed pattern as DEMO_BORNOVA
+
+3. UI validation:
+   - facility selector behavior
+   - ensure correct API calls per selection
+
+4. Optional:
+   - production deploy + cache bust
+
+---
+
+## ⚙️ WORKING RULES
+
+- Turkish only
+- Terminal-first
+- 1 command + 1 control
+- No nano
+- Diagnose first, then fix
+- Do NOT break working components
+- Always verify with curl before UI assumptions
+
+---
+
+## 🧠 IMPORTANT INSIGHT
+
+Previous issue was NOT code.
+
+It was:
+→ data absence + hardcoded fallback
+
+Now:
+→ system is data-driven and scalable
+
+---
+
+## 🚀 STATUS
+
+SYSTEM = STABLE  
+ARCHITECTURE = CORRECT  
+NEXT = DATA COVERAGE EXPANSION
+

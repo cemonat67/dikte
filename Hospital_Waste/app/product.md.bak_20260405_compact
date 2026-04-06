@@ -1,0 +1,250 @@
+# ZERO@HOSPITAL — PRODUCT NOTES
+
+## Tarih
+2026-04-05
+
+## Konu
+Multi-hospital clinic synthetic data orchestration
+
+## Neden Bu Katman Gerekli?
+Mevcut durumda dashboard multi-hospital çalışıyor; ancak clinic layer veri kapsamı eksik olduğunda bazı demo hastaneler boş dönüyor. Sorun koddan çok veri orkestrasyonu ve clinic-level synthetic coverage eksikliği.
+
+## Doğrulanmış Teknik Gerçekler
+- `/api/dashboard/latest` legacy mapping olmadan `facility_code` ile çalışıyor.
+- `/api/dashboard/daily` `zerocare_operational.vw_dashboard_daily` üzerinden `facility_code` ile çalışıyor.
+- `vw_dashboard_clinic_daily` view definition doğrulandı.
+- `vw_dashboard_clinic_daily` kaynak tabloları:
+  - `zerocare_operational.daily_metrics`
+  - `zerocare_operational.facilities`
+  - `zerocare_operational.departments`
+- Clinic verisi `daily_metrics.department_id` dolu olduğunda view’e düşüyor.
+- Klinik adı view içinde `departments.department_name_tr` üzerinden geliyor.
+- Klinik kodu view içinde `departments.department_code` üzerinden geliyor.
+
+## Veri Gerçeği
+- `CIGLI_HOSP` clinic coverage var.
+- `DEMO_BORNOVA` clinic coverage seed ile var.
+- `DEMO_KONAK` clinic coverage yok.
+- `DEMO_KSK` clinic coverage yok.
+
+## Ürün Kararı
+Tek tek manuel seed yaklaşımı yerine:
+**Synthetic Clinic Orchestration Layer** kurulacak.
+
+## Hedef Mimari
+1. Facility Seed Agent
+2. Clinic Generator Agent
+3. Synthetic Validation Agent
+4. Reconciliation Agent
+5. Orchestrator
+
+## Tasarım Prensipleri
+- Production-safe
+- Multi-hospital
+- Clinic-aware
+- Validation-driven
+- Staging -> validation -> reconciliation -> publish akışı
+- Doğrudan kör insert yok
+- Demo-grade ama audit kontrollü
+
+## Muhtemel Yazma Noktası
+Ana veri giriş tablosu olarak ilk aday:
+- `zerocare_operational.daily_metrics`
+
+## Sonraki Teknik Adım
+Aşağıdakiler doğrulanacak:
+1. `daily_metrics` şeması
+2. gerekli kolonlar
+3. `department_id` / `facility_id` ilişkisi
+4. synthetic write için staging gereksinimi
+5. publish stratejisi
+
+
+## 2026-04-05 — Department Master Data Reality
+
+### Doğrulanan gerçek
+- `zerocare_operational.facilities` içinde:
+  - `CIGLI_HOSP`
+  - `DEMO_BORNOVA`
+  - `DEMO_KONAK`
+  - `DEMO_KSK`
+  kayıtları mevcut.
+
+- Ancak `zerocare_operational.departments` içinde:
+  - `DEMO_BORNOVA`
+  - `DEMO_KONAK`
+  - `DEMO_KSK`
+  için department kaydı yok.
+
+### Kritik bulgu
+- `DEMO_BORNOVA` clinic verisi çalışıyor görünse de,
+  kendi department master’ı ile çalışmıyor.
+- `daily_metrics.department_id` değerleri `CIGLI_HOSP` department kayıtlarına bağlı.
+- Yani mevcut Bornova clinic layer semantik olarak “borrowed departments” modeliyle çalışıyor.
+
+### Çiğli demo klinik katalogu
+- `CARDIO` → Kalp Damar
+- `ONCO` → Onkoloji
+- `ORTHO` → Ortopedi
+- `SURG` → Genel Cerrahi
+
+### Constraint doğrulaması
+- `departments_pkey` → `PRIMARY KEY (department_id)`
+- `departments_facility_id_department_code_key` → `UNIQUE (facility_id, department_code)`
+- `departments_facility_id_fkey` → facilities foreign key
+
+### Ürün kararı
+Doğru mimari:
+1. Her demo hospital için kendi `departments` master data kayıtları oluşturulacak
+2. Sonra clinic synthetic metrics bu local department kayıtlarına yazılacak
+3. `DEMO_BORNOVA` ileride borrowed-department modelinden local-department modeline normalize edilecek
+
+### Sonraki teknik adım
+- `DEMO_BORNOVA`, `DEMO_KONAK`, `DEMO_KSK` için
+  `CARDIO / ONCO / ORTHO / SURG`
+  department bootstrap SQL hazırlanacak.
+
+## 2026-04-05 — Department Master Data Reality
+
+### Doğrulanan gerçek
+- `zerocare_operational.facilities` içinde:
+  - `CIGLI_HOSP`
+  - `DEMO_BORNOVA`
+  - `DEMO_KONAK`
+  - `DEMO_KSK`
+  kayıtları mevcut.
+
+- Ancak `zerocare_operational.departments` içinde:
+  - `DEMO_BORNOVA`
+  - `DEMO_KONAK`
+  - `DEMO_KSK`
+  için department kaydı yok.
+
+### Kritik bulgu
+- `DEMO_BORNOVA` clinic verisi çalışıyor görünse de,
+  kendi department master’ı ile çalışmıyor.
+- `daily_metrics.department_id` değerleri `CIGLI_HOSP` department kayıtlarına bağlı.
+- Yani mevcut Bornova clinic layer semantik olarak “borrowed departments” modeliyle çalışıyor.
+
+### Çiğli demo klinik katalogu
+- `CARDIO` → Kalp Damar
+- `ONCO` → Onkoloji
+- `ORTHO` → Ortopedi
+- `SURG` → Genel Cerrahi
+
+### Constraint doğrulaması
+- `departments_pkey` → `PRIMARY KEY (department_id)`
+- `departments_facility_id_department_code_key` → `UNIQUE (facility_id, department_code)`
+- `departments_facility_id_fkey` → facilities foreign key
+
+### Ürün kararı
+Doğru mimari:
+1. Her demo hospital için kendi `departments` master data kayıtları oluşturulacak
+2. Sonra clinic synthetic metrics bu local department kayıtlarına yazılacak
+3. `DEMO_BORNOVA` ileride borrowed-department modelinden local-department modeline normalize edilecek
+
+### Sonraki teknik adım
+- `DEMO_BORNOVA`, `DEMO_KONAK`, `DEMO_KSK` için
+  `CARDIO / ONCO / ORTHO / SURG`
+  department bootstrap SQL hazırlanacak.
+
+## 2026-04-05 — Expanded Demo Clinic Catalog Decision
+
+### Yeni karar
+Demo hastaneler için klinik katalogu 4 temel klinikle sınırlı kalmayacak.
+Gerçeğe daha yakın bir hospital demo yapısı için katalog genişletilecek.
+
+### Faz-1 genişletilmiş demo klinik seti
+- `CARDIO` → Kalp Damar
+- `ONCO`   → Onkoloji
+- `ORTHO`  → Ortopedi
+- `SURG`   → Genel Cerrahi
+- `ER`     → Acil Servis
+- `ICU`    → Yoğun Bakım
+- `IM`     → Dahiliye
+- `RAD`    → Radyoloji
+- `LAB`    → Laboratuvar
+
+### Gerekçe
+- Demo hastanelerin klinik dağılımını daha gerçekçi yapmak
+- Klinik davranışlarını çeşitlendirmek
+- Synthetic orchestration içinde farklı pattern kurallarına zemin hazırlamak
+- UI tarafında daha inandırıcı clinic dashboard görünümü sağlamak
+
+### Metrik seti (faz-1)
+Yeni klinikler şu mevcut metric set ile beslenecek:
+- `water_m3`
+- `wastewater_m3`
+- `electricity_kwh`
+- `medical_waste_kg`
+- `pathological_waste_kg`
+
+### Tasarım notu
+Bir sonraki aşamada her klinik için ayrı davranış profili tanımlanacak:
+- `ER`  → yüksek oynaklık, yüksek atık
+- `ICU` → yüksek ve daha stabil yük
+- `SURG` → patolojik ve tıbbi atık piki
+- `RAD` → yüksek elektrik, düşük su
+- `LAB` → orta elektrik, sabit atık
+- `IM` → dengeli günlük dağılım
+
+## 2026-04-05 — Synthetic Clinic Generator v1
+
+### Konu
+Global clinic catalog üstünden behavior-driven synthetic clinic metric generation.
+
+### Problem
+Dashboard multi-hospital çalışıyor; ancak clinic katmanında veri kapsamı eksik olduğunda bazı facility’lerde clinic endpoint’leri boş veya yetersiz kalıyor.
+
+### Yeni doğrulanmış teknik gerçek
+- `daily_metrics` wide değil, long-format metric store.
+- 1 metric = 1 row.
+- Hedef metric set zaten mevcut şemayla uyumlu:
+  - `electricity_kwh`
+  - `water_m3`
+  - `wastewater_m3`
+  - `medical_waste_kg`
+  - `pathological_waste_kg`
+
+### Ürün kararı
+Synthetic katman manuel seed yaklaşımından çıkarılıp standardize edilmiş generator mantığına geçirilecek.
+
+### v1 standardı
+- quality_flag = `synthetic`
+- calculation_method = `clinic_behavior_v1`
+- source_system = `clinic_synth_v1`
+
+### Mimari rol
+Bu katman artık sadece demo doldurma aracı değil:
+- data completeness engine
+- clinic simulation layer
+- future forecasting / ML hazırlık katmanı
+
+### Tasarım prensipleri
+- preview-first
+- validation-driven
+- controlled insert
+- no overwrite
+- no update
+- deterministic seed destekli
+- facility-aware
+- clinic-aware
+
+### Klinik davranış mantığı
+`clinic_behavior.json` dosyası generator’ın ana davranış kaynağı olacak.
+Her clinic için:
+- base intensity
+- variance
+- wastewater ratio
+- waste pattern
+- daily fluctuation
+kuralları tanımlanacak.
+
+### Faz-1 çıktı hedefi
+- tüm 9 facility
+- tüm 9 clinic
+- 7 günlük synthetic clinic metric coverage
+- clinic endpoint’lerinin facility bazında dolu ve tutarlı çalışması
+
+### Sonraki adım
+Preview script implementation + resolver + long-format insert payload generation.

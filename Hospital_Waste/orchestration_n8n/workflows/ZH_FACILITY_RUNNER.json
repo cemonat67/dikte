@@ -1,0 +1,203 @@
+{
+  "name": "ZH_FACILITY_RUNNER",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "manual-trigger",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        220,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first()?.json || {};\nreturn [{ json: {\n  run_date: input.run_date || new Date().toISOString().slice(0,10),\n  mode: input.mode || 'daily',\n  facility_code: input.facility_code || 'CIGLI_HOSP',\n  facility_name: input.facility_name || 'Demo Hospital Çiğli Hastanesi',\n  metric_profile: input.metric_profile || 'hospital_standard',\n  tags: input.tags || []\n}}];"
+      },
+      "id": "normalize-input",
+      "name": "Normalize Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const fs = require('fs');\nconst raw = fs.readFileSync('/docs/metric_profiles.json', 'utf8');\nconst profiles = JSON.parse(raw).profiles || {};\nconst item = $input.first().json;\nconst profile = profiles[item.metric_profile];\nif (!profile) {\n  throw new Error(`Metric profile not found: ${item.metric_profile}`);\n}\nreturn [{ json: { ...item, profile } }];"
+      },
+      "id": "load-profile",
+      "name": "Load Metric Profile",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nreturn [{ json: {\n  ...item,\n  baseline_status: 'pending_check',\n  note: 'baseline DB kontrolü sonraki adımda eklenecek'\n}}];"
+      },
+      "id": "baseline-check",
+      "name": "Baseline Check Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nconst groups = item.profile.producer_groups || [];\nreturn [{ json: {\n  ...item,\n  producer_groups: groups,\n  generated_rows: 0,\n  generation_status: 'pending_implementation'\n}}];"
+      },
+      "id": "generate-metrics",
+      "name": "Generate Metrics Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nreturn [{ json: {\n  ...item,\n  validation_rows: 0,\n  accepted_pairs: 0,\n  rejected_pairs: 0,\n  validation_status: 'pending_implementation'\n}}];"
+      },
+      "id": "validate-output",
+      "name": "Validation Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nreturn [{ json: {\n  ...item,\n  promoted_rows: 0,\n  bridged_rows: 0,\n  bridge_status: 'pending_implementation'\n}}];"
+      },
+      "id": "bridge-output",
+      "name": "Bridge Placeholder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1660,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json;\nreturn [{ json: {\n  run_date: item.run_date,\n  facility_code: item.facility_code,\n  facility_name: item.facility_name,\n  metric_profile: item.metric_profile,\n  status: 'warning',\n  generated_rows: item.generated_rows,\n  validation_rows: item.validation_rows,\n  accepted_pairs: item.accepted_pairs,\n  rejected_pairs: item.rejected_pairs,\n  promoted_rows: item.promoted_rows,\n  bridged_rows: item.bridged_rows,\n  note: 'facility runner skeleton tamam; gerçek DB/generation/bridge henüz bağlı değil'\n}}];"
+      },
+      "id": "build-result",
+      "name": "Build Facility Result",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Normalize Input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Input": {
+      "main": [
+        [
+          {
+            "node": "Load Metric Profile",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Load Metric Profile": {
+      "main": [
+        [
+          {
+            "node": "Baseline Check Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baseline Check Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Generate Metrics Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Metrics Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Validation Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Bridge Placeholder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bridge Placeholder": {
+      "main": [
+        [
+          {
+            "node": "Build Facility Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "zh-facility-runner-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "pinData": {},
+  "tags": [
+    {
+      "name": "zero-hospital"
+    },
+    {
+      "name": "facility-runner"
+    }
+  ],
+  "id": "PFOyc86ZjgwaVRlq"
+}
