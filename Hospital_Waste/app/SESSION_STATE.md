@@ -483,3 +483,725 @@ NEXT = DATA COVERAGE EXPANSION
 3. promote sonrası staging flag stratejisi
 4. orchestration (n8n / API trigger)
 
+
+## 2026-04-06 — N8N PROMOTE PRODUCTION GO-LIVE CHECKPOINT
+
+### VERIFIED
+- `zerocare_audit.promote_runs` audit tablosu aktif
+- `zerocare_operational.run_promote_with_audit(...)` wrapper fonksiyonu aktif
+- n8n workflow: `ZH_PROMOTE_PRODUCTION`
+- cron schedule: daily 06:00
+- webhook endpoint: `POST /webhook/zh-promote-production`
+- postgres execution from n8n confirmed
+- audit confirmed across:
+  - DRY_RUN
+  - NO_OP
+  - SUCCESS
+
+### GO-LIVE PROOF
+- Test amaçlı staging `electricity_kwh` değeri kontrollü artırıldı ve `written_rows = 1` ile SUCCESS doğrulandı
+- Test değişikliği geri alındı
+- Geri alma sonrası tekrar `written_rows = 1` ile SUCCESS doğrulandı
+- Son canlı webhook çağrısı:
+  - `selected_rows = 7`
+  - `written_rows = 0`
+  - `status = NO_OP`
+- Bu davranış idempotent production behavior olarak doğrulandı
+
+### CURRENT STATE
+- production promote workflow canlı
+- tekrar eden aynı veri için `NO_OP` beklenen ve doğru davranış
+- yeni version / fingerprint değişiminde `SUCCESS` ve write gerçekleşiyor
+
+### NEXT
+1. webhook body ile `facility_code`, `date_from`, `date_to`, `dry_run` parametre alma
+2. alert layer (email/slack) ekleme
+3. audit summary view / dashboard widget
+4. cron run sonrası lightweight notification
+
+## 2026-04-06 — GENERATOR OMURGASI KARARI
+
+- Teşhis kesinleşti: generator pipeline `public.core_metric_readings` üzerinde kalmış legacy hatta bağlı.
+- Çalışan production omurgası `zerocare_operational.staging_daily_metrics -> promote -> daily_metrics -> vw_dashboard_daily` zinciri.
+- `daily_live_generator.py` ve `generate_validate_promote_synthetic.py` mevcut haliyle yanlış veri omurgasına yazıyor/okuyor.
+- `staging_daily_metrics` write target olarak doğrulandı; manuel insert başarılı.
+- `daily_metrics` baseline için ham kaynak, ancak department/facility çoğulluğu içeriyor.
+- `vw_dashboard_daily` facility-level günlük pivot view olarak doğrulandı ve baseline için V1'de kullanılmasına karar verildi.
+- V1 synthetic metric scope kilitlendi: `electricity_kwh`, `water_m3`, `medical_waste_kg`, `pathological_waste_kg`, `general_waste_kg`.
+- V1 scope dışı: `wastewater_m3`, `scope2_location_tco2e`, `waste_cost_try`.
+- Karar: `daily_live_generator.py` clean rewrite ile `vw_dashboard_daily`den baseline okuyacak, `staging_daily_metrics`e yazacak. Promote ayrı adımda tetiklenecek.
+
+## 2026-04-06 — DAILY LIVE GENERATOR V3 → PROMOTE → DASHBOARD CHECKPOINT
+
+### VERIFIED
+- Legacy generator hattının ana kaynak olmayacağı kararı canlı olarak doğrulandı
+- Yaşayan omurga doğrulandı:
+  `staging_daily_metrics -> run_promote_with_audit / promote_ready_daily_metrics -> daily_metrics -> vw_dashboard_daily`
+- `daily_live_generator.py` clean rewrite sonrası `daily_live_generator_v3` şu 7 metrici üretiyor:
+  - `electricity_kwh`
+  - `water_m3`
+  - `medical_waste_kg`
+  - `pathological_waste_kg`
+  - `general_waste_kg`
+  - `scope2_location_tco2e`
+  - `waste_cost_try`
+- Derived kurallar doğrulandı:
+  - `scope2_location_tco2e = electricity_kwh * 0.000460`
+  - `waste_cost_try = total_waste_kg * 43.3255`
+- `connect()` içinde `conn.prepare_threshold = None` ile prepared statement problemi aşıldı
+
+### LIVE VERIFICATION — DEMO_KONAK / 2026-04-06
+- Batch: `7a8a4194-d247-4dc7-aee2-411322a1ab94`
+- `staging_daily_metrics` içinde 7/7 metric yazıldı
+- Tüm satırlar `VALID`
+- Tüm satırlar `is_promotable = true`
+- `v_staging_daily_metrics_status` sonucu:
+  - `total_metrics = 7`
+  - `valid_metrics = 7`
+  - `status = READY`
+- `run_promote_with_audit('DEMO_KONAK', '2026-04-06', '2026-04-06', false)` sonucu:
+  - `selected_days = 1`
+  - `selected_rows = 7`
+  - `written_rows = 7`
+  - `status = SUCCESS`
+- `vw_dashboard_daily` üzerinde facility/day pivot satırı eksiksiz doğrulandı
+
+### DECISION
+- Enterprise Dogma korunuyor
+- READY=7 kuralı gevşetilmeyecek
+- Generator yaşayan production omurgasına bağlı kalacak
+- `vw_dashboard_daily` artık generator doğrulaması için de resmi okuma katmanı kabul edilecek
+
+### NEXT
+1. Aynı doğrulamayı en az 1–2 farklı demo facility için tekrar et
+2. `generate_validate_promote_synthetic.py` dosyasını da aynı omurgaya hizalı mı diye doğrula
+3. Bu akışı orchestration katmanına bağlayacak günlük run planını netleştir
+4. Gerekirse n8n veya scheduler katmanına enterprise-ready günlük akış ekle
+
+## 2026-04-06 — SECOND FACILITY VERIFICATION (DEMO_BORNOVA)
+
+### VERIFIED
+- `daily_live_generator_v3` ikinci facility üzerinde de aynı production omurgasıyla doğrulandı
+- Test facility: `DEMO_BORNOVA`
+- Generator çıktısı:
+  - `status = OK`
+  - `baseline_day = 2026-04-05`
+  - `start_date = 2026-04-06`
+  - `end_date = 2026-04-06`
+  - `inserted_rows = 7`
+  - `batch_id = 67b4ecfc-88ce-46fa-ad28-498ba8098d33`
+  - `mode = enterprise_ready_7_metrics`
+
+### LIVE VERIFICATION — DEMO_BORNOVA / 2026-04-06
+- `v_staging_daily_metrics_status` sonucu:
+  - `total_metrics = 7`
+  - `valid_metrics = 7`
+  - `status = READY`
+- `run_promote_with_audit('DEMO_BORNOVA', '2026-04-06', '2026-04-06', false)` sonucu:
+  - `selected_days = 1`
+  - `selected_rows = 7`
+  - `written_rows = 7`
+  - `status = SUCCESS`
+- `vw_dashboard_daily` facility/day satırı eksiksiz doğrulandı:
+  - `electricity_kwh = 22094.551111`
+  - `water_m3 = 481.013447`
+  - `medical_waste_kg = 103.746588`
+  - `pathological_waste_kg = 24.569223`
+  - `general_waste_kg = 389.068558`
+  - `scope2_location_tco2e = 10.163494`
+  - `waste_cost_try = 22415.936479`
+
+### DECISION
+- `daily_live_generator_v3` artık tek-facility değil, çoklu demo facility davranışı açısından da doğrulanmış kabul edilecek
+- Yaşayan omurga kararı yalnız `DEMO_KONAK` özel başarısı değil, tekrar üretilebilir sistem davranışı olarak kabul edildi
+- Sonraki adımda yeni generator yazmaktan önce orchestration / scheduling planı netleştirilecek
+
+### NEXT
+1. `generate_validate_promote_synthetic.py` dosyasının da aynı production omurgasına tam hizalı olup olmadığını doğrula
+2. Günlük enterprise run tasarımını netleştir:
+   - facility listesi
+   - sıra / retry mantığı
+   - promote tetik sırası
+   - audit / idempotency kuralları
+3. Bu akışın n8n mi yoksa Python scheduler mı olacağına karar ver
+4. Gerekirse orchestration katmanı için ayrı runner tasarla (`generate -> validate/status -> promote -> verify dashboard`)
+
+## 2026-04-06 — GENERATE_VALIDATE_PROMOTE_SYNTHETIC REWRITE KARARI
+
+### DECISION
+- `scripts/generate_validate_promote_synthetic.py` patch edilerek kurtarılmayacak
+- Dosya mimari olarak legacy / parallel pipeline mantığı taşıdığı için baştan yazılacak
+- Yeni sürüm yalnız yaşayan production omurgasına bağlanacak:
+  `vw_dashboard_daily -> staging_daily_metrics -> v_staging_daily_metrics_status -> run_promote_with_audit -> vw_dashboard_daily`
+- Yeni sürüm yalnız yaşayan 7 KPI setini üretecek:
+  - `electricity_kwh`
+  - `water_m3`
+  - `medical_waste_kg`
+  - `pathological_waste_kg`
+  - `general_waste_kg`
+  - `scope2_location_tco2e`
+  - `waste_cost_try`
+
+### RULES FOR REWRITE
+- Legacy tablolar kullanılmayacak:
+  - `public.core_metric_readings`
+  - `public.synthetic_metric_readings_staging`
+  - `public.synthetic_validation_results`
+- Custom validation/promote mantığı taşınmayacak
+- Script rolü: `generate -> stage -> readiness check -> promote -> verify`
+- Multi-facility çalışabilecek şekilde tasarlanacak
+- JSON çıktı verecek
+- Idempotent olacak
+- Önce mimari/net kontrat, sonra clean rewrite
+
+## 2026-04-06 — LEGACY SYNTHETIC ENGINE SQL ARŞİVLENDİ
+
+### VERIFIED
+- Repo içi legacy referans taraması yapıldı:
+  - aktif yeni scriptte legacy runtime dependency bulunmadı
+  - legacy izleri yalnız backup / state / eski SQL artefaktlarında kaldı
+- `sql/01_create_synthetic_engine.sql` incelendi
+- Dosyanın yalnız aşağıdaki legacy tabloları oluşturduğu doğrulandı:
+  - `public.synthetic_metric_readings_staging`
+  - `public.synthetic_validation_results`
+- Trigger / function / scheduler / view içermediği doğrulandı
+- Risk tipi runtime değil, “yanlışlıkla yeniden aktive edilme” riski olarak sınıflandırıldı
+
+### ACTION
+- `sql/01_create_synthetic_engine.sql` aktif SQL klasöründen çıkarıldı
+- Dosya `archive/legacy/01_create_synthetic_engine.sql` konumuna taşındı
+- Böylece production SQL klasörü yalnız yaşayan omurgaya ait migration/DDL dosyalarını içerir hale getirildi
+
+### DECISION
+- Legacy synthetic engine artefaktları silinmeyecek, forensic / tarihçe amacıyla arşivde tutulacak
+- Ancak aktif production path içinde yer almayacak
+- Yeni orchestration runner legacy’ye runtime dependency taşımayacak
+- Gerekirse yalnız preflight/read-only audit amaçlı legacy görünürlüğü korunacak
+
+## 2026-04-06 — GENERATE_VALIDATE_PROMOTE_SYNTHETIC ORCHESTRATOR v1 CHECKPOINT
+
+### VERIFIED
+- `scripts/generate_validate_promote_synthetic.py` sıfırdan pure orchestrator olarak yeniden yazıldı
+- Script artık veri üretmiyor; yalnızca yaşayan hat üzerinde orchestration yapıyor:
+  - `daily_live_generator.py`
+  - `zerocare_operational.v_staging_daily_metrics_status`
+  - `zerocare_operational.run_promote_with_audit`
+  - `zerocare_operational.vw_dashboard_daily`
+- Legacy synthetic engine runtime dependency kaldırıldı
+- Staging manipülasyonu / deactivate logic kaldırıldı
+- Tek facility smoke test `DEMO_KONAK / 2026-04-06` için başarıyla doğrulandı
+- Doğrulanan çıktı:
+  - `generate_status = NOOP: up-to-date`
+  - `staging_status = READY`
+  - `total_metrics = 7`
+  - `valid_metrics = 7`
+  - `promote_status = NO_OP`
+  - `written_rows = 0`
+  - `final_row_exists = true`
+- Script tek JSON summary döndürüyor; n8n / API orchestration için uygun
+
+### CURRENT DECISION
+- Tüm uygulama baştan yazılmayacak
+- Çalışan production omurgası korunacak
+- Rewrite yalnız yanlış katmanlarda yapılacak
+- Bir sonraki odak:
+  1. multi-facility smoke test
+  2. orchestration service layer
+  3. KPI evaluation + routing + AI commentary contract
+
+
+## 2026-04-06 — MULTI-FACILITY SMOKE TEST CHECKPOINT
+
+### VERIFIED
+- Multi-facility smoke test başarıyla doğrulandı
+- Test edilen facility seti:
+  - `CIGLI_HOSP`
+  - `DEMO_BORNOVA`
+  - `DEMO_KONAK`
+- Her facility için `scripts/generate_validate_promote_synthetic.py` end-to-end çalıştı
+- Her sonuçta aşağıdaki koşullar sağlandı:
+  - `status = OK`
+  - `generate_status = NOOP: up-to-date`
+  - `total_metrics = 7`
+  - `valid_metrics = 7`
+  - `staging_status = READY`
+  - `promote_status = NO_OP`
+  - `final_row_exists = true`
+
+### DATA HYGIENE
+- `CIGLI_HOSP / 2026-04-06` staging içinde bulunan kirli test kaydı temizlendi:
+  - `metric_code = energy_kwh`
+  - `source_system = manual_test`
+  - `validation_status = PENDING`
+- Bu temizlik sonrası staging görünümü üç facility için de `7 / 7 / READY` seviyesine geldi
+
+### CURRENT DECISION
+- Orchestrator v1 tek facility ile sınırlı bir demo script olmaktan çıktı
+- Yaşayan production omurgası üzerinde multi-facility doğrulanmış çekirdek haline geldi
+- Bir sonraki odak:
+  1. ayrı multi-facility runner tasarımı
+  2. orchestration service layer
+  3. KPI evaluation + routing + AI commentary contract
+
+
+## CHECKPOINT — Multi-Facility Orchestration v1 (2026-04-06)
+
+STATUS: STABLE CORE SYSTEM
+
+- Multi-facility orchestrator aktif
+- KPI evaluator deterministic severity (LOW/MEDIUM/HIGH/MISSING)
+- Trend-aware değerlendirme aktif
+- Routing decision layer gerçek karar üretiyor (ESCALATE/REVIEW/NO_ACTION)
+- AI commentary explainable ve KPI bazlı
+- Facility naming single source of truth → orchestration.details.facility_name
+
+SYSTEM TYPE:
+→ KPI-aware orchestration + decision engine (ML-ready)
+
+NEXT STEP:
+→ Action Layer (alerts / tasks / notifications)
+
+
+## 2026-04-06 — ACTION LAYER CHECKPOINT
+
+### VERIFIED
+- Action Layer faz 1 tamamlandı
+- `services/action_dispatcher.py` oluşturuldu
+- deterministic action contract üretimi aktif
+- desteklenen routing kararları:
+  - `ESCALATE`
+  - `REVIEW`
+  - `NO_ACTION`
+- action output yapısı:
+  - `primary_action`
+  - `action_count`
+  - `requires_followup`
+  - `dispatch_mode=DRY_RUN`
+  - `actions[]`
+  - `log_payload`
+- gerçek dış dispatch yok:
+  - mail yok
+  - slack yok
+  - webhook yok
+- action contract yanlışlıkla subprocess wrapper seviyesine bağlandı, sonra geri alındı
+- doğru birleşim noktası `scripts/run_multi_facility_orchestrator.py` olarak sabitlendi
+- final orchestration payload artık şu katmanları birlikte üretiyor:
+  - `kpi_evaluation`
+  - `routing_decision`
+  - `routing_contract`
+  - `ai_commentary`
+  - `action_contract`
+
+### LIVE VALIDATION
+- test facility: `CIGLI_HOSP`
+- doğrulanan çıktı:
+  - `facility_name = Demo Hospital Çiğli Hastanesi`
+  - `routing_decision = ESCALATE`
+  - `action_primary = incident_create`
+  - `action_count = 4`
+
+### ARCHITECTURE DECISION
+- `services/orchestrator_runner.py` sadece subprocess wrapper olarak kalacak
+- action contract üretimi orchestration composer katmanında yapılacak
+- Action Layer karar üretmez; routing kararını operasyonel aksiyon kontratına çevirir
+
+### NEXT
+1. final payload için API response contract netleştir
+2. action contract log/audit persistence tasarla
+3. DRY_RUN → future dispatcher adapter arayüzünü tanımla
+
+
+## 2026-04-06 — API ORCHESTRATION FINAL ENDPOINT CHECKPOINT
+
+### VERIFIED
+- yeni endpoint eklendi: `/api/orchestration/final`
+- eski `/api/orchestration/summary` endpoint'ine dokunulmadı
+- yeni endpoint orchestration composer zincirini API katmanına taşıyor:
+  - `run_facility_orchestrator`
+  - `evaluate_facility_kpis`
+  - `decide_service_route`
+  - `build_ai_commentary_contract`
+  - `build_action_contract`
+- response contract alanları:
+  - `facility_code`
+  - `facility_name`
+  - `report_date`
+  - `kpi_evaluation`
+  - `routing_decision`
+  - `routing_contract`
+  - `ai_commentary`
+  - `action_contract`
+  - `meta.contract_version = orchestration_final_v1`
+
+### LIVE VALIDATION
+- endpoint fonksiyon testi doğrudan Python üzerinden doğrulandı
+- test facility: `CIGLI_HOSP`
+- doğrulanan çıktı:
+  - `facility_name = Demo Hospital Çiğli Hastanesi`
+  - `report_date = 2026-04-06`
+  - `routing_decision = ESCALATE`
+  - `action_primary = incident_create`
+  - `action_count = 4`
+  - `meta.contract_version = orchestration_final_v1`
+
+### ARCHITECTURE DECISION
+- API v2/final contract ayrı endpoint olarak açıldı
+- mevcut v1 summary endpoint korunuyor
+- frontend geçişi kontrollü yapılacak; önce yeni endpoint sabitlenecek, sonra UI tüketimi bağlanacak
+
+### NEXT
+1. frontend hangi ekranda bu endpoint'i kullanacak netleştir
+2. static/app.js veya ilgili UI dosyasında fetch zincirini yeni endpoint'e bağla
+3. routing / AI / action kartlarını frontend'de görünür hale getir
+
+
+## 2026-04-06 — FRONTEND ORCHESTRATION FINAL INTEGRATION CHECKPOINT
+
+### VERIFIED
+- Frontend orchestration entegrasyonu `static/index.html` ve `static/app.js` üzerinden yapıldı
+- `static/index.html` içine yeni görünür orchestration blokları eklendi:
+  - `routingDecision`
+  - `routingContract`
+  - `actionContract`
+- `static/app.js` içinde `els` map’i yeni orchestration alanları ile genişletildi
+- `loadAll()` artık `/api/ai/summary` yerine `/api/orchestration/final` çağrıyor
+- `loadAll()` halen `/api/dashboard/latest` ve `/api/dashboard/daily` kaynaklarını koruyor
+- Yeni render fonksiyonları eklendi:
+  - `renderRoutingDecision(final)`
+  - `renderRoutingContract(final)`
+  - `renderActionContract(final)`
+- `renderAISummary()` ve `renderPersonas()` gerçek `ai_commentary` contract’ine göre yeniden hizalandı
+- Canlı contract doğrulandı:
+  - `routing_decision = ESCALATE`
+  - `ai_commentary` alanları: `highlights`, `kpi_summary`, `orchestration_status`, `routing_decision`, `facility_code`, `facility_name`, `report_date`
+  - `action_contract` alanları: `primary_action`, `action_count`, `actions`, `overall_status`, `routing_decision`, vb.
+  - `routing_contract` alanları: `decision`, `facility_code`, `reason_codes`
+- `node --check static/app.js` temiz geçti
+
+### CURRENT FRONTEND DATA FLOW
+- Decision / AI / Action layer:
+  - `/api/orchestration/final`
+- KPI / executive score layer:
+  - `/api/dashboard/latest`
+- Trend / chart / table layer:
+  - `/api/dashboard/daily`
+
+### IMPORTANT
+- Frontend artık eski `/api/ai/summary` bağımlılığından çıkarıldı
+- `/api/orchestration/summary` endpoint’i backend’de korunuyor ancak frontend ana akışında kullanılmıyor
+- Bu checkpoint sonrası yapılacak doğru sonraki adım:
+  1. Browser runtime doğrulaması
+  2. UI kart içeriklerinin görsel iyileştirmesi
+  3. Gerekirse legacy `/api/ai/summary` kullanımının tamamen emekliye ayrılması
+
+
+## 2026-04-07 — VERIFIED BOOTSTRAP LAYER CHECKPOINT
+
+### SCOPE
+`dashboard_rows = 0` olan facility'ler için canonical 7 KPI bootstrap verisi üretip staging -> readiness -> promote -> dashboard verify akışına sokan Bootstrap Layer tamamlandı.
+
+### IMPLEMENTED
+- `scripts/bootstrap_zero_facilities.py` genişletildi
+- Profile resolver eklendi:
+  - `facility_type`
+  - `gross_area_m2`
+  - `bed_count`
+  bazlı bootstrap profile çözümleme aktif
+- Metric generation contract eklendi:
+  - electricity_kwh
+  - water_m3
+  - medical_waste_kg
+  - pathological_waste_kg
+  - general_waste_kg
+  - scope2_location_tco2e
+  - waste_cost_try
+- Derived rules aktif:
+  - `scope2_location_tco2e = electricity_kwh * 0.000460`
+  - `waste_cost_try = total_waste_kg * 43.3255`
+- Staging payload builder eklendi
+- Real schema uyumlu staging insert eklendi
+- Readiness check eklendi:
+  - `zerocare_operational.v_staging_daily_metrics_status`
+- Promote eklendi:
+  - `zerocare_operational.run_promote_with_audit(...)`
+- Final production verify eklendi:
+  - `zerocare_operational.vw_dashboard_daily`
+- JSON summary output eklendi
+
+### REAL DB ALIGNMENTS
+Bootstrap write logic aşağıdaki gerçek staging şemasına hizalandı:
+- `source` = `synthetic`
+- `source_system` = `bootstrap_seed`
+- `raw_unit`, `metric_unit`, `normalized_unit` alanları kullanıldı
+- `metric_value`, `normalized_value`, `raw_payload`, `payload_hash`, `fingerprint`, `batch_id` üretildi
+- `psycopg.connect(..., prepare_threshold=None)` kullanıldı
+  - sebep: `DuplicatePreparedStatement` hatası
+
+### VERIFIED RESULT
+Test facility:
+- `MENEMEN_HOSP`
+- `facility_type = hospital`
+- `bed_count = 120`
+- `gross_area_m2 = 18000`
+
+Verified outcome:
+- `write_result.status = OK`
+- `inserted_rows = 7`
+- `readiness.status = OK`
+- `readiness.ready = true`
+- `staging_status = READY`
+- `promote_result.status = OK`
+- `promote_status = SUCCESS`
+- `written_rows = 7`
+- `dashboard_verify.status = OK`
+- `present_metric_count = 7`
+
+### GENERATED VERIFIED VALUES
+- `electricity_kwh = 3120.0`
+- `water_m3 = 108.0`
+- `medical_waste_kg = 420.0`
+- `pathological_waste_kg = 54.6`
+- `general_waste_kg = 798.0`
+- `scope2_location_tco2e = 1.435`
+- `waste_cost_try = 55136.031`
+
+### IMPORTANT
+Bootstrap Layer artık sadece discovery değil, production omurgasına veri sokan verified executable flow durumunda.
+
+### NEXT
+1. Kalan zero-dashboard facility'ler için batch bootstrap çalıştır
+2. Script'e `--all-zero-facilities` veya benzeri batch mode ekle
+3. Bootstrap yapılan facility'leri tekrar seed etmemek için toplu NOOP davranışını doğrula
+4. UI tarafında yeni facility coverage'ı kontrol et
+5. Sonraki adımda bootstrap sonrası orchestration / AI layer coverage genişlet
+
+## 2026-04-07 — VERIFIED BOOTSTRAP LAYER BATCH MODE CHECKPOINT
+
+### VERIFIED
+- `scripts/bootstrap_zero_facilities_batch.py` oluşturuldu
+- Batch mode discovery doğrulandı:
+  - seçim kuralı: `vw_dashboard_daily` içinde `dashboard_rows = 0` olan facility'ler
+- Batch orchestrator, verified tek-facility script olan `scripts/bootstrap_zero_facilities.py` üstünden çalışacak şekilde tasarlandı
+- Tek-facility motor korunarak dış kabuk batch orchestration modeli benimsendi
+- CLI forwarding düzeltildi:
+  - `--facility-type`
+  - `--gross-area-m2`
+  - `--bed-count`
+  - `--facility-name`
+- `gross_area_m2` için CLI int normalization düzeltildi
+- `promote_result.promote_status` parse düzeltildi
+- `NOOP_ALREADY_BOOTSTRAPPED` durumu batch classifier içinde doğru şekilde `NOOP` olarak işaretleniyor
+- Idempotent davranış doğrulandı:
+  - `BALCOVA_MED` ikinci çalıştırmada `NOOP_ALREADY_BOOTSTRAPPED`
+  - `promote_status = NO_OP`
+  - `dashboard_verify_status = OK`
+
+### VERIFIED BATCH RUN
+- `--all-zero-facilities --continue-on-error` ile gerçek batch run çalıştırıldı
+- Batch sonucu:
+  - `selected_facility_count = 3`
+  - `processed_facility_count = 3`
+  - `success_count = 3`
+  - `failed_count = 0`
+- Başarıyla bootstrap edilen facility'ler:
+  - `CIGLI_MED`
+  - `DENTAL_CENTER`
+  - `EYE_CENTER`
+
+### VERIFIED KPI COVERAGE
+Her yeni facility için aşağıdakiler doğrulandı:
+- `inserted_rows = 7`
+- `readiness_ready = true`
+- `staging_status = READY`
+- `promote_status = SUCCESS`
+- `dashboard_verify_status = OK`
+- `present_metric_count = 7`
+
+### VERIFIED UI COVERAGE
+`zerocare_operational.vw_dashboard_daily` üzerinde aşağıdaki facility'lerin görünürlüğü doğrulandı:
+- `BALCOVA_MED`
+- `CIGLI_MED`
+- `DENTAL_CENTER`
+- `EYE_CENTER`
+- `MENEMEN_HOSP`
+
+### CURRENT DECISION
+- Bootstrap Layer artık tekil test script’i seviyesinden çıktı
+- Batch mode ile zero-coverage facility bootstrap akışı verified hale geldi
+- Sonraki mantıklı faz:
+  1. batch run için opsiyonel `--pretty` / kısa çıktı ayrımı
+  2. batch discovery ve sonuçlarını API veya admin endpoint’e taşıma
+  3. frontend facility coverage / dropdown verify
+
+## 2026-04-07 — VERIFIED FRONTEND FACILITY COVERAGE + ORCHESTRATION DATE PROPAGATION CHECKPOINT
+
+### VERIFIED FRONTEND COVERAGE
+- `static/index.html` içindeki `#facilitySelect` dropdown aktif kaynak olarak doğrulandı
+- `static/app.js` içinde dropdown veri kaynağı `/api/facilities` olarak doğrulandı
+- Dropdown datasource testi geçti:
+  - `BALCOVA_MED`
+  - `CIGLI_MED`
+  - `DENTAL_CENTER`
+  - `EYE_CENTER`
+  - `MENEMEN_HOSP`
+  frontend facility listesinde görünür durumda
+
+### VERIFIED FACILITY SELECTION FLOW
+`DENTAL_CENTER` ile uçtan uca seçim testi yapıldı:
+- `/api/dashboard/latest?facility_code=DENTAL_CENTER` doğru facility verisi döndü
+- `/api/dashboard/daily?facility_code=DENTAL_CENTER&days=14` doğru facility verisi döndü
+- frontend selection zincirinin dashboard data ayağı verified
+
+### ORCHESTRATION PAYLOAD FINDING
+İlk kontrolde `/api/orchestration/final` payload’ında alanların camelCase değil snake_case olduğu doğrulandı:
+- doğru alanlar:
+  - `routing_decision`
+  - `routing_contract`
+  - `action_contract`
+- ilk False kontrolü backend eksikliği değil, yanlış field adı varsayımı kaynaklıydı
+
+### ROOT CAUSE — DATE PROPAGATION BUG
+Yeni bootstrap edilen facility’lerde orchestration error nedeni teşhis edildi:
+- `/api/orchestration/final` içinde `final_report_date` hesaplanıyordu
+- fakat `run_facility_orchestrator(...)` çağrısına tarih aktarılmıyordu
+- `services/orchestrator_runner.py` sadece `FACILITY_CODE` env geçiriyordu
+- alt script `scripts/generate_validate_promote_synthetic.py` ise `TARGET_DATE` env destekliyordu
+- sonuç olarak orchestration katmanı eski/default target_date ile çalışıyordu
+
+### FIX APPLIED
+- `services/orchestrator_runner.py`
+  - imza güncellendi:
+    - `run_facility_orchestrator(facility_code, target_date=None)`
+  - `TARGET_DATE` env forwarding eklendi
+- `server.py`
+  - `run_facility_orchestrator(facility_key, final_report_date)` şeklinde çağrı düzeltildi
+
+### VERIFIED AFTER FIX
+`DENTAL_CENTER` için `/api/orchestration/final` tekrar doğrulandı:
+- `facility_name = Demo Hospital Ağız ve Diş Sağlığı Merkezi`
+- `orchestrator_status = OK`
+- `generate_status = NOOP: up-to-date`
+- `staging_status = READY`
+- `promote_status = NO_OP`
+- `final_row_exists = True`
+- `routing_contract = True`
+- `action_contract = True`
+- `details_target_date = 2026-04-07`
+
+### SERVER HYGIENE
+- `server.py` process aktif doğrulandı
+- `127.0.0.1:8050` listen doğrulandı
+- `/health` endpoint sonucu:
+  - `status = ok`
+  - `db = connected`
+
+### CURRENT DECISION
+- Bootstrap Layer batch mode + frontend facility selection + orchestration coverage zinciri verified
+- Bu faz kapanmıştır
+- Sonraki mantıklı faz:
+  1. dropdown / UI davranışını tarayıcıdan manuel smoke test ile son kez görmek
+  2. orchestration coverage’ı diğer yeni bootstrap facility’lerde (`CIGLI_MED`, `EYE_CENTER`, `BALCOVA_MED`) toplu doğrulamak
+  3. gerekirse admin/API raporlama katmanı eklemek
+
+## 2026-04-07 — VERIFIED 9/9 FACILITY ORCHESTRATION FINAL SMOKE TEST CHECKPOINT
+
+### VERIFIED SCOPE
+Aşağıdaki 9 facility için `/api/orchestration/final` uçtan uca smoke test çalıştırıldı:
+- `BALCOVA_MED`
+- `CIGLI_HOSP`
+- `CIGLI_MED`
+- `DEMO_BORNOVA`
+- `DEMO_KONAK`
+- `DEMO_KSK`
+- `DENTAL_CENTER`
+- `EYE_CENTER`
+- `MENEMEN_HOSP`
+
+### VERIFIED RESULT
+Tüm 9 facility için aşağıdakiler doğrulandı:
+- `orchestrator_status = OK`
+- `staging_status = READY`
+- `final_row_exists = True`
+- `routing_contract = True`
+- `action_contract = True`
+- `details_target_date = 2026-04-07`
+
+### OBSERVED EXECUTION MODES
+İki normal çalışma modu gözlendi:
+
+1. Up-to-date / idempotent facility'ler
+- `generate_status = NOOP: up-to-date`
+- `promote_status = NO_OP`
+
+2. Gün içinde veri üreten / promote eden facility'ler
+- `generate_status = OK`
+- `promote_status = SUCCESS`
+
+Bu fark hata değildir; orchestrator aynı gün bağlamında bazı facility’lerde mevcut veriyi yeniden kullanmış, bazılarında yeni üretim/promote akışını çalıştırmıştır.
+
+### CURRENT DECISION
+- Frontend dropdown coverage verified
+- facility selection verified
+- orchestration final verified
+- date propagation bug fixed
+- tüm 9 facility için orchestration smoke test geçti
+
+Bu faz production-ready demo doğrulama seviyesiyle kapanmıştır.
+
+
+## 2026-04-07 — 30 DAY PRODUCTION COVERAGE BACKFILL COMPLETED
+
+### VERIFIED
+- Rolling 30-day production coverage hedefi tamamlandı
+- Son 30 gün penceresi: 2026-03-09 → 2026-04-07
+- Final gap check sonucu: 0 rows
+- Aktif 9 facility için coverage tamamlandı
+- Final coverage:
+  - BALCOVA_MED = 30
+  - CIGLI_HOSP = 31
+  - CIGLI_MED = 30
+  - DEMO_BORNOVA = 30
+  - DEMO_KONAK = 30
+  - DEMO_KSK = 30
+  - DENTAL_CENTER = 30
+  - EYE_CENTER = 30
+  - MENEMEN_HOSP = 30
+
+### ROOT CAUSE FOUND
+- İlk backfill denemesinde DEMO_* facility’lerde failure oluştu
+- Kök neden:
+  - `scripts/bootstrap_zero_facilities.py`
+  - `normalize_facility_type()`
+  - `private_hospital` alias desteği yoktu
+- Hata:
+  - `unsupported facility_type: 'private_hospital'`
+
+### FIX APPLIED
+- `normalize_facility_type()` alias map genişletildi
+- Eklenen aliaslar:
+  - private_hospital -> hospital
+  - public_hospital -> hospital
+  - state_hospital -> hospital
+  - training_research_hospital -> hospital
+  - education_research_hospital -> hospital
+  - medical_centre -> medical_center
+
+### NEW SCRIPT
+- Yeni batch runner eklendi:
+  - `scripts/backfill_30day_zero_facilities.py`
+- Amaç:
+  - aktif facility listesi
+  - rolling 30 calendar day window
+  - eksik facility+date çiftlerini bul
+  - verified single bootstrap layer ile yalnızca eksikleri tamamla
+  - aggregate JSON summary üret
+
+### DECISION
+- `bootstrap_zero_facilities.py` verified single-facility canonical layer olarak korundu
+- `bootstrap_zero_facilities_batch.py` değiştirilmedi
+- 30-day historical completion için ayrı runner yaklaşımı benimsendi
+
+### STATUS
+- Production dashboard coverage artık demo-safe
+- Dropdown seçilen her facility için son 30 günlük veri görünürlüğü hazır
+
