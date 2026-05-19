@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  zerotrust-api:
+    build: .
+    restart: unless-stopped
+    expose:
+      - "8000"
+    environment:
+      - APP_ENV=${APP_ENV:-production}
+      - DATABASE_URL=${DATABASE_URL}
+      - ADMIN_API_KEY=${ADMIN_API_KEY}
+      - TRUST_TICK_SECONDS=${TRUST_TICK_SECONDS:-10}
+      - CORS_ORIGINS=${CORS_ORIGINS}
+    depends_on:
+      postgres:
+        condition: service_started
+    networks:
+      - internal
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-zerotrust}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-zerotrust}
+      - POSTGRES_DB=${POSTGRES_DB:-zerotrust}
+    volumes:
+      - postgres_data_prod:/var/lib/postgresql/data
+    networks:
+      - internal
+    # Do not map port 5432 to host in production for security
+    expose:
+      - "5432"
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/nginx/zerotrust.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    depends_on:
+      - zerotrust-api
+    networks:
+      - internal
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./deploy/certbot/conf:/etc/letsencrypt
+      - ./deploy/certbot/www:/var/www/certbot
+    profiles:
+      - certbot
+
+volumes:
+  postgres_data_prod:
+
+networks:
+  internal:

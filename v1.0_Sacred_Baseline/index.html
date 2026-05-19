@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero@Trust — Operational Surface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-state="stable">
+  
+  <!-- State Backgrounds for smooth transition without cross-fading text jitter -->
+  <div class="bg-layer state-stable active"></div>
+  <div class="bg-layer state-observing"></div>
+  <div class="bg-layer state-review"></div>
+
+  <!-- Ambient light drifters -->
+  <div class="light-drift-1"></div>
+  <div class="light-drift-2"></div>
+  
+  <main class="surface">
+    <!-- Ambient Trust Signal -->
+    <div class="trust-signal"></div>
+    
+    <!-- Archival Label -->
+    <div class="archival-label">Zero@Trust Living Surface v1.0</div>
+    
+    <!-- Using two identical layers to crossfade state content smoothly -->
+    <div class="content-layer" id="layer-active">
+      <!-- Injected by JS -->
+    </div>
+    <div class="content-layer" id="layer-fade">
+      <!-- Injected by JS for crossfading -->
+    </div>
+    
+    <div class="governance-anchor">
+      Human authority preserved
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operator Surface</title>
+    <link rel="stylesheet" href="operator.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="operator-container">
+        <header class="operator-header">
+            <span class="operator-note">Operator rehearsal surface. Not part of the executive interface.</span>
+        </header>
+
+        <main class="operator-main">
+            <div class="control-group">
+                <button id="btn-resolve" class="btn-action">Restore Baseline</button>
+            </div>
+
+            <div class="control-group scenario-group">
+                <button id="btn-supplier" class="btn-action">Introduce Supplier Drift</button>
+                <button id="btn-identity" class="btn-action">Introduce Identity Uncertainty</button>
+                <button id="btn-payment" class="btn-action">Introduce Routing Inconsistency</button>
+            </div>
+
+            <div class="control-group">
+                <button id="btn-state" class="btn-action btn-secondary">Read Current Posture</button>
+            </div>
+
+            <div class="feedback-area">
+                <div id="status-message" class="status-message"></div>
+                <pre id="state-output" class="state-output hidden"></pre>
+            </div>
+        </main>
+    </div>
+    
+    <script src="operator.js"></script>
+</body>
+</html>

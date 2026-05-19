@@ -1,0 +1,384 @@
+:root {
+  var(--text-silver): #c8d2df;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  /* Institutional permanence: deeply reduce overall digital sharpness */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Manufactured material grain overlay */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.025;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 50;
+}
+
+/* Background State Layers */
+.bg-layer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  /* Deep temporal cycle transition: extremely slow, non-reactive */
+  transition: opacity 8s cubic-bezier(0.3, 0, 0.1, 1);
+  z-index: -2;
+}
+
+.bg-layer.active {
+  opacity: 1;
+}
+
+/* 1. STABLE: Deeply settled, institutional continuity */
+.bg-layer.state-stable {
+  background-color: #06090e;
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, transparent 40%, transparent 60%, rgba(0, 0, 0, 0.6) 100%),
+    radial-gradient(ellipse at 50% -20%, rgba(20, 30, 45, 0.3) 0%, #06090e 100%);
+}
+
+/* 2. OBSERVING: Measured operational attention */
+.bg-layer.state-observing {
+  background-color: #04070a;
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.012) 0%, transparent 35%, transparent 65%, rgba(0, 0, 0, 0.7) 100%),
+    radial-gradient(ellipse at 50% -20%, rgba(18, 25, 38, 0.25) 0%, #04070a 100%);
+}
+
+/* 3. REVIEW: Historically grounded, preserved judgment */
+.bg-layer.state-review {
+  background-color: #010203;
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.005) 0%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.95) 100%),
+    radial-gradient(ellipse at 50% -10%, rgba(8, 12, 18, 0.1) 0%, #010203 100%);
+}
+
+/* Atmospheric Ambient Lights: Geological/Temporal drift */
+.light-drift-1, .light-drift-2 {
+  position: absolute;
+  width: 200vw;
+  height: 200vh;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 8s ease, background 8s ease;
+}
+
+.light-drift-1 {
+  background: radial-gradient(circle, rgba(30, 45, 65, 0.05) 0%, transparent 50%);
+  top: -50%;
+  left: -30%;
+  /* Glacial movement speed */
+  animation: driftArchitectural 240s cubic-bezier(0.3, 0, 0.7, 1) infinite alternate;
+}
+
+.light-drift-2 {
+  background: radial-gradient(circle, rgba(15, 25, 40, 0.06) 0%, transparent 45%);
+  bottom: -60%;
+  right: -30%;
+  animation: driftArchitecturalOpposite 300s cubic-bezier(0.3, 0, 0.7, 1) infinite alternate;
+}
+
+body[data-state="observing"] .light-drift-1 {
+  background: radial-gradient(circle, rgba(35, 50, 70, 0.06) 0%, transparent 45%);
+}
+body[data-state="observing"] .light-drift-2 {
+  background: radial-gradient(circle, rgba(20, 30, 45, 0.07) 0%, transparent 40%);
+}
+
+body[data-state="review"] .light-drift-1 {
+  background: radial-gradient(circle, rgba(10, 15, 25, 0.02) 0%, transparent 60%);
+}
+body[data-state="review"] .light-drift-2 {
+  background: radial-gradient(circle, rgba(5, 8, 12, 0.03) 0%, transparent 55%);
+}
+
+@keyframes driftArchitectural {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(3%, 2%); }
+}
+
+@keyframes driftArchitecturalOpposite {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-2%, -2%); }
+}
+
+/* Content Surface Container */
+.surface {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 10s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Master temporal softening */
+  filter: blur(0.15px);
+}
+
+/* Ambient Trust Signal: Atmospheric trust halo */
+.trust-signal {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(180deg, transparent 10%, rgba(200, 215, 230, 0.01) 50%, transparent 90%);
+  box-shadow: 0 0 12vw 3vw rgba(160, 180, 200, 0.015);
+  z-index: -1;
+  pointer-events: none;
+  transition: all 8s cubic-bezier(0.25, 0, 0.1, 1);
+  filter: blur(4px); /* Completely dissolves hard edges */
+}
+
+body[data-state="observing"] .trust-signal {
+  background: linear-gradient(180deg, transparent 15%, rgba(180, 195, 215, 0.02) 50%, transparent 85%);
+  box-shadow: 0 0 8vw 2vw rgba(160, 180, 200, 0.025);
+  filter: blur(3px);
+}
+
+body[data-state="review"] .trust-signal {
+  background: linear-gradient(180deg, transparent 25%, rgba(140, 155, 180, 0.03) 50%, transparent 75%);
+  box-shadow: 0 0 4vw 1vw rgba(120, 140, 165, 0.04);
+  filter: blur(2px);
+}
+
+.content-layer {
+  position: absolute;
+  top: 10vh; bottom: 4vh; left: 8vw; right: 8vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  /* Enduring crossfade: 6 seconds */
+  transition: opacity 6s cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+.content-layer.active {
+  opacity: 1;
+}
+
+.core-focus {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body[data-state="review"] .core-focus {
+  transform: translateY(2vh);
+}
+
+/* Typographic Temporality */
+.status-primary {
+  font-size: 8.5rem;
+  font-weight: 300;
+  letter-spacing: -0.05em;
+  background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, rgba(180,195,215,0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 10px rgba(255, 255, 255, 0.02);
+  margin-bottom: 3.5rem;
+  opacity: 0.85; /* Aged in */
+  /* Remove crisp digital edges */
+  filter: blur(0.3px);
+}
+
+body[data-state="observing"] .status-primary {
+  letter-spacing: -0.04em;
+  text-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 10px rgba(255, 255, 255, 0.03);
+}
+
+body[data-state="review"] .status-primary {
+  font-weight: 400; 
+  letter-spacing: -0.07em;
+  /* Deep historical gravity */
+  text-shadow: 0 50px 120px rgba(0, 0, 0, 0.95), 0 0 20px rgba(255, 255, 255, 0.01);
+  background: linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(130,145,160,0.3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.9;
+}
+
+.status-divider {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  margin-bottom: 3.5rem;
+}
+
+body[data-state="review"] .status-divider {
+  opacity: 0.15;
+}
+
+/* Institutional Governance Signatures */
+.status-secondary {
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  /* Deeply embedded feeling */
+  color: rgba(140, 155, 175, 0.2);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  transition: color 6s ease;
+  filter: blur(0.2px);
+}
+
+body[data-state="observing"] .status-secondary {
+  color: rgba(150, 165, 185, 0.35);
+}
+
+body[data-state="review"] .status-secondary {
+  /* Boardroom-safe, legally mature presence */
+  color: rgba(120, 135, 155, 0.45);
+  letter-spacing: 0.45em; 
+}
+
+/* Operational Legibility Condition Phrase */
+.condition-phrase {
+  margin-top: 5vh;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: rgba(140, 155, 175, 0.2); /* Barely present in Stable */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  filter: blur(0.2px);
+  transition: color 6s ease;
+}
+
+body[data-state="observing"] .condition-phrase {
+  color: rgba(160, 175, 195, 0.4); /* Gently present */
+}
+
+body[data-state="review"] .condition-phrase {
+  color: rgba(180, 195, 215, 0.65); /* Clearly present, quiet */
+  font-weight: 400;
+}
+
+.micro-context {
+  display: flex;
+  justify-content: center;
+  gap: 10vw;
+  padding-bottom: 4vh;
+  filter: blur(0.15px);
+}
+
+.context-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  /* Permanent, deep background assurance */
+  opacity: 0.25;
+}
+
+body[data-state="observing"] .context-node {
+  opacity: 0.4;
+}
+
+body[data-state="review"] .context-node {
+  /* Clearly readable but historically calm */
+  opacity: 0.7;
+}
+
+body[data-state="review"] .context-node.alert-node {
+  opacity: 0.8; 
+}
+
+.context-label {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(100, 115, 135, 0.6);
+}
+
+body[data-state="review"] .context-label {
+  color: rgba(110, 125, 145, 0.7);
+}
+
+.context-value {
+  font-size: 1rem;
+  font-weight: 300;
+  color: rgba(200, 210, 225, 0.7);
+  letter-spacing: 0.05em;
+}
+
+body[data-state="review"] .context-value {
+  font-weight: 400;
+  color: rgba(220, 230, 245, 0.8);
+}
+
+.context-node.resting {
+  opacity: 0.1; /* Almost invisible */
+}
+
+body[data-state="observing"] .context-node.resting {
+  opacity: 0.15;
+}
+
+/* Subtle Governance Anchor: Permanent Inscription */
+.governance-anchor {
+  position: absolute;
+  bottom: 4vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.45em; /* Wider, eternal */
+  text-transform: uppercase;
+  color: rgba(140, 155, 175, 0.1); /* absolute silence */
+  pointer-events: none;
+  transition: color 6s ease, opacity 6s ease;
+  filter: blur(0.2px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+body[data-state="observing"] .governance-anchor {
+  color: rgba(150, 165, 185, 0.18);
+}
+
+body[data-state="review"] .governance-anchor {
+  color: rgba(160, 175, 195, 0.35); /* institutionally grounded */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+/* Final Archival Prototype Label */
+.archival-label {
+  position: absolute;
+  top: 4vh;
+  left: 4vw;
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(140, 155, 175, 0.1); /* extremely subtle */
+  pointer-events: none;
+  transition: opacity 6s ease;
+  z-index: 5;
+  filter: blur(0.2px);
+}
+
+body[data-state="review"] .archival-label {
+  opacity: 0.03; /* fades further to maintain focus */
+}

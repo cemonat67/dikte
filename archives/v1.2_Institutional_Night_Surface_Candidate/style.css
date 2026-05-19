@@ -1,0 +1,527 @@
+:root {
+  var(--text-silver): #c8d2df;
+}
+
+/* Cognitive Weight Calibration Presets */
+body[data-preset="A"] {
+  --op-secondary: 0.05;
+  --op-secondary-obs: 0.08;
+  --op-secondary-rev: 0.12;
+
+  --op-condition: 0.05;
+  --op-condition-obs: 0.08;
+  --op-condition-rev: 0.12;
+
+  --op-micro-resting: 0.02;
+  --op-micro: 0.05;
+  --op-micro-obs: 0.08;
+  --op-micro-rev: 0.12;
+  --op-micro-alert: 0.15;
+
+  --op-anchor: 0.10;
+  --op-anchor-obs: 0.11;
+  --op-anchor-rev: 0.12;
+}
+
+body[data-preset="B"] { /* Institutional - Default */
+  --op-secondary: 0.15;
+  --op-secondary-obs: 0.25;
+  --op-secondary-rev: 0.35;
+
+  --op-condition: 0.10;
+  --op-condition-obs: 0.20;
+  --op-condition-rev: 0.35;
+
+  --op-micro-resting: 0.05;
+  --op-micro: 0.15;
+  --op-micro-obs: 0.25;
+  --op-micro-rev: 0.40;
+  --op-micro-alert: 0.50;
+
+  --op-anchor: 0.20;
+  --op-anchor-obs: 0.22;
+  --op-anchor-rev: 0.24;
+}
+
+body[data-preset="C"] { /* Operational */
+  --op-secondary: 0.25;
+  --op-secondary-obs: 0.35;
+  --op-secondary-rev: 0.45;
+
+  --op-condition: 0.20;
+  --op-condition-obs: 0.30;
+  --op-condition-rev: 0.45;
+
+  --op-micro-resting: 0.15;
+  --op-micro: 0.24;
+  --op-micro-obs: 0.32;
+  --op-micro-rev: 0.45;
+  --op-micro-alert: 0.55;
+
+  --op-anchor: 0.32;
+  --op-anchor-obs: 0.35;
+  --op-anchor-rev: 0.40;
+}
+
+/* Temporal Weight Calibration Presets */
+body[data-temporal="T1"] { /* Operational */
+  --drift-dur-1: 240s;
+  --drift-dur-2: 300s;
+}
+
+body[data-temporal="T2"] { /* Architectural - Default */
+  --drift-dur-1: 720s;
+  --drift-dur-2: 840s;
+}
+
+body[data-temporal="T3"] { /* Geological */
+  --drift-dur-1: 1500s;
+  --drift-dur-2: 1800s;
+}
+
+/* Typographic Authority Calibration Presets */
+body[data-type="P1"] { /* Quiet Legal */
+  --font-wt-primary: 200;
+  --font-wt-primary-rev: 300;
+  --ls-primary: -0.005em;
+  --ls-primary-obs: -0.01em;
+  --ls-primary-rev: -0.015em;
+  
+  --font-wt-secondary: 400;
+  --ls-secondary: 0.6em;
+  --ls-secondary-rev: 0.65em;
+  
+  --font-wt-condition: 200;
+  --ls-condition: 0.15em;
+  
+  --font-wt-label: 400;
+  --ls-label: 0.4em;
+  
+  --font-wt-val: 200;
+  --ls-val: 0.1em;
+  
+  --font-wt-anchor: 400;
+  --ls-anchor: 0.6em;
+}
+
+body[data-type="P2"] { /* Executive Calm - Default */
+  --font-wt-primary: 300;
+  --font-wt-primary-rev: 400;
+  --ls-primary: -0.01em;
+  --ls-primary-obs: -0.02em;
+  --ls-primary-rev: -0.03em;
+  
+  --font-wt-secondary: 500;
+  --ls-secondary: 0.5em;
+  --ls-secondary-rev: 0.55em;
+  
+  --font-wt-condition: 300;
+  --ls-condition: 0.1em;
+  
+  --font-wt-label: 500;
+  --ls-label: 0.3em;
+  
+  --font-wt-val: 300;
+  --ls-val: 0.05em;
+  
+  --font-wt-anchor: 500;
+  --ls-anchor: 0.5em;
+}
+
+body[data-type="P3"] { /* Operational Clarity */
+  --font-wt-primary: 400;
+  --font-wt-primary-rev: 500;
+  --ls-primary: -0.03em;
+  --ls-primary-obs: -0.04em;
+  --ls-primary-rev: -0.05em;
+  
+  --font-wt-secondary: 600;
+  --ls-secondary: 0.35em;
+  --ls-secondary-rev: 0.4em;
+  
+  --font-wt-condition: 400;
+  --ls-condition: 0.05em;
+  
+  --font-wt-label: 600;
+  --ls-label: 0.2em;
+  
+  --font-wt-val: 400;
+  --ls-val: 0.02em;
+  
+  --font-wt-anchor: 600;
+  --ls-anchor: 0.35em;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #000;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Manufactured material grain overlay */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0.02;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 50;
+}
+
+/* Background State Layers - NIGHT OPERATIONAL MODE */
+/* Deep graphite and navy, zero emission */
+.bg-layer {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  opacity: 0;
+  transition: opacity 8s cubic-bezier(0.3, 0, 0.1, 1);
+  z-index: -2;
+}
+
+.bg-layer.active {
+  opacity: 1;
+}
+
+/* 1. STABLE: Architectural depth, barely lit */
+.bg-layer.state-stable {
+  background-color: #040507;
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.005) 0%, transparent 40%, transparent 60%, rgba(0, 0, 0, 0.8) 100%),
+    radial-gradient(ellipse at 50% -20%, rgba(15, 20, 25, 0.15) 0%, #040507 100%);
+}
+
+/* 2. OBSERVING: Silence narrows */
+.bg-layer.state-observing {
+  background-color: #030405;
+  background-image: 
+    linear-gradient(135deg, rgba(255, 255, 255, 0.003) 0%, transparent 35%, transparent 65%, rgba(0, 0, 0, 0.9) 100%),
+    radial-gradient(ellipse at 50% -20%, rgba(10, 15, 20, 0.1) 0%, #030405 100%);
+}
+
+/* 3. REVIEW: Absolute physical grounding */
+.bg-layer.state-review {
+  background-color: #010102;
+  background-image: 
+    linear-gradient(135deg, transparent 0%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.95) 100%),
+    radial-gradient(ellipse at 50% -10%, rgba(5, 8, 12, 0.05) 0%, #010102 100%);
+}
+
+/* Atmospheric Ambient Lights: Reflection, not emission */
+.light-drift-1, .light-drift-2 {
+  position: absolute;
+  width: 200vw;
+  height: 200vh;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 8s ease, background 8s ease;
+}
+
+.light-drift-1 {
+  background: radial-gradient(circle, rgba(15, 20, 25, 0.03) 0%, transparent 50%);
+  top: -50%;
+  left: -30%;
+  animation: driftArchitectural var(--drift-dur-1, 720s) cubic-bezier(0.3, 0, 0.7, 1) infinite alternate;
+}
+
+.light-drift-2 {
+  background: radial-gradient(circle, rgba(10, 15, 20, 0.04) 0%, transparent 45%);
+  bottom: -60%;
+  right: -30%;
+  animation: driftArchitecturalOpposite var(--drift-dur-2, 840s) cubic-bezier(0.3, 0, 0.7, 1) infinite alternate;
+}
+
+body[data-state="observing"] .light-drift-1 {
+  background: radial-gradient(circle, rgba(12, 18, 22, 0.02) 0%, transparent 45%);
+}
+body[data-state="observing"] .light-drift-2 {
+  background: radial-gradient(circle, rgba(8, 12, 15, 0.03) 0%, transparent 40%);
+}
+
+body[data-state="review"] .light-drift-1 {
+  background: radial-gradient(circle, rgba(5, 8, 10, 0.01) 0%, transparent 60%);
+}
+body[data-state="review"] .light-drift-2 {
+  background: radial-gradient(circle, rgba(2, 4, 6, 0.02) 0%, transparent 55%);
+}
+
+@keyframes driftArchitectural {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(3%, 2%); }
+}
+
+@keyframes driftArchitecturalOpposite {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-2%, -2%); }
+}
+
+/* Content Surface Container */
+.surface {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 10s cubic-bezier(0.2, 0.8, 0.2, 1);
+  filter: blur(0.25px); /* Increased blur for Night Mode depth */
+}
+
+/* Ambient Trust Signal: A dark architectural void / sheen */
+.trust-signal {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background: linear-gradient(180deg, transparent 10%, rgba(150, 160, 175, 0.005) 50%, transparent 90%);
+  box-shadow: 0 0 15vw 4vw rgba(100, 115, 130, 0.008);
+  z-index: -1;
+  pointer-events: none;
+  transition: all 8s cubic-bezier(0.25, 0, 0.1, 1);
+  filter: blur(5px);
+}
+
+body[data-state="observing"] .trust-signal {
+  background: linear-gradient(180deg, transparent 15%, rgba(140, 150, 165, 0.008) 50%, transparent 85%);
+  box-shadow: 0 0 10vw 3vw rgba(90, 105, 120, 0.012);
+  filter: blur(4px);
+}
+
+body[data-state="review"] .trust-signal {
+  background: linear-gradient(180deg, transparent 25%, rgba(120, 130, 145, 0.015) 50%, transparent 75%);
+  box-shadow: 0 0 5vw 2vw rgba(80, 90, 100, 0.02);
+  filter: blur(3px);
+}
+
+.content-layer {
+  position: absolute;
+  top: 10vh; bottom: 4vh; left: 8vw; right: 8vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 6s cubic-bezier(0.25, 0, 0.1, 1);
+}
+
+.content-layer.active {
+  opacity: 1;
+}
+
+.core-focus {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+body[data-state="review"] .core-focus {
+  transform: translateY(2vh);
+}
+
+/* Typographic Temporality: Night Mode Reflection */
+.status-primary {
+  font-size: 8.5rem;
+  font-weight: var(--font-wt-primary, 300);
+  /* Looser tracking for night mode reading */
+  letter-spacing: var(--ls-primary, -0.01em);
+  /* Dark, reflected gradient. Never white. */
+  background: linear-gradient(180deg, rgba(160,175,190,0.3) 0%, rgba(80,95,110,0.1) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Heavy dark shadows pulling it into the material */
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  margin-bottom: 3.5rem;
+  opacity: 0.4; /* Drastically reduced opacity */
+  filter: blur(0.4px); /* Softer edge */
+  transition: all 8s ease;
+}
+
+body[data-state="observing"] .status-primary {
+  letter-spacing: var(--ls-primary-obs, -0.02em);
+  background: linear-gradient(180deg, rgba(180,195,210,0.35) 0%, rgba(90,105,120,0.15) 100%);
+  text-shadow: 0 20px 60px rgba(0, 0, 0, 0.95);
+  opacity: 0.5;
+}
+
+body[data-state="review"] .status-primary {
+  font-weight: var(--font-wt-primary-rev, 400); 
+  letter-spacing: var(--ls-primary-rev, -0.03em);
+  background: linear-gradient(180deg, rgba(200,215,230,0.4) 0%, rgba(100,115,130,0.2) 100%);
+  text-shadow: 0 40px 100px rgba(0, 0, 0, 1);
+  opacity: 0.6;
+}
+
+.status-divider {
+  width: 1px;
+  height: 60px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  margin-bottom: 3.5rem;
+}
+
+body[data-state="review"] .status-divider {
+  opacity: 0.05;
+}
+
+/* Institutional Governance Signatures */
+.status-secondary {
+  font-size: 0.9rem;
+  font-weight: var(--font-wt-secondary, 500);
+  letter-spacing: var(--ls-secondary, 0.5em);
+  text-transform: uppercase;
+  color: rgba(100, 110, 120, var(--op-secondary));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  transition: color 6s ease;
+  filter: blur(0.3px);
+}
+
+body[data-state="observing"] .status-secondary {
+  color: rgba(120, 130, 140, var(--op-secondary-obs));
+}
+
+body[data-state="review"] .status-secondary {
+  color: rgba(140, 150, 160, var(--op-secondary-rev));
+  letter-spacing: var(--ls-secondary-rev, 0.55em); 
+}
+
+/* Operational Legibility Condition Phrase */
+.condition-phrase {
+  margin-top: 5vh;
+  font-size: 0.8rem;
+  font-weight: var(--font-wt-condition, 300);
+  letter-spacing: var(--ls-condition, 0.1em);
+  color: rgba(100, 115, 130, var(--op-condition));
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+  filter: blur(0.3px);
+  transition: color 6s ease;
+}
+
+body[data-state="observing"] .condition-phrase {
+  color: rgba(120, 135, 150, var(--op-condition-obs));
+}
+
+body[data-state="review"] .condition-phrase {
+  color: rgba(150, 165, 180, var(--op-condition-rev));
+}
+
+.micro-context {
+  display: flex;
+  justify-content: center;
+  gap: 12vw;
+  padding-bottom: 4vh;
+  filter: blur(0.25px);
+}
+
+.context-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: var(--op-micro);
+  transition: opacity 6s ease;
+}
+
+body[data-state="observing"] .context-node {
+  opacity: var(--op-micro-obs);
+}
+
+body[data-state="review"] .context-node {
+  opacity: var(--op-micro-rev);
+}
+
+body[data-state="review"] .context-node.alert-node {
+  opacity: var(--op-micro-alert);
+}
+
+.context-label {
+  font-size: 0.6rem;
+  font-weight: var(--font-wt-label, 500);
+  letter-spacing: var(--ls-label, 0.3em);
+  text-transform: uppercase;
+  color: rgba(80, 90, 100, 0.5);
+}
+
+body[data-state="review"] .context-label {
+  color: rgba(100, 110, 120, 0.6);
+}
+
+.context-value {
+  font-size: 1rem;
+  font-weight: var(--font-wt-val, 300);
+  color: rgba(120, 130, 140, 0.5);
+  letter-spacing: var(--ls-val, 0.05em);
+}
+
+body[data-state="review"] .context-value {
+  color: rgba(150, 160, 170, 0.6);
+}
+
+.context-node.resting {
+  opacity: var(--op-micro-resting);
+}
+
+body[data-state="observing"] .context-node.resting {
+  opacity: calc(var(--op-micro-resting) * 2);
+}
+
+/* Subtle Governance Anchor */
+.governance-anchor {
+  position: absolute;
+  bottom: 4vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  font-weight: var(--font-wt-anchor, 500);
+  letter-spacing: var(--ls-anchor, 0.5em);
+  text-transform: uppercase;
+  color: rgba(80, 95, 110, var(--op-anchor));
+  pointer-events: none;
+  transition: color 6s ease, opacity 6s ease;
+  filter: blur(0.3px);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+body[data-state="observing"] .governance-anchor {
+  color: rgba(100, 115, 130, var(--op-anchor-obs));
+}
+
+body[data-state="review"] .governance-anchor {
+  color: rgba(130, 145, 160, var(--op-anchor-rev));
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 1);
+}
+
+/* Final Archival Prototype Label */
+.archival-label {
+  position: absolute;
+  top: 4vh;
+  left: 4vw;
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(100, 110, 120, 0.05);
+  pointer-events: none;
+  transition: opacity 6s ease;
+  z-index: 5;
+  filter: blur(0.3px);
+}
+
+body[data-state="review"] .archival-label {
+  opacity: 0.01;
+}
