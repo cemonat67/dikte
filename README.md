@@ -1,158 +1,124 @@
 # Zero@Trust
 
-> **Production Beta Handover (v13.1):** The codebase is formally frozen for production beta deployment. The system features a fully isolated, multi-tenant deterministic intelligence engine (`FastAPI`/`PostgreSQL`), administered strictly via a private JWT-secured Governance API, capable of receiving native machine webhooks, and rendered purely as a subtractive, atmospheric frontend. 
-> 
-> **Handover Documentation:**
-> - [HANDOVER.md](HANDOVER.md) (Architecture & System Purpose)
-> - [SECURITY_CHECKLIST.md](SECURITY_CHECKLIST.md) (Mandatory Go-Live Checks)
-> - [API_CONTRACT.md](API_CONTRACT.md) (Full Endpoint Index)
-> - [CHANGELOG.md](CHANGELOG.md) (Version History)
+**Ambient Enterprise Computing & Institutional Continuity Engine**
 
-The backend architecture is now capable of managing multiple completely isolated "atmospheres" from a single engine process. By introducing `environment_id` across all database models and engine calculators, different tenants, clients, or internal operational environments (e.g. `sun-tekstil`, `finance-ops`, `default`) will accrue persistence, trust posture, and risk severity without cross-contamination.
+Zero@Trust is not a conventional cybersecurity dashboard.
 
-## Local Setup & Deployment (v7.0)
+It is a calm operational trust surface designed for enterprise environments where continuity, restraint, human governance, and institutional memory matter more than alert noise or visual complexity.
 
-## Local Setup & Deployment (v7.0/v10.0)
+The system is built around one principle:
 
-**1. Configure Environment:**
-```bash
-cp .env.example .env
-```
-Edit `.env` if deploying to production. For production, set `APP_ENV=production` and use a valid PostgreSQL `DATABASE_URL`. Do NOT deploy with the default `ADMIN_API_KEY`.
+> The interface should stabilize human decision-making, not compete with it.
 
-**2. Production Deployment (v10.0):**
-Zero@Trust v10.0 includes a production-ready Nginx + PostgreSQL orchestration template. See [DEPLOYMENT.md](DEPLOYMENT.md) for the secure deployment runbook.
+---
 
-**3. Local Production Run (Docker Compose):**
-This boots a realistic production environment linking the FastAPI backend, a true PostgreSQL 16 database, and automatically serves the static frontend from `/`.
-```bash
-docker compose up --build
-```
-Navigate to:
-- `http://localhost:8000/` (Default environment)
-- `http://localhost:8000/?env=alpha` (Alpha tenant)
-- `http://localhost:8000/health` (Telemetry)
+## Current Stable Version
 
-**3. Local Dev Run (SQLite Fallback):**
-```bash
-pip install -r requirements.txt
-uvicorn backend.main:app --reload
-```
-*(Note: For local SQLite dev, the background process will automatically detect missing schemas and safely drop `zerotrust.db` to rebuild. This destructive action is strictly blocked in production.)*
+**v2.6.1 — Isolated Stable**
 
-## Intelligence Model Testing Flow (v8.0)
+Current checkpoint:
 
-**1. Open Default Tenant:**
-Open `http://localhost:8000/`
+- Desktop-level accidental Git tracking has been removed.
+- Zero@Trust now lives in its own isolated repository.
+- Active stable tag: `zerotrust-v2.6.1-isolated-stable`
+- Session checkpoint: `SESSION_STATE.md`
 
-**2. Inject Low-Weight Risk (Network):**
-Network category has a 0.90 multiplier, so a 0.5 severity might only cause "watching".
-```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/risk/evaluate" \
-     -H "Content-Type: application/json" \
-     -d '{"environment_id": "default", "source": "aws", "category": "network", "severity": 0.50}'
-```
+---
 
-**3. Inject High-Weight Risk (Payment):**
-Payment category has a 1.25 multiplier. This will push the intelligence model aggressively towards "burdened" or "withheld".
-```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/risk/evaluate" \
-     -H "Content-Type: application/json" \
-     -d '{"environment_id": "default", "source": "stripe", "category": "payment", "severity": 0.80}'
-```
+## What Zero@Trust Is
 
-**4. Introduce Operational Evidence:**
-Evidence softens risk pressure mathematically.
-```bash
-curl -X POST "http://127.0.0.1:8000/api/v1/evidence/record" \
-     -H "Content-Type: application/json" \
-     -d '{"environment_id": "default", "category": "human_verification", "weight": 0.95}'
-```
+Zero@Trust is an operational trust environment for:
 
-**5. View Intelligence Scoring via Admin:**
-```bash
-curl "http://127.0.0.1:8000/api/v1/admin/environment/default/summary" \
-     -H "X-Admin-Key: change-me-before-production"
-```
-*(Observe `weighted_risk_score`, `evidence_confidence`, and `final_trust_pressure` in the response.)*
+- human-governed enterprise continuity
+- institutional memory and post-incident awareness
+- silent failure handling
+- calm executive visibility
+- controlled operational posture
+- trust, risk, evidence, and temporal state interpretation
 
-## Public API Contract
+It is designed to make operational conditions understandable without turning the interface into a noisy control room.
 
-The public surface is strictly atmospheric. Endpoints do not require authentication, but they return zero operational details.
+---
 
-**1. View Posture (GET):**
-```bash
-curl "http://localhost:8000/api/v1/trust/state?environment_id=default"
-```
-*(Returns strictly atmospheric variables like `posture`, `silence_locked` and `frontend_phrase`)*
+## What Zero@Trust Is Not
 
-**2. Inject Risk (POST):**
-```bash
-curl -X POST "http://localhost:8000/api/v1/risk/evaluate" \
-     -H "Content-Type: application/json" \
-     -d '{"environment_id": "default", "source": "aws", "category": "network", "severity": 0.50}'
-```
-*(Validation: severity must be 0.0 - 1.0)*
+Zero@Trust is not:
 
-**3. Webhook Intelligence Intake (POST):**
-Secure endpoint for external operational systems (Datadog, AWS, Stripe).
-```bash
-curl -X POST "http://localhost:8000/api/v1/webhooks/signal" \
-     -H "X-Webhook-Secret: change-me-before-production" \
-     -H "Content-Type: application/json" \
-     -d '{
-           "environment_id": "alpha",
-           "source": "aws-guardduty",
-           "event_type": "iam_anomaly",
-           "category": "anomaly",
-           "severity": 0.90,
-           "summary": "Unusual IAM API activity detected",
-           "external_id": "evt_998877",
-           "metadata": {"region": "us-east-1"}
-         }'
-```
-*(Returns `{"ok": true, "environment_id": "alpha", "accepted": true, ...}`)*
+- a traditional dashboard
+- an alert theater interface
+- a cyberpunk security screen
+- an autonomous remediation engine
+- a notification-heavy monitoring product
+- an AI spectacle
+- a visual dopamine machine
 
-## Private Governance API (v9.0)
+Capability should be inferred, not advertised.
 
-Administrative routes explicitly require the `X-Admin-Key` header and return a standardized action envelope.
+---
 
-**1. Obtain Admin JWT Token (POST):**
-Admin routes require a JWT Bearer token.
-```bash
-curl -X POST "http://localhost:8000/api/v1/auth/login" \
-     -H "Content-Type: application/json" \
-     -d '{"username": "admin", "password": "change-me-before-production"}'
-```
-*(Store the `access_token` from the response).*
+## Core Principles
 
-**2. View Environment Summary (GET):**
-```bash
-curl "http://localhost:8000/api/v1/admin/environment/alpha/summary" \
-     -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>"
-```
-*(Note: In local dev mode, `X-Admin-Key: <YOUR_ADMIN_API_KEY>` is supported as a developer fallback.)*
+### 1. Human Governance
 
-**3. Resolve Active Risk (POST):**
-```bash
-curl -X POST "http://localhost:8000/api/v1/admin/environment/alpha/resolve-risk" \
-     -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>" \
-     -H "Content-Type: application/json" \
-     -d '{"reviewer": "admin_cem", "note": "False positive latency spike confirmed."}'
-```
-*(Returns `{"ok": true, "environment_id": "alpha", "action": "resolve-risk", ...}`)*
+The system supports human decision-making.  
+It does not replace judgment, escalate theatrically, or act autonomously without governance boundaries.
 
-**4. Suppress Risk (POST):**
-```bash
-curl -X POST "http://localhost:8000/api/v1/admin/environment/alpha/suppress-risk" \
-     -H "Authorization: Bearer <YOUR_ACCESS_TOKEN>" \
-     -H "Content-Type: application/json" \
-     -d '{"reviewer": "admin_cem", "note": "Investigating identity issue, suppressing immediate lock."}'
-```
+### 2. Operational Restraint
 
-```bash
-curl -X POST "http://localhost:8000/api/v1/admin/environment/alpha/restore-continuity" \
-     -H "X-Admin-Key: change-me-before-production" \
-     -H "Content-Type: application/json" \
-     -d '{"reviewer": "admin_cem", "note": "Manual continuity reset after maintenance."}'
-```
+Signals are intentionally quiet.  
+The interface avoids unnecessary motion, noise, and metric overload.
+
+### 3. Silent Failure Handling
+
+Failure states are absorbed gracefully.  
+The system maintains posture and continuity instead of exposing raw technical collapse to the user.
+
+### 4. Institutional Memory
+
+Recent operational stress influences the system atmosphere.  
+The interface remembers pressure, instability, and recovery without dramatizing them.
+
+### 5. Temporal Atmosphere
+
+Time is treated as part of the operational surface.  
+Posture, transition speed, and visual calmness adapt to the system’s recent condition.
+
+---
+
+## Architecture Overview
+
+```text
+Zero@Trust
+├── backend/
+│   ├── api/
+│   ├── core/
+│   ├── db/
+│   ├── engines/
+│   │   ├── evidence.py
+│   │   ├── risk.py
+│   │   ├── temporal.py
+│   │   └── trust.py
+│   ├── models/
+│   ├── schemas/
+│   └── main.py
+│
+├── frontend/
+│   ├── index.html
+│   ├── script.js
+│   ├── style.css
+│   ├── operator.html
+│   ├── operator.js
+│   └── operator.css
+│
+├── deploy/
+│   └── nginx/
+│
+├── docs/
+│   └── governance/
+│
+├── archives/
+├── v1.0_Sacred_Baseline/
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── SESSION_STATE.md
+└── README.md
